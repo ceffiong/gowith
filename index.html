@@ -1,0 +1,2763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GoWith — Prototype</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --primary: #FC4C02;
+  --secondary: #0F1B35;
+  --surface: #F5F5F5;
+  --surface-2: #E8E8E8;
+  --white: #FFFFFF;
+  --text: #1A1A1A;
+  --text-2: #555555;
+  --text-3: #999999;
+  --success: #22C55E;
+  --danger: #EF4444;
+  --radius-card: 20px;
+  --radius-sheet: 24px;
+  --radius-btn: 12px;
+  --tab-height: 83px;
+  --nav-height: 56px;
+  --status-height: 44px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0d0d1a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  overflow-y: auto;
+  padding: 32px 0 48px;
+}
+
+.desktop-label {
+  color: rgba(255,255,255,0.3);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.phone {
+  width: 390px;
+  height: 844px;
+  background: white;
+  border-radius: 50px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7), inset 0 0 0 1.5px rgba(255,255,255,0.15);
+}
+
+.dynamic-island {
+  width: 120px;
+  height: 34px;
+  background: #000;
+  border-radius: 20px;
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+}
+
+.screen-container { width: 100%; height: 100%; position: relative; overflow: hidden; }
+
+.screen {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: white;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.screen.active { display: flex; }
+
+.screen-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+.screen-content::-webkit-scrollbar { display: none; }
+
+/* Status Bar */
+.status-bar {
+  height: var(--status-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 28px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.status-bar .time { font-weight: 700; font-size: 15px; }
+.status-bar .icons { display: flex; align-items: center; gap: 5px; font-size: 12px; }
+
+/* Nav Bar */
+.nav-bar {
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: white;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  flex-shrink: 0;
+  z-index: 10;
+  position: relative;
+  gap: 8px;
+}
+.nav-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 700;
+  font-size: 17px;
+  white-space: nowrap;
+}
+.nav-back {
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: var(--surface);
+  cursor: pointer;
+  color: var(--text);
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.nav-action {
+  margin-left: auto;
+  font-weight: 700;
+  color: var(--primary);
+  cursor: pointer;
+  font-size: 15px;
+}
+
+/* Tab Bar */
+.tab-bar {
+  height: var(--tab-height);
+  background: white;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  display: flex;
+  align-items: flex-start;
+  padding-top: 10px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+}
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  color: var(--text-3);
+  font-size: 10px;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.tab i { font-size: 22px; }
+.tab.active { color: var(--primary); }
+.tab.center-tab .center-btn {
+  width: 52px; height: 52px;
+  background: var(--primary);
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: -18px;
+  box-shadow: 0 4px 20px rgba(252,76,2,0.45);
+}
+.tab.center-tab .center-btn i { font-size: 22px; color: white; }
+
+/* Buttons */
+.btn {
+  padding: 15px 24px;
+  border-radius: var(--radius-btn);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.btn:active { transform: scale(0.98); opacity: 0.9; }
+.btn-primary { background: var(--primary); color: white; }
+.btn-secondary { background: var(--surface); color: var(--text); }
+.btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+.btn-sm { padding: 9px 18px; font-size: 14px; }
+
+/* Auth Buttons */
+.auth-btn {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 18px;
+  border-radius: var(--radius-btn);
+  border: 1.5px solid rgba(0,0,0,0.1);
+  background: white;
+  cursor: pointer;
+  font-size: 15px; font-weight: 600; color: var(--text);
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  transition: background 0.15s;
+}
+.auth-btn:hover { background: var(--surface); }
+.auth-btn i { font-size: 20px; width: 22px; text-align: center; }
+.auth-btn .fa-strava { color: var(--primary); }
+.auth-btn .fa-google { color: #4285F4; }
+.auth-btn .fa-apple { color: #000; }
+.auth-btn .fa-envelope { color: var(--text-3); }
+
+/* Inputs */
+.input-label {
+  font-size: 12px; font-weight: 700; color: var(--text-3);
+  text-transform: uppercase; letter-spacing: 0.6px;
+  display: block; margin-bottom: 8px;
+}
+.input-field {
+  width: 100%; padding: 13px 16px;
+  border-radius: var(--radius-btn);
+  border: 1.5px solid rgba(0,0,0,0.1);
+  font-size: 16px; font-family: 'Inter', sans-serif;
+  background: var(--surface); color: var(--text);
+  outline: none;
+}
+.input-field:focus { border-color: var(--primary); background: white; }
+
+/* Chips */
+.chip {
+  display: inline-flex; align-items: center;
+  padding: 8px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 600;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  cursor: pointer; background: white; color: var(--text);
+  transition: all 0.15s; user-select: none;
+}
+.chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+.chips-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Badges */
+.badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 3px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 700;
+}
+.badge-verified { background: rgba(34,197,94,0.15); color: #16A34A; }
+.badge-pace { background: var(--primary); color: white; }
+
+/* Progress bar */
+.progress-bar {
+  height: 3px; background: var(--surface-2);
+  border-radius: 2px; margin: 0 20px;
+  flex-shrink: 0;
+}
+.progress-fill {
+  height: 100%; background: var(--primary);
+  border-radius: 2px; transition: width 0.3s ease;
+}
+
+/* Range slider */
+input[type=range] {
+  width: 100%; height: 4px;
+  background: var(--surface-2); border-radius: 2px;
+  outline: none; -webkit-appearance: none; cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 2px 8px rgba(252,76,2,0.35);
+}
+
+/* Bottom Sheet */
+.bottom-sheet-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 50; display: none; align-items: flex-end;
+}
+.bottom-sheet-overlay.active { display: flex; }
+.bottom-sheet {
+  background: white;
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  width: 100%; padding: 10px 20px 36px;
+  max-height: 88%; overflow-y: auto;
+}
+.bottom-sheet::-webkit-scrollbar { display: none; }
+.sheet-handle {
+  width: 38px; height: 4px;
+  background: rgba(0,0,0,0.12); border-radius: 2px;
+  margin: 0 auto 16px;
+}
+.sheet-title { font-size: 18px; font-weight: 800; margin-bottom: 20px; }
+
+/* Card */
+.card {
+  background: white; border-radius: var(--radius-card);
+  overflow: hidden; box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+/* Avatar */
+.avatar-placeholder {
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; font-weight: 800; color: white; flex-shrink: 0;
+}
+
+/* Toggle */
+.toggle {
+  width: 44px; height: 26px; border-radius: 13px;
+  background: var(--success); position: relative;
+  cursor: pointer; margin-left: auto; flex-shrink: 0;
+  transition: background 0.2s;
+}
+.toggle::after {
+  content: '';
+  width: 22px; height: 22px; border-radius: 50%;
+  background: white; position: absolute;
+  top: 2px; right: 2px;
+  transition: right 0.2s, left 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+}
+.toggle.off { background: var(--surface-2); }
+.toggle.off::after { right: auto; left: 2px; }
+
+/* Dividers */
+.divider-or {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--text-3); font-size: 13px; margin: 4px 0;
+}
+.divider-or::before, .divider-or::after {
+  content: ''; flex: 1; height: 1px; background: rgba(0,0,0,0.08);
+}
+
+/* List items */
+.list-item {
+  display: flex; align-items: center;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  cursor: pointer;
+}
+.list-item:last-child { border-bottom: none; }
+.list-item-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; margin-right: 14px; flex-shrink: 0;
+}
+.list-item-title { font-size: 15px; font-weight: 600; color: var(--text); }
+.list-item-subtitle { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+/* Utilities */
+.p20 { padding: 20px; }
+.px20 { padding-left: 20px; padding-right: 20px; }
+.mt8 { margin-top: 8px; }
+.mt12 { margin-top: 12px; }
+.mt16 { margin-top: 16px; }
+.mt20 { margin-top: 20px; }
+.mt24 { margin-top: 24px; }
+.mb8 { margin-bottom: 8px; }
+.mb12 { margin-bottom: 12px; }
+.mb16 { margin-bottom: 16px; }
+.mb20 { margin-bottom: 20px; }
+.flex { display: flex; }
+.flex-center { display: flex; align-items: center; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.gap8 { gap: 8px; }
+.gap12 { gap: 12px; }
+.gap16 { gap: 16px; }
+.text-center { text-align: center; }
+.text-sm { font-size: 13px; }
+.text-xs { font-size: 11px; }
+.text-muted { color: var(--text-3); }
+.text-primary { color: var(--primary); }
+.text-danger { color: var(--danger); }
+.font-bold { font-weight: 700; }
+.font-heavy { font-weight: 800; }
+
+/* ======================================================
+   SCREEN-SPECIFIC STYLES
+   ====================================================== */
+
+/* SPLASH */
+#splash { background: var(--secondary); align-items: center; justify-content: center; }
+
+/* DISCOVER - Card stack */
+.runner-card {
+  position: absolute;
+  width: calc(100% - 32px); left: 16px;
+  border-radius: 24px; overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  cursor: pointer;
+}
+.runner-card:nth-child(1) { top: 0; z-index: 3; }
+.runner-card:nth-child(2) { top: 12px; z-index: 2; transform: scale(0.97); }
+.runner-card:nth-child(3) { top: 22px; z-index: 1; transform: scale(0.94); }
+
+.runner-photo { height: 330px; position: relative; overflow: hidden; }
+
+.action-btn {
+  border-radius: 50%; border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  transition: transform 0.15s;
+}
+.action-btn:active { transform: scale(0.9); }
+.action-btn.pass { background: white; color: var(--danger); font-size: 24px; width: 60px; height: 60px; }
+.action-btn.gorun { background: var(--primary); color: white; font-size: 26px; width: 70px; height: 70px; box-shadow: 0 6px 24px rgba(252,76,2,0.4); }
+
+/* MATCH MODAL */
+.match-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(170deg, #0F1B35 0%, #1a2f60 100%);
+  z-index: 70; display: none;
+  flex-direction: column; align-items: center; justify-content: center;
+  padding: 40px 24px;
+}
+.match-overlay.active { display: flex; }
+
+@keyframes confetti-drop {
+  0% { transform: translateY(-60px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(900px) rotate(720deg); opacity: 0; }
+}
+.confetti-piece {
+  position: absolute;
+  animation: confetti-drop linear infinite;
+}
+
+/* CHAT */
+.chat-messages {
+  flex: 1; overflow-y: auto; padding: 16px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.chat-messages::-webkit-scrollbar { display: none; }
+.bubble {
+  max-width: 75%; padding: 10px 14px;
+  border-radius: 18px; font-size: 15px; line-height: 1.4;
+}
+.bubble-out { background: var(--primary); color: white; border-bottom-right-radius: 4px; align-self: flex-end; }
+.bubble-in { background: var(--surface); color: var(--text); border-bottom-left-radius: 4px; align-self: flex-start; }
+.msg-time { text-align: center; font-size: 11px; color: var(--text-3); margin: 8px 0; }
+.chat-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px 30px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  background: white; flex-shrink: 0;
+}
+.chat-input-field {
+  flex: 1; padding: 10px 16px; border-radius: 24px;
+  border: 1.5px solid rgba(0,0,0,0.1);
+  font-size: 15px; font-family: 'Inter', sans-serif;
+  outline: none; background: var(--surface);
+}
+.icon-btn { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; color: var(--text-3); cursor: pointer; font-size: 18px; }
+.send-btn { width: 36px; height: 36px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; font-size: 14px; }
+.plan-pill {
+  background: rgba(252,76,2,0.1); color: var(--primary);
+  padding: 6px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; gap: 5px;
+}
+.run-card {
+  background: var(--surface); border-radius: 14px;
+  padding: 12px 14px; align-self: flex-start;
+  max-width: 80%; border-left: 3px solid var(--primary);
+}
+
+/* FEED */
+.stories-row {
+  display: flex; gap: 12px; padding: 12px 16px;
+  overflow-x: auto; border-bottom: 1px solid rgba(0,0,0,0.05); flex-shrink: 0;
+}
+.stories-row::-webkit-scrollbar { display: none; }
+.story-item { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex-shrink: 0; }
+.story-ring { padding: 2.5px; border-radius: 50%; background: linear-gradient(45deg, var(--primary), #FF8E53); }
+.story-ring.viewed { background: var(--surface-2); }
+.story-ring.add-btn { background: var(--surface-2); }
+
+.post-card { border-bottom: 8px solid var(--surface); }
+.post-header { display: flex; align-items: center; gap: 10px; padding: 12px 16px; }
+.post-img { width: 100%; height: 220px; display: flex; align-items: center; justify-content: center; }
+.post-actions { display: flex; align-items: center; gap: 20px; padding: 10px 16px 12px; }
+.post-action { display: flex; align-items: center; gap: 6px; color: var(--text-2); font-size: 14px; cursor: pointer; }
+
+/* STORY VIEWER */
+#story-viewer { background: #000; }
+.story-bars { display: flex; gap: 4px; padding: 0 12px; position: absolute; top: 52px; left: 0; right: 0; z-index: 20; }
+.story-bar { flex: 1; height: 2.5px; background: rgba(255,255,255,0.3); border-radius: 2px; overflow: hidden; }
+.story-bar-fill { height: 100%; background: white; border-radius: 2px; }
+.story-user-row { position: absolute; top: 62px; left: 12px; right: 12px; display: flex; align-items: center; gap: 10px; z-index: 20; }
+.story-close { position: absolute; top: 62px; right: 12px; z-index: 20; color: white; font-size: 20px; cursor: pointer; }
+.story-reply { position: absolute; bottom: 32px; left: 12px; right: 12px; display: flex; align-items: center; gap: 10px; z-index: 20; }
+.story-reply-input { flex: 1; padding: 10px 16px; border-radius: 24px; border: 1.5px solid rgba(255,255,255,0.4); background: rgba(255,255,255,0.12); color: white; font-size: 15px; font-family: 'Inter', sans-serif; outline: none; }
+.story-reply-input::placeholder { color: rgba(255,255,255,0.55); }
+
+/* NOTIFICATIONS */
+.notif-chips { display: flex; gap: 8px; padding: 10px 16px; overflow-x: auto; border-bottom: 1px solid rgba(0,0,0,0.06); flex-shrink: 0; }
+.notif-chips::-webkit-scrollbar { display: none; }
+.notif-row { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; border-bottom: 1px solid rgba(0,0,0,0.04); cursor: pointer; }
+.notif-icon { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.notif-group-title { font-size: 12px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.6px; padding: 12px 16px 4px; }
+
+/* PROFILE */
+.profile-cover { height: 130px; background: linear-gradient(135deg, var(--secondary) 0%, #1E3A6E 100%); position: relative; flex-shrink: 0; }
+.profile-stats { display: flex; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
+.profile-stat { flex: 1; padding: 14px 8px; text-align: center; border-right: 1px solid rgba(0,0,0,0.06); }
+.profile-stat:last-child { border-right: none; }
+.stat-val { font-size: 20px; font-weight: 900; color: var(--text); }
+.stat-lbl { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+
+/* VERIFY */
+.verify-step { display: flex; align-items: flex-start; gap: 14px; padding: 16px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.verify-step:last-child { border-bottom: none; }
+.step-num { width: 30px; height: 30px; border-radius: 50%; background: var(--surface); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex-shrink: 0; }
+.step-num.done { background: var(--success); color: white; }
+.step-num.active { background: var(--primary); color: white; }
+
+/* SETTINGS */
+.settings-group-title { font-size: 12px; font-weight: 700; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.8px; padding: 16px 20px 6px; }
+.settings-row { display: flex; align-items: center; padding: 13px 20px; background: white; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; }
+.settings-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; margin-right: 14px; flex-shrink: 0; color: white; }
+
+/* MATCHES */
+.pending-strip { display: flex; gap: 12px; padding: 12px 16px; overflow-x: auto; border-bottom: 1px solid rgba(0,0,0,0.05); flex-shrink: 0; }
+.pending-strip::-webkit-scrollbar { display: none; }
+.match-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer; }
+.unread { background: var(--primary); color: white; font-size: 11px; font-weight: 800; min-width: 20px; height: 20px; border-radius: 10px; display: flex; align-items: center; justify-content: center; padding: 0 5px; }
+
+/* STORY EDITOR */
+#story-editor { background: #000; }
+#story-canvas-bg { position: absolute; inset: 0; }
+#story-canvas { position: absolute; inset: 0; overflow: hidden; }
+
+.story-layer {
+  position: absolute;
+  cursor: move;
+  user-select: none;
+  touch-action: none;
+  transform: translate(-50%, -50%);
+}
+
+/* toolbar buttons on canvas */
+.se-tool-btn {
+  width: 46px; height: 46px;
+  background: rgba(0,0,0,0.45);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: white; font-size: 20px;
+  backdrop-filter: blur(6px);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.se-tool-btn:hover { background: rgba(255,255,255,0.2); }
+.se-tool-btn.active { background: white; color: #000; }
+
+/* slide-up panels */
+.story-panel {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  background: rgba(20,20,20,0.96);
+  border-radius: 24px 24px 0 0;
+  padding: 12px 20px 36px;
+  z-index: 60;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
+  backdrop-filter: blur(20px);
+}
+.story-panel.active { transform: translateY(0); }
+.story-panel-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; margin: 0 auto 16px; }
+
+/* text input in story panel */
+.story-text-input {
+  width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 14px; padding: 12px 16px; font-size: 20px; font-weight: 700;
+  font-family: 'Inter', sans-serif; color: white; outline: none; text-align: center;
+  margin-bottom: 14px;
+}
+.story-text-input::placeholder { color: rgba(255,255,255,0.35); }
+.story-text-input:focus { border-color: rgba(255,255,255,0.5); }
+
+/* font style buttons */
+.font-style-btn {
+  flex: 1; padding: 10px; border-radius: 10px;
+  border: 1.5px solid rgba(255,255,255,0.15); background: transparent;
+  color: white; font-family: 'Inter', sans-serif; font-size: 13px;
+  cursor: pointer; text-align: center; transition: all 0.15s;
+}
+.font-style-btn.active { background: white; color: #000; border-color: white; }
+
+/* color swatches */
+.color-swatch {
+  width: 30px; height: 30px; border-radius: 50%; cursor: pointer; flex-shrink: 0;
+  border: 2.5px solid transparent; transition: transform 0.15s;
+}
+.color-swatch.selected { border-color: white; transform: scale(1.2); }
+
+/* emoji grid */
+.emoji-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.emoji-btn { font-size: 28px; cursor: pointer; padding: 4px; border-radius: 8px; line-height: 1; transition: background 0.1s; }
+.emoji-btn:hover { background: rgba(255,255,255,0.1); }
+
+/* sticker chips */
+.sticker-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 16px; border-radius: 20px;
+  font-weight: 800; font-size: 13px; cursor: pointer;
+  color: white; white-space: nowrap;
+  transition: opacity 0.15s;
+}
+.sticker-chip:hover { opacity: 0.85; }
+
+/* audience toggle */
+.audience-toggle {
+  display: flex; align-items: center;
+  background: rgba(0,0,0,0.5); border-radius: 20px;
+  padding: 4px; gap: 2px; backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.audience-opt {
+  padding: 6px 12px; border-radius: 16px;
+  font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.6);
+  cursor: pointer; transition: all 0.2s;
+}
+.audience-opt.active { background: white; color: #000; }
+
+/* story creation grid */
+.story-bg-option {
+  aspect-ratio: 9/16; border-radius: 14px; cursor: pointer;
+  position: relative; overflow: hidden;
+  border: 3px solid transparent; transition: border-color 0.15s, transform 0.15s;
+}
+.story-bg-option:hover { transform: scale(1.03); }
+.story-bg-option.selected { border-color: white; }
+
+/* ======================================================
+   NEW SCREENS CSS
+   ====================================================== */
+
+/* RUN REQUEST ACCEPTED overlay */
+.req-accepted-overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  z-index: 80; display: none;
+  align-items: center; justify-content: center; padding: 32px;
+}
+.req-accepted-overlay.active { display: flex; }
+.req-accepted-modal {
+  background: white; border-radius: 28px; padding: 32px 24px;
+  width: 100%; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+/* MAP LOCATION PICKER */
+#map-location-picker { background: #e8ede4; flex-direction: column; }
+.map-tile { flex: 1; position: relative; overflow: hidden; background: #e8ede4; }
+.map-grid {
+  position: absolute; inset: 0;
+  background-image: linear-gradient(rgba(0,0,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.map-search-wrap {
+  position: absolute; top: 56px; left: 12px; right: 12px; z-index: 20;
+}
+.map-search-input {
+  width: 100%; padding: 13px 16px 13px 42px;
+  border-radius: 14px; border: none;
+  background: white; font-size: 15px; font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15); outline: none; color: var(--text);
+}
+
+/* STORY VIEWER SELF */
+#story-viewer-self { background: #000; }
+.story-viewers-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(0,0,0,0.5); padding: 6px 14px; border-radius: 20px;
+  backdrop-filter: blur(8px); cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.2); color: white;
+  font-size: 13px; font-weight: 700;
+}
+
+/* SHARE SHEET */
+#share-sheet-screen { background: var(--surface); }
+.share-dest-row { display: flex; overflow-x: auto; padding: 4px 12px 4px; gap: 0; }
+.share-dest-row::-webkit-scrollbar { display: none; }
+.share-dest {
+  display: flex; flex-direction: column; align-items: center; gap: 7px;
+  flex-shrink: 0; width: 74px; cursor: pointer; padding: 6px 0;
+}
+.share-dest-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center; font-size: 24px;
+}
+.share-dest span { font-size: 11px; font-weight: 600; color: var(--text-2); text-align: center; line-height: 1.3; }
+
+/* RUN CLUBS */
+#run-clubs-discovery { background: var(--surface); }
+.clubs-card {
+  background: white; border-radius: 20px; overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  margin: 0 16px 14px; position: relative;
+}
+.clubs-locked {
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0.82); backdrop-filter: blur(5px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; border-radius: 20px;
+}
+
+/* STRAVA AUTH */
+#strava-auth { background: white; }
+
+</style>
+</head>
+<body>
+
+<div class="desktop-label">GoWith — Interactive Prototype</div>
+
+<div class="phone">
+  <div class="dynamic-island"></div>
+  <div class="screen-container">
+
+    <!-- ========== SPLASH ========== -->
+    <div class="screen active" id="splash">
+      <div class="status-bar" style="color:white;">
+        <span class="time">9:41</span>
+        <div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;">
+        <div style="width:88px;height:88px;background:var(--primary);border-radius:28px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 40px rgba(252,76,2,0.5);">
+          <i class="fas fa-person-running" style="font-size:44px;color:white;"></i>
+        </div>
+        <div style="text-align:center;">
+          <h1 style="font-size:44px;font-weight:900;color:white;letter-spacing:-1.5px;">GoWith</h1>
+          <p style="color:rgba(255,255,255,0.5);font-size:15px;margin-top:8px;font-weight:500;">Find someone to go with.</p>
+        </div>
+      </div>
+      <div style="padding-bottom:56px;text-align:center;">
+        <div style="width:36px;height:5px;background:rgba(255,255,255,0.2);border-radius:3px;margin:0 auto;"></div>
+      </div>
+    </div>
+
+    <!-- ========== ONBOARDING ========== -->
+    <div class="screen" id="onboarding">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;padding:4px 20px 0;flex-shrink:0;">
+        <span style="color:var(--text-3);font-size:15px;cursor:pointer;font-weight:600;" onclick="show('auth-options')">Skip</span>
+      </div>
+      <div style="flex:1;overflow:hidden;position:relative;">
+        <div id="ob-slides" style="display:flex;width:300%;height:100%;transition:transform 0.4s ease;">
+          <div style="width:33.333%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;">
+            <div style="width:180px;height:180px;border-radius:40px;background:linear-gradient(135deg,#FF6B35,#FC4C02);display:flex;align-items:center;justify-content:center;margin-bottom:32px;"><i class="fas fa-person-running" style="font-size:72px;color:white;"></i></div>
+            <h2 style="font-size:28px;font-weight:900;color:var(--secondary);line-height:1.2;">Run Better.<br>Together.</h2>
+            <p style="color:var(--text-2);margin-top:14px;font-size:15px;line-height:1.6;">Match with runners near you based on pace, goals, and schedule.</p>
+          </div>
+          <div style="width:33.333%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;">
+            <div style="width:180px;height:180px;border-radius:40px;background:linear-gradient(135deg,#3B82F6,#1D4ED8);display:flex;align-items:center;justify-content:center;margin-bottom:32px;"><i class="fas fa-shield-halved" style="font-size:72px;color:white;"></i></div>
+            <h2 style="font-size:28px;font-weight:900;color:var(--secondary);line-height:1.2;">Verified<br>Runners Only.</h2>
+            <p style="color:var(--text-2);margin-top:14px;font-size:15px;line-height:1.6;">Every runner is identity-verified or Strava-connected. Run safely with real people.</p>
+          </div>
+          <div style="width:33.333%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 28px;text-align:center;">
+            <div style="width:180px;height:180px;border-radius:40px;background:linear-gradient(135deg,#22C55E,#16A34A);display:flex;align-items:center;justify-content:center;margin-bottom:32px;"><i class="fas fa-route" style="font-size:72px;color:white;"></i></div>
+            <h2 style="font-size:28px;font-weight:900;color:var(--secondary);line-height:1.2;">Plan. Run.<br>Share.</h2>
+            <p style="color:var(--text-2);margin-top:14px;font-size:15px;line-height:1.6;">Chat, plan routes, and share your runs with your crew.</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:0 24px 40px;flex-shrink:0;">
+        <div id="ob-dots" style="display:flex;gap:8px;justify-content:center;margin-bottom:24px;">
+          <div class="dot active" style="width:24px;height:8px;border-radius:4px;background:var(--primary);transition:all 0.3s;cursor:pointer;" onclick="goToSlide(0)"></div>
+          <div class="dot" style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.15);transition:all 0.3s;cursor:pointer;" onclick="goToSlide(1)"></div>
+          <div class="dot" style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.15);transition:all 0.3s;cursor:pointer;" onclick="goToSlide(2)"></div>
+        </div>
+        <button class="btn btn-primary" id="ob-btn" onclick="obNext()">Next</button>
+      </div>
+    </div>
+
+    <!-- ========== AUTH OPTIONS ========== -->
+    <div class="screen" id="auth-options">
+      <div class="status-bar">
+        <span class="time">9:41</span>
+        <div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div>
+      </div>
+      <div style="flex:1;display:flex;flex-direction:column;padding:20px 24px;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;">
+          <div style="width:68px;height:68px;background:var(--primary);border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(252,76,2,0.4);">
+            <i class="fas fa-person-running" style="font-size:34px;color:white;"></i>
+          </div>
+          <h1 style="font-size:30px;font-weight:900;color:var(--secondary);">GoWith</h1>
+          <p style="color:var(--text-3);font-size:14px;font-weight:500;">Find someone to go with.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <button class="auth-btn" onclick="show('setup-1')"><i class="fab fa-google"></i><span>Continue with Google</span></button>
+          <button class="auth-btn" onclick="show('setup-1')"><i class="fab fa-apple"></i><span>Continue with Apple</span></button>
+          <button class="auth-btn" onclick="show('email-auth')"><i class="fas fa-envelope"></i><span>Continue with Email</span></button>
+          <div class="divider-or">or</div>
+          <button class="auth-btn" style="border-color:var(--primary);border-width:2px;" onclick="show('strava-auth')">
+            <i class="fab fa-strava"></i>
+            <span>Continue with Strava</span>
+            <span style="margin-left:auto;background:rgba(34,197,94,0.12);color:#16A34A;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;">Auto-verified</span>
+          </button>
+          <p style="text-align:center;font-size:11px;color:var(--text-3);line-height:1.5;margin-top:4px;">By continuing you agree to our <span style="color:var(--primary);cursor:pointer;">Terms</span> &amp; <span style="color:var(--primary);cursor:pointer;">Privacy Policy</span></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== EMAIL AUTH ========== -->
+    <div class="screen" id="email-auth">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar">
+        <div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div>
+        <span class="nav-title">Sign In</span>
+      </div>
+      <div class="screen-content p20">
+        <div style="display:flex;background:var(--surface);border-radius:var(--radius-btn);padding:4px;margin-bottom:24px;">
+          <div style="flex:1;padding:10px;background:white;border-radius:10px;text-align:center;font-size:14px;font-weight:700;box-shadow:0 1px 6px rgba(0,0,0,0.08);cursor:pointer;">Sign In</div>
+          <div style="flex:1;padding:10px;text-align:center;font-size:14px;color:var(--text-3);font-weight:600;cursor:pointer;">Sign Up</div>
+        </div>
+        <div style="margin-bottom:16px;">
+          <label class="input-label">Email</label>
+          <input class="input-field" type="email" placeholder="you@example.com">
+        </div>
+        <div style="margin-bottom:8px;">
+          <label class="input-label">Password</label>
+          <input class="input-field" type="password" placeholder="••••••••">
+        </div>
+        <div style="text-align:right;margin-bottom:28px;">
+          <span style="color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;">Forgot password?</span>
+        </div>
+        <button class="btn btn-primary" onclick="show('setup-1')">Sign In</button>
+      </div>
+    </div>
+
+    <!-- ========== SETUP STEP 1 ========== -->
+    <div class="screen" id="setup-1">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Your Profile</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+      <div class="screen-content p20">
+        <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 1 of 5</p>
+        <h2 style="font-size:22px;font-weight:900;margin-bottom:24px;">Tell us about yourself</h2>
+        <div style="display:flex;justify-content:center;margin-bottom:28px;">
+          <div style="position:relative;cursor:pointer;">
+            <div class="avatar-placeholder" style="width:96px;height:96px;font-size:38px;background:linear-gradient(135deg,#FF6B35,#FC4C02);">Y</div>
+            <div style="position:absolute;bottom:0;right:0;width:28px;height:28px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2.5px solid white;">
+              <i class="fas fa-camera" style="color:white;font-size:11px;"></i>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;"><label class="input-label">Full Name</label><input class="input-field" type="text" placeholder="Your name"></div>
+        <div style="margin-bottom:16px;"><label class="input-label">Bio</label><textarea class="input-field" rows="3" placeholder="Tell other runners about yourself..." style="resize:none;"></textarea></div>
+      </div>
+      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('setup-2')">Continue</button></div>
+    </div>
+
+    <!-- ========== SETUP STEP 2 ========== -->
+    <div class="screen" id="setup-2">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Run Preferences</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+      <div class="screen-content p20">
+        <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 2 of 5</p>
+        <h2 style="font-size:22px;font-weight:900;margin-bottom:24px;">How do you run?</h2>
+        <div style="margin-bottom:20px;"><label class="input-label">Run Types</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip">Trail</div><div class="chip active">Track</div><div class="chip">Treadmill</div><div class="chip">Ultra</div></div></div>
+        <div style="margin-bottom:20px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Pace Range</span><span style="font-weight:500;text-transform:none;font-size:13px;color:var(--text-2);">8:00 – 10:00 /mi</span></label><input type="range" style="margin-top:12px;" min="5" max="15" value="8"></div>
+        <div style="margin-bottom:20px;">
+          <label class="input-label">Typical Distance</label>
+          <div style="display:flex;background:var(--surface);border-radius:var(--radius-btn);padding:4px;margin-top:8px;">
+            <div style="flex:1;padding:10px;background:white;border-radius:10px;text-align:center;font-size:14px;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,0.08);cursor:pointer;">5K</div>
+            <div style="flex:1;padding:10px;text-align:center;font-size:14px;color:var(--text-3);font-weight:600;cursor:pointer;">10K</div>
+            <div style="flex:1;padding:10px;text-align:center;font-size:14px;color:var(--text-3);font-weight:600;cursor:pointer;">Half</div>
+            <div style="flex:1;padding:10px;text-align:center;font-size:14px;color:var(--text-3);font-weight:600;cursor:pointer;">Full</div>
+          </div>
+        </div>
+        <div><label class="input-label">Time of Day</label><div class="chips-row mt8"><div class="chip active">Early Morning</div><div class="chip">Morning</div><div class="chip">Afternoon</div><div class="chip">Evening</div></div></div>
+      </div>
+      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('setup-3')">Continue</button></div>
+    </div>
+
+    <!-- ========== SETUP STEP 3 ========== -->
+    <div class="screen" id="setup-3">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Goals</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+      <div class="screen-content p20">
+        <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 3 of 5</p>
+        <h2 style="font-size:22px;font-weight:900;margin-bottom:24px;">What are you training for?</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+          <div class="card" style="padding:16px;cursor:pointer;border:2.5px solid var(--primary);"><div style="font-size:28px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-medal"></i></div><div style="font-weight:800;font-size:14px;">Race Training</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">5K to Marathon</div></div>
+          <div class="card" style="padding:16px;cursor:pointer;"><div style="font-size:28px;margin-bottom:8px;color:var(--text-2);"><i class="fas fa-dumbbell"></i></div><div style="font-weight:800;font-size:14px;">Get Fit</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Build a habit</div></div>
+          <div class="card" style="padding:16px;cursor:pointer;border:2.5px solid var(--primary);"><div style="font-size:28px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-people-group"></i></div><div style="font-weight:800;font-size:14px;">Social Running</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Meet new people</div></div>
+          <div class="card" style="padding:16px;cursor:pointer;"><div style="font-size:28px;margin-bottom:8px;color:var(--text-2);"><i class="fas fa-leaf"></i></div><div style="font-weight:800;font-size:14px;">Stress Relief</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Run to unwind</div></div>
+        </div>
+        <label class="input-label">Weekly Mileage Goal</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px;">
+          <div style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;font-weight:300;">−</div>
+          <div style="flex:1;text-align:center;font-size:26px;font-weight:900;">20 <span style="font-size:14px;font-weight:500;color:var(--text-2);">mi/wk</span></div>
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;font-weight:300;color:white;">+</div>
+        </div>
+      </div>
+      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('setup-4')">Continue</button></div>
+    </div>
+
+    <!-- ========== SETUP STEP 4 ========== -->
+    <div class="screen" id="setup-4">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Location</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:80%"></div></div>
+      <div class="screen-content p20">
+        <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 4 of 5</p>
+        <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;">Where do you run?</h2>
+        <p style="color:var(--text-2);font-size:14px;margin-bottom:20px;line-height:1.5;">We use your location to find runners near you. Your exact address is never shared.</p>
+        <div style="width:100%;height:220px;border-radius:20px;overflow:hidden;position:relative;margin-bottom:20px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="text-align:center;color:#3B82F6;opacity:0.4;"><i class="fas fa-map" style="font-size:52px;"></i><p style="font-size:13px;margin-top:8px;">Map Preview</p></div></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);">
+            <i class="fas fa-map-pin" style="font-size:36px;color:var(--primary);filter:drop-shadow(0 3px 6px rgba(0,0,0,0.3));"></i>
+          </div>
+        </div>
+        <button class="btn btn-secondary" style="margin-bottom:16px;"><i class="fas fa-location-arrow" style="margin-right:8px;color:var(--primary);"></i>Use My Current Location</button>
+        <div style="display:flex;align-items:center;padding:14px 0;border-top:1px solid rgba(0,0,0,0.06);">
+          <div style="flex:1;"><div style="font-weight:700;font-size:15px;">Precise Location</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Show within exact radius</div></div>
+          <div class="toggle"></div>
+        </div>
+      </div>
+      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('setup-5')">Continue</button></div>
+    </div>
+
+    <!-- ========== SETUP STEP 5 ========== -->
+    <div class="screen" id="setup-5">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Review Profile</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      <div class="screen-content p20">
+        <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 5 of 5</p>
+        <h2 style="font-size:22px;font-weight:900;margin-bottom:20px;">This is how others see you</h2>
+        <div class="card" style="margin-bottom:16px;">
+          <div style="height:180px;background:linear-gradient(135deg,#FF6B35,#FC4C02);position:relative;">
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,rgba(0,0,0,0.7));">
+              <div style="color:white;font-weight:900;font-size:20px;">Your Name, 28</div>
+              <div style="display:flex;gap:6px;margin-top:5px;"><span style="background:var(--primary);color:white;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;">8:30/mi</span><span style="background:rgba(255,255,255,0.2);color:white;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;">Road · Trail</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 14px;"><p style="font-size:13px;color:var(--text-2);">Your bio will appear here...</p></div>
+        </div>
+        <div class="card" style="padding:16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span style="font-weight:800;">Run Preferences</span><span style="color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;" onclick="show('setup-2')">Edit</span></div>
+          <div class="chips-row"><div class="chip active" style="font-size:12px;">Road</div><div class="chip active" style="font-size:12px;">Track</div><div class="chip active" style="font-size:12px;">Race Training</div><div class="chip active" style="font-size:12px;">Social Running</div></div>
+        </div>
+      </div>
+      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('discover')">Start Running With People 🎉</button></div>
+    </div>
+
+    <!-- ========== DISCOVER ========== -->
+    <div class="screen" id="discover">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:6px 20px;flex-shrink:0;">
+        <div style="width:36px;"></div>
+        <div style="display:flex;align-items:center;gap:8px;"><i class="fas fa-person-running" style="color:var(--primary);font-size:20px;"></i><span style="font-weight:900;font-size:22px;color:var(--secondary);">GoWith</span></div>
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="openSheet('filters-sheet')"><i class="fas fa-sliders" style="color:var(--text-2);font-size:16px;"></i></div>
+      </div>
+      <!-- Card Stack -->
+      <div id="card-stack" style="flex:1;position:relative;">
+        <div class="runner-card" style="top:22px;z-index:1;transform:scale(0.94);">
+          <div class="runner-photo" style="background:linear-gradient(135deg,#667eea,#764ba2);"></div>
+        </div>
+        <div class="runner-card" style="top:12px;z-index:2;transform:scale(0.97);">
+          <div class="runner-photo" style="background:linear-gradient(135deg,#4ECDC4,#44A08D);"></div>
+        </div>
+        <div class="runner-card" style="top:0;z-index:3;">
+          <div class="runner-photo" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);position:relative;">
+            <div style="position:absolute;top:12px;right:12px;background:rgba(34,197,94,0.88);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;backdrop-filter:blur(4px);display:flex;align-items:center;gap:4px;"><i class="fas fa-check-circle"></i> Verified</div>
+            <div style="position:absolute;top:16px;left:16px;width:10px;height:10px;background:#22C55E;border-radius:50%;border:2px solid white;"></div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,0.78));">
+              <div style="color:white;font-weight:900;font-size:22px;">Sarah, 28</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:5px;">
+                <span style="background:rgba(255,255,255,0.18);color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;backdrop-filter:blur(4px);"><i class="fas fa-location-dot"></i> 0.3 mi</span>
+                <span style="background:var(--primary);color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;">8:30/mi</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:12px 16px;background:white;">
+            <div class="chips-row" style="gap:6px;">
+              <div class="chip" style="font-size:11px;padding:4px 10px;">Road</div>
+              <div class="chip" style="font-size:11px;padding:4px 10px;">Trail</div>
+              <div class="chip" style="font-size:11px;padding:4px 10px;">🏅 Race Training</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Action buttons -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:20px;padding:14px 20px 10px;flex-shrink:0;">
+        <button class="action-btn pass" onclick="swipeCard('left')"><i class="fas fa-xmark"></i></button>
+        <button class="action-btn gorun" onclick="swipeCard('right')"><i class="fas fa-person-running"></i></button>
+      </div>
+      <div class="tab-bar">
+        <div class="tab active" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
+        <div class="tab" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
+        <div class="tab" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
+        <div class="tab" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+      </div>
+
+      <!-- FILTERS SHEET -->
+      <div class="bottom-sheet-overlay" id="filters-sheet" onclick="overlayClose(event,'filters-sheet')">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <div class="sheet-title" style="margin-bottom:0;">Filter Runners</div>
+            <span style="color:var(--primary);font-weight:700;cursor:pointer;">Reset</span>
+          </div>
+          <div style="margin-bottom:20px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Distance Radius</span><span style="font-weight:500;text-transform:none;color:var(--text-2);">5 miles</span></label><input type="range" style="margin-top:12px;" min="1" max="25" value="5"></div>
+          <div style="margin-bottom:20px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Pace Range</span><span style="font-weight:500;text-transform:none;color:var(--text-2);">7:00–11:00/mi</span></label><input type="range" style="margin-top:12px;" min="5" max="15" value="9"></div>
+          <div style="margin-bottom:16px;"><label class="input-label">Run Type</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip">Trail</div><div class="chip active">Track</div><div class="chip">Treadmill</div></div></div>
+          <div style="margin-bottom:16px;"><label class="input-label">Goals</label><div class="chips-row mt8"><div class="chip active">Race Training</div><div class="chip">Social</div><div class="chip">Fitness</div></div></div>
+          <div style="margin-bottom:20px;"><label class="input-label">Availability</label><div class="chips-row mt8"><div class="chip active">Early Morning</div><div class="chip">Morning</div><div class="chip">Evening</div></div></div>
+          <button class="btn btn-primary" onclick="closeSheet('filters-sheet')">Apply Filters</button>
+        </div>
+      </div>
+
+      <!-- MATCH MODAL -->
+      <div class="match-overlay" id="match-modal">
+        <div id="confetti-wrap" style="position:absolute;inset:0;overflow:hidden;pointer-events:none;"></div>
+        <div style="text-align:center;position:relative;z-index:1;width:100%;">
+          <p style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px;">It's a Match!</p>
+          <h1 style="font-size:36px;font-weight:900;color:white;margin-bottom:6px;">You &amp; Sarah</h1>
+          <p style="color:rgba(255,255,255,0.55);font-size:14px;margin-bottom:36px;">You're both ready to run together! 🏃</p>
+          <div style="display:flex;justify-content:center;margin-bottom:36px;">
+            <div class="avatar-placeholder" style="width:100px;height:100px;font-size:36px;background:linear-gradient(135deg,#FF6B35,#FC4C02);border:4px solid white;">Y</div>
+            <div class="avatar-placeholder" style="width:100px;height:100px;font-size:36px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);border:4px solid white;margin-left:-22px;">S</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <button class="btn btn-primary" onclick="show('chat-thread')">Send a Message</button>
+            <button class="btn" style="background:rgba(255,255,255,0.12);color:white;font-weight:700;" onclick="closeMatch()">Keep Discovering</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== RUNNER DETAIL ========== -->
+    <div class="screen" id="runner-detail">
+      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:20;color:white;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div style="position:absolute;top:50px;left:16px;z-index:20;">
+        <div style="width:36px;height:36px;background:rgba(0,0,0,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);" onclick="back()"><i class="fas fa-chevron-left" style="color:white;font-size:14px;"></i></div>
+      </div>
+      <div class="screen-content">
+        <div style="height:360px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);position:relative;flex-shrink:0;">
+          <div style="position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(transparent,rgba(0,0,0,0.82));">
+            <h2 style="color:white;font-size:26px;font-weight:900;">Sarah M., 28</h2>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap;">
+              <span style="background:rgba(255,255,255,0.18);color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;backdrop-filter:blur(4px);"><i class="fas fa-location-dot"></i> 0.3 mi away</span>
+              <span style="background:var(--primary);color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;">8:30 /mi</span>
+              <span style="background:rgba(34,197,94,0.88);color:white;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;backdrop-filter:blur(4px);"><i class="fas fa-check-circle"></i> Verified</span>
+            </div>
+          </div>
+        </div>
+        <div style="padding:20px;">
+          <h3 style="font-size:16px;font-weight:800;margin-bottom:10px;">About</h3>
+          <p style="color:var(--text-2);font-size:14px;line-height:1.65;">Marathon runner training for Boston 2026. Love early morning runs and hitting trails on weekends. Always down for a running buddy to push the pace! 🏃‍♀️</p>
+          <h3 style="font-size:16px;font-weight:800;margin-top:22px;margin-bottom:12px;">Run Preferences</h3>
+          <div class="chips-row">
+            <div class="chip active" style="font-size:12px;">Road</div>
+            <div class="chip active" style="font-size:12px;">Trail</div>
+            <div class="chip active" style="font-size:12px;">🏅 Race Training</div>
+            <div class="chip active" style="font-size:12px;">Early Morning</div>
+          </div>
+          <h3 style="font-size:16px;font-weight:800;margin-top:22px;margin-bottom:12px;">Compatibility</h3>
+          <div class="card" style="padding:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span style="font-size:13px;color:var(--text-2);">Pace Match</span><div style="display:flex;gap:4px;"><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--surface-2);"></div></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span style="font-size:13px;color:var(--text-2);">Goals Alignment</span><div style="display:flex;gap:4px;"><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div></div></div>
+            <div style="display:flex;align-items:center;justify-content:space-between;"><span style="font-size:13px;color:var(--text-2);">Schedule</span><div style="display:flex;gap:4px;"><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--primary);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--surface-2);"></div><div style="width:11px;height:11px;border-radius:50%;background:var(--surface-2);"></div></div></div>
+          </div>
+          <div style="height:90px;"></div>
+        </div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 20px 32px;background:white;border-top:1px solid rgba(0,0,0,0.06);display:flex;gap:12px;">
+        <button class="btn btn-secondary" style="flex:0 0 52px;padding:0;height:52px;display:flex;align-items:center;justify-content:center;" onclick="back()"><i class="fas fa-xmark" style="color:var(--danger);font-size:20px;"></i></button>
+        <button class="btn btn-primary" style="flex:1;" onclick="openSheet('run-request-sent-sheet')">Run With Sarah <i class="fas fa-person-running" style="margin-left:6px;"></i></button>
+      </div>
+
+      <!-- RUN REQUEST SENT SHEET -->
+      <div class="bottom-sheet-overlay" id="run-request-sent-sheet" onclick="overlayClose(event,'run-request-sent-sheet')">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div style="text-align:center;padding-bottom:8px;">
+            <div style="width:68px;height:68px;background:rgba(252,76,2,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+              <i class="fas fa-paper-plane" style="font-size:28px;color:var(--primary);"></i>
+            </div>
+            <h3 style="font-size:20px;font-weight:900;margin-bottom:8px;">Request Sent!</h3>
+            <p style="color:var(--text-2);font-size:14px;line-height:1.65;margin-bottom:24px;">Your run request has been sent to <strong>Sarah</strong>. You'll be notified when she responds.</p>
+            <button class="btn btn-primary" style="margin-bottom:10px;" onclick="closeSheet('run-request-sent-sheet');show('matches-list')">View in Matches</button>
+            <button class="btn btn-secondary" onclick="closeSheet('run-request-sent-sheet')">Keep Browsing</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== MATCHES LIST ========== -->
+    <div class="screen" id="matches-list">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><span class="nav-title">Matches</span><div style="margin-left:auto;cursor:pointer;color:var(--text-2);font-size:18px;"><i class="fas fa-magnifying-glass"></i></div></div>
+      <div class="screen-content">
+        <div style="padding:10px 16px 4px;"><span style="font-size:11px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:0.7px;">Pending Requests</span></div>
+        <div class="pending-strip">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0;" onclick="show('run-request-inbox')">
+            <div style="padding:2.5px;border-radius:50%;background:var(--primary);"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:20px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Emma L.</span>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex-shrink:0;">
+            <div style="padding:2.5px;border-radius:50%;background:var(--surface-2);"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:20px;background:linear-gradient(135deg,#667eea,#764ba2);">C</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Carlos R.</span>
+          </div>
+        </div>
+        <div style="padding:12px 16px 4px;border-top:8px solid var(--surface);"><span style="font-size:11px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:0.7px;">Your Matches</span></div>
+        <div class="match-row" onclick="show('chat-thread')">
+          <div style="padding:2.5px;border-radius:50%;background:linear-gradient(45deg,var(--primary),#FF8E53);"><div class="avatar-placeholder" style="width:52px;height:52px;font-size:18px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div></div>
+          <div style="flex:1;"><div style="font-weight:800;font-size:15px;">Sarah M.</div><div style="font-size:13px;color:var(--text-3);margin-top:2px;">See you at 6am! 🏃</div></div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px;"><div style="font-size:11px;color:var(--text-3);">2m</div><div class="unread">2</div></div>
+        </div>
+        <div class="match-row" onclick="show('chat-thread')">
+          <div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div>
+          <div style="flex:1;"><div style="font-weight:800;font-size:15px;">Emma L.</div><div style="font-size:13px;color:var(--text-3);margin-top:2px;">What trail do you usually run?</div></div>
+          <div style="font-size:11px;color:var(--text-3);">1h</div>
+        </div>
+        <div class="match-row" onclick="show('chat-thread')">
+          <div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div>
+          <div style="flex:1;"><div style="font-weight:800;font-size:15px;">Jake T.</div><div style="font-size:13px;color:var(--text-3);margin-top:2px;">You: Want to run Saturday?</div></div>
+          <div style="font-size:11px;color:var(--text-3);">3d</div>
+        </div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
+        <div class="tab active" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
+        <div class="tab" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
+        <div class="tab" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+
+    <!-- ========== CHAT THREAD ========== -->
+    <div class="screen" id="chat-thread">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar" style="gap:10px;">
+        <div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div>
+        <div style="padding:2px;border-radius:50%;background:linear-gradient(45deg,var(--primary),#FF8E53);cursor:pointer;" onclick="show('runner-detail')"><div class="avatar-placeholder" style="width:36px;height:36px;font-size:14px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div></div>
+        <div style="flex:1;cursor:pointer;" onclick="show('runner-detail')"><div style="font-weight:800;font-size:15px;">Sarah M.</div><div style="font-size:12px;color:var(--success);">● Online now</div></div>
+        <div class="plan-pill" onclick="openSheet('run-sheet')"><i class="fas fa-route"></i>Plan Run</div>
+      </div>
+      <div class="chat-messages">
+        <div class="msg-time">Today, 6:12 AM</div>
+        <div class="bubble bubble-in">Hey! Saw you run Riverside Park too 🏃‍♀️ Do you usually go mornings?</div>
+        <div class="bubble bubble-out">Yes! 6am start. Love the trails near Riverside Park</div>
+        <div class="bubble bubble-in">That's my spot too! We should run together 😊</div>
+        <div class="run-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><i class="fas fa-route" style="color:var(--primary);"></i><span style="font-weight:800;font-size:13px;">Run Invite</span><span style="margin-left:auto;background:rgba(252,76,2,0.1);color:var(--primary);padding:2px 8px;border-radius:20px;font-size:11px;font-weight:800;">Pending</span></div>
+          <div style="font-size:13px;color:var(--text-2);line-height:1.8;">📅 Saturday, Apr 12 · 6:00 AM<br>📍 Riverside Park, North Entrance<br>🏃 5 miles easy pace</div>
+          <div style="display:flex;gap:8px;margin-top:10px;"><button class="btn btn-primary btn-sm" style="flex:1;padding:8px;">Accept</button><button class="btn btn-secondary btn-sm" style="flex:1;padding:8px;">Decline</button></div>
+        </div>
+        <div class="bubble bubble-in">Sounds perfect! See you at 6am 🏃</div>
+        <div class="bubble bubble-out">Can't wait! 🔥</div>
+      </div>
+      <div class="chat-bar">
+        <div class="icon-btn" onclick="openSheet('run-sheet')"><i class="fas fa-shoe-prints"></i></div>
+        <div class="icon-btn"><i class="fas fa-image"></i></div>
+        <input class="chat-input-field" placeholder="Message...">
+        <div class="send-btn"><i class="fas fa-paper-plane"></i></div>
+      </div>
+
+      <!-- RUN PLANNING SHEET -->
+      <div class="bottom-sheet-overlay" id="run-sheet" onclick="overlayClose(event,'run-sheet')">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div class="sheet-title">Plan a Run</div>
+          <div style="margin-bottom:14px;"><label class="input-label">Date</label><input class="input-field" type="date" value="2026-04-12"></div>
+          <div style="margin-bottom:14px;"><label class="input-label">Time</label><input class="input-field" type="time" value="06:00"></div>
+          <div style="margin-bottom:14px;"><label class="input-label">Location</label><div class="input-field" style="display:flex;align-items:center;gap:8px;cursor:pointer;color:var(--text-2);" onclick="show('map-location-picker')"><i class="fas fa-location-dot" style="color:var(--primary);"></i>Riverside Park, North Entrance</div></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+            <div><label class="input-label">Distance</label><div style="display:flex;align-items:center;gap:6px;margin-top:8px;"><div style="width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;">−</div><div style="flex:1;text-align:center;font-weight:800;">5 mi</div><div style="width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;">+</div></div></div>
+            <div><label class="input-label">Duration</label><div style="display:flex;align-items:center;gap:6px;margin-top:8px;"><div style="width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;">−</div><div style="flex:1;text-align:center;font-weight:800;">45m</div><div style="width:32px;height:32px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;cursor:pointer;color:white;">+</div></div></div>
+          </div>
+          <div style="margin-bottom:20px;"><label class="input-label">Note (optional)</label><input class="input-field" style="margin-top:8px;" placeholder="Any details for your run partner..."></div>
+          <button class="btn btn-primary" onclick="closeSheet('run-sheet')">Send Run Invite</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== FEED ========== -->
+    <div class="screen" id="feed">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><span style="font-size:22px;font-weight:900;color:var(--secondary);">Feed</span><div style="margin-left:auto;color:var(--text-2);font-size:18px;cursor:pointer;"><i class="fas fa-paper-plane"></i></div></div>
+      <div class="screen-content">
+        <div class="stories-row">
+          <div class="story-item" onclick="show('story-creation')">
+            <div class="story-ring add-btn" style="padding:2.5px;"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#FF6B35,#FC4C02);">Y</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Add Story</span>
+          </div>
+          <div class="story-item" onclick="show('story-viewer')">
+            <div class="story-ring" style="padding:2.5px;"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Sarah</span>
+          </div>
+          <div class="story-item" onclick="show('story-viewer')">
+            <div class="story-ring" style="padding:2.5px;"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Emma</span>
+          </div>
+          <div class="story-item">
+            <div class="story-ring viewed" style="padding:2.5px;"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Jake</span>
+          </div>
+        </div>
+        <div class="post-card" onclick="show('feed-post-detail')">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="width:40px;height:40px;font-size:14px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+            <div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-weight:800;font-size:14px;">Sarah M.</span><span class="badge badge-verified" style="font-size:10px;"><i class="fas fa-check-circle"></i> Verified</span></div><div style="font-size:12px;color:var(--text-3);">2 hours ago</div></div>
+            <div style="color:var(--text-3);cursor:pointer;"><i class="fas fa-ellipsis"></i></div>
+          </div>
+          <div class="post-img" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);"><div style="text-align:center;color:#3B82F6;opacity:0.35;"><i class="fas fa-image" style="font-size:48px;"></i><p style="font-size:12px;margin-top:8px;">Post Photo</p></div></div>
+          <div style="padding:10px 16px 6px;"><p style="font-size:14px;line-height:1.55;"><span style="font-weight:800;">Sarah M.</span> Morning run done! 🌅 5 miles at Riverside Park. The sunrise was 🔥 Who's down to run this weekend?</p></div>
+          <div class="post-actions">
+            <div class="post-action"><i class="fas fa-fire" style="color:var(--primary);"></i><span>24</span></div>
+            <div class="post-action"><i class="fas fa-comment"></i><span>8</span></div>
+            <div class="post-action" style="margin-left:auto;" onclick="show('share-sheet-screen')"><i class="fas fa-share-nodes"></i></div>
+          </div>
+        </div>
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="width:40px;height:40px;font-size:14px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Jake T.</div><div style="font-size:12px;color:var(--text-3);">5 hours ago</div></div>
+            <div style="color:var(--text-3);cursor:pointer;"><i class="fas fa-ellipsis"></i></div>
+          </div>
+          <div style="padding:0 16px 10px;"><p style="font-size:14px;line-height:1.55;"><span style="font-weight:800;">Jake T.</span> Crushed my tempo run today! 8 miles at 7:45/mi. Chicago Marathon training is going well 💪 Anyone else running Chicago this fall?</p></div>
+          <div class="post-actions">
+            <div class="post-action"><i class="fas fa-fire" style="color:var(--primary);"></i><span>31</span></div>
+            <div class="post-action"><i class="fas fa-comment"></i><span>12</span></div>
+            <div class="post-action" style="margin-left:auto;" onclick="show('share-sheet-screen')"><i class="fas fa-share-nodes"></i></div>
+          </div>
+        </div>
+        <div style="height:20px;"></div>
+      </div>
+      <!-- FAB -->
+      <div style="position:absolute;bottom:96px;right:20px;z-index:20;">
+        <div style="width:52px;height:52px;background:var(--primary);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(252,76,2,0.45);cursor:pointer;" onclick="show('post-creation')"><i class="fas fa-plus" style="color:white;font-size:22px;"></i></div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
+        <div class="tab" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab active" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
+        <div class="tab" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
+        <div class="tab" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+
+    <!-- ========== FEED POST DETAIL ========== -->
+    <div class="screen" id="feed-post-detail">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Post</span></div>
+      <div class="screen-content">
+        <div class="post-header">
+          <div class="avatar-placeholder" style="width:40px;height:40px;font-size:14px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+          <div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-weight:800;font-size:14px;">Sarah M.</span><span class="badge badge-verified" style="font-size:10px;"><i class="fas fa-check-circle"></i> Verified</span></div><div style="font-size:12px;color:var(--text-3);">2 hours ago</div></div>
+        </div>
+        <div class="post-img" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);"><div style="text-align:center;color:#3B82F6;opacity:0.35;"><i class="fas fa-image" style="font-size:48px;"></i></div></div>
+        <div style="padding:12px 16px;"><p style="font-size:14px;line-height:1.55;"><span style="font-weight:800;">Sarah M.</span> Morning run done! 🌅 5 miles at Riverside Park. The sunrise was 🔥 Who's down to run this weekend?</p></div>
+        <div style="display:flex;gap:20px;padding:10px 16px;border-bottom:1px solid rgba(0,0,0,0.06);"><span style="font-size:13px;color:var(--text-3);">24 reactions</span><span style="font-size:13px;color:var(--text-3);">8 comments</span></div>
+        <div style="padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.04);">
+          <div style="display:flex;gap:10px;"><div class="avatar-placeholder" style="width:32px;height:32px;font-size:12px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div><div><div style="background:var(--surface);border-radius:12px;padding:10px 12px;"><span style="font-weight:800;font-size:13px;">Jake T. </span><span style="font-size:13px;">Riverside Park is amazing in the morning! 🌄</span></div><div style="font-size:11px;color:var(--text-3);margin-top:4px;padding-left:4px;">1h ago · Cheer</div></div></div>
+        </div>
+        <div style="padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.04);">
+          <div style="display:flex;gap:10px;"><div class="avatar-placeholder" style="width:32px;height:32px;font-size:12px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div><div><div style="background:var(--surface);border-radius:12px;padding:10px 12px;"><span style="font-weight:800;font-size:13px;">Emma L. </span><span style="font-size:13px;">I'm in for Saturday! What time? 🏃‍♀️</span></div><div style="font-size:11px;color:var(--text-3);margin-top:4px;padding-left:4px;">30m ago · Cheer</div></div></div>
+        </div>
+        <div style="height:80px;"></div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;gap:8px;padding:10px 16px 28px;background:white;border-top:1px solid rgba(0,0,0,0.06);">
+        <div class="avatar-placeholder" style="width:32px;height:32px;font-size:12px;background:linear-gradient(135deg,#FF6B35,#FC4C02);">Y</div>
+        <input class="chat-input-field" style="flex:1;" placeholder="Add a comment...">
+        <div class="send-btn"><i class="fas fa-paper-plane"></i></div>
+      </div>
+    </div>
+
+    <!-- ========== POST CREATION ========== -->
+    <div class="screen" id="post-creation">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">New Post</span><div class="nav-action" style="background:var(--primary);color:white;padding:6px 16px;border-radius:20px;font-size:14px;" onclick="back()">Post</div></div>
+      <div class="screen-content p20">
+        <div style="height:160px;border:2px dashed rgba(0,0,0,0.12);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;color:var(--text-3);margin-bottom:16px;">
+          <i class="fas fa-image" style="font-size:34px;color:var(--surface-2);"></i>
+          <div style="font-weight:700;font-size:14px;">Add Photo</div>
+          <div style="font-size:12px;">Tap to upload from library</div>
+        </div>
+        <div style="margin-bottom:16px;"><textarea class="input-field" rows="4" placeholder="Share your run story..." style="resize:none;"></textarea></div>
+        <div class="list-item" style="border-top:1px solid rgba(0,0,0,0.06);"><div class="list-item-icon" style="background:rgba(252,76,2,0.1);color:var(--primary);"><i class="fas fa-globe"></i></div><div style="flex:1;"><div class="list-item-title">Audience</div><div class="list-item-subtitle">Matches only</div></div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+        <div class="list-item"><div class="list-item-icon" style="background:rgba(59,130,246,0.1);color:#3B82F6;"><i class="fas fa-user-tag"></i></div><div style="flex:1;"><div class="list-item-title">Tag People</div><div class="list-item-subtitle">Tag your run partner</div></div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+        <div class="list-item" onclick="openSheet('strava-picker-sheet')"><div class="list-item-icon" style="background:rgba(252,76,2,0.1);color:var(--primary);"><i class="fab fa-strava"></i></div><div style="flex:1;"><div class="list-item-title">Attach Strava Activity</div><div class="list-item-subtitle">Link your latest run</div></div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+      </div>
+      <!-- STRAVA ACTIVITY PICKER SHEET -->
+      <div class="bottom-sheet-overlay" id="strava-picker-sheet" onclick="overlayClose(event,'strava-picker-sheet')">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div class="sheet-title">Recent Strava Runs</div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;background:rgba(252,76,2,0.05);border-radius:10px;padding:12px 8px;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#4ECDC4,#44A08D);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Morning Run</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Today · 5.2 mi · 8:30/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;"><i class="fas fa-check" style="color:white;font-size:10px;"></i></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Riverside Trail</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Yesterday · 8.1 mi · 8:55/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.12);"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Tempo Run</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Apr 4 · 6.0 mi · 7:50/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.12);"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Long Run</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Apr 2 · 12.3 mi · 9:15/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.12);"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;cursor:pointer;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#43e97b,#38f9d7);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Recovery Jog</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Apr 1 · 3.5 mi · 9:45/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.12);"></div>
+          </div>
+          <div style="margin-top:16px;"><button class="btn btn-primary" onclick="closeSheet('strava-picker-sheet')">Attach Activity</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== STORY VIEWER ========== -->
+    <div class="screen" id="story-viewer">
+      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:30;color:white;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="story-bars">
+        <div class="story-bar"><div class="story-bar-fill" style="width:100%;"></div></div>
+        <div class="story-bar"><div class="story-bar-fill" style="width:45%;"></div></div>
+        <div class="story-bar"><div class="story-bar-fill" style="width:0%;"></div></div>
+      </div>
+      <div class="story-user-row">
+        <div class="avatar-placeholder" style="width:36px;height:36px;font-size:14px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+        <div><div style="color:white;font-weight:800;font-size:14px;">Sarah M.</div><div style="color:rgba(255,255,255,0.55);font-size:12px;">2 hours ago</div></div>
+        <div style="margin-left:auto;display:flex;gap:16px;"><i class="fas fa-ellipsis" style="color:white;cursor:pointer;font-size:16px;"></i><i class="fas fa-xmark" style="color:white;cursor:pointer;font-size:20px;" onclick="back()"></i></div>
+      </div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1a1a2e 0%,#FF6B35 100%);display:flex;align-items:center;justify-content:center;z-index:0;">
+        <div style="text-align:center;padding:24px;">
+          <div style="background:rgba(255,255,255,0.12);border-radius:20px;padding:20px 28px;backdrop-filter:blur(10px);margin-bottom:24px;">
+            <div style="font-size:40px;font-weight:900;color:white;">5.2 mi</div>
+            <div style="color:rgba(255,255,255,0.65);font-size:13px;margin-top:4px;">at 8:30/mi pace 🔥</div>
+          </div>
+          <p style="color:white;font-size:20px;font-weight:900;">Morning done! ☀️</p>
+          <p style="color:rgba(255,255,255,0.75);font-size:14px;margin-top:10px;line-height:1.5;">Who's running with me this weekend?</p>
+        </div>
+      </div>
+      <div class="story-reply">
+        <input class="story-reply-input" placeholder="Reply to Sarah...">
+        <span style="font-size:24px;cursor:pointer;">🔥</span>
+        <span style="font-size:24px;cursor:pointer;">👏</span>
+        <span style="font-size:24px;cursor:pointer;">💪</span>
+      </div>
+    </div>
+
+    <!-- ========== NOTIFICATIONS ========== -->
+    <div class="screen" id="notifications">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><span class="nav-title">Activity</span></div>
+      <div class="notif-chips">
+        <div class="chip active" style="padding:6px 14px;font-size:13px;">All</div>
+        <div class="chip" style="padding:6px 14px;font-size:13px;">Matches</div>
+        <div class="chip" style="padding:6px 14px;font-size:13px;">Messages</div>
+        <div class="chip" style="padding:6px 14px;font-size:13px;">Likes</div>
+        <div class="chip" style="padding:6px 14px;font-size:13px;">Runs</div>
+      </div>
+      <div class="screen-content">
+        <div class="notif-group-title">Today</div>
+        <div class="notif-row" onclick="showMatch()">
+          <div class="notif-icon" style="background:rgba(252,76,2,0.1);color:var(--primary);"><i class="fas fa-person-running"></i></div>
+          <div style="flex:1;"><div style="font-size:14px;line-height:1.45;"><span style="font-weight:800;">Sarah M.</span> wants to run with you — It's a Match! 🎉</div><div style="font-size:12px;color:var(--text-3);margin-top:3px;">2 minutes ago</div></div>
+          <div class="avatar-placeholder" style="width:36px;height:36px;font-size:12px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+        </div>
+        <div class="notif-row" onclick="show('chat-thread')">
+          <div class="notif-icon" style="background:rgba(59,130,246,0.1);color:#3B82F6;"><i class="fas fa-comment-dots"></i></div>
+          <div style="flex:1;"><div style="font-size:14px;line-height:1.45;"><span style="font-weight:800;">Emma L.</span> sent you a message</div><div style="font-size:12px;color:var(--text-3);margin-top:3px;">1 hour ago</div></div>
+          <div class="avatar-placeholder" style="width:36px;height:36px;font-size:12px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div>
+        </div>
+        <div class="notif-row" onclick="show('feed-post-detail')">
+          <div class="notif-icon" style="background:rgba(252,76,2,0.1);color:var(--primary);"><i class="fas fa-fire"></i></div>
+          <div style="flex:1;"><div style="font-size:14px;line-height:1.45;"><span style="font-weight:800;">Jake T.</span> reacted 🔥 to your post</div><div style="font-size:12px;color:var(--text-3);margin-top:3px;">3 hours ago</div></div>
+          <div class="avatar-placeholder" style="width:36px;height:36px;font-size:12px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div>
+        </div>
+        <div class="notif-group-title" style="border-top:8px solid var(--surface);">This Week</div>
+        <div class="notif-row" onclick="show('discover')">
+          <div class="notif-icon" style="background:rgba(34,197,94,0.1);color:var(--success);"><i class="fas fa-person-running"></i></div>
+          <div style="flex:1;"><div style="font-size:14px;line-height:1.45;"><span style="font-weight:800;">3 new runners</span> near you match your pace</div><div style="font-size:12px;color:var(--text-3);margin-top:3px;">Yesterday</div></div>
+        </div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
+        <div class="tab" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
+        <div class="tab active" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
+        <div class="tab" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+
+    <!-- ========== MY PROFILE ========== -->
+    <div class="screen" id="my-profile">
+      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:20;color:white;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="screen-content">
+        <div class="profile-cover">
+          <div style="position:absolute;top:52px;right:16px;display:flex;gap:10px;">
+            <div style="width:34px;height:34px;background:rgba(255,255,255,0.18);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);" onclick="show('settings')"><i class="fas fa-gear" style="color:white;font-size:15px;"></i></div>
+          </div>
+        </div>
+        <div style="padding:0 20px;position:relative;">
+          <div style="position:absolute;top:-44px;left:20px;">
+            <div class="avatar-placeholder" style="width:88px;height:88px;font-size:34px;background:linear-gradient(135deg,#FF6B35,#FC4C02);border:3.5px solid white;">Y</div>
+          </div>
+          <div style="text-align:right;padding-top:10px;"><button class="btn btn-secondary" style="width:auto;padding:8px 20px;font-size:14px;font-weight:700;" onclick="show('profile-edit')">Edit Profile</button></div>
+          <div style="margin-top:6px;">
+            <h2 style="font-size:22px;font-weight:900;">Your Name, 28</h2>
+            <p style="font-size:13px;color:var(--text-2);margin-top:4px;">Marathon runner training for Boston 2026 🏃‍♀️</p>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:12px;padding:12px 14px;background:rgba(252,76,2,0.06);border-radius:14px;cursor:pointer;" onclick="show('id-verification')">
+              <i class="fas fa-shield-halved" style="color:var(--primary);font-size:20px;"></i>
+              <div style="flex:1;"><div style="font-weight:700;font-size:13px;">Not Verified</div><div style="font-size:11px;color:var(--text-3);margin-top:1px;">Get verified to build trust with other runners</div></div>
+              <span style="color:var(--primary);font-size:13px;font-weight:800;">Verify →</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-stats" style="margin-top:16px;">
+          <div class="profile-stat"><div class="stat-val">12</div><div class="stat-lbl">Matches</div></div>
+          <div class="profile-stat"><div class="stat-val">5</div><div class="stat-lbl">Runs Together</div></div>
+          <div class="profile-stat"><div class="stat-val">47</div><div class="stat-lbl">Total Miles</div></div>
+        </div>
+        <div style="padding:16px 20px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span style="font-size:16px;font-weight:800;">Run Preferences</span><span style="color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;" onclick="show('profile-edit')">Edit</span></div>
+          <div class="chips-row">
+            <div class="chip active" style="font-size:12px;">Road</div>
+            <div class="chip active" style="font-size:12px;">Trail</div>
+            <div class="chip active" style="font-size:12px;">8:30/mi</div>
+            <div class="chip active" style="font-size:12px;">🏅 Race Training</div>
+            <div class="chip active" style="font-size:12px;">Early AM</div>
+          </div>
+        </div>
+        <!-- Run Clubs Teaser -->
+        <div style="padding:0 20px 16px;">
+          <div style="background:linear-gradient(135deg,var(--secondary),#1E3A6E);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="show('run-clubs-discovery')">
+            <div style="width:44px;height:44px;background:rgba(252,76,2,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <i class="fas fa-people-group" style="font-size:20px;color:var(--primary);"></i>
+            </div>
+            <div style="flex:1;">
+              <div style="font-weight:800;font-size:14px;color:white;">Run Clubs</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Coming Soon — Join the waitlist</div>
+            </div>
+            <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.3);font-size:13px;"></i>
+          </div>
+        </div>
+        <div style="padding:0 20px 110px;">
+          <div style="font-size:16px;font-weight:800;margin-bottom:12px;">My Posts</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#FF6B6B,#FF8E53);border-radius:10px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#4ECDC4,#44A08D);border-radius:10px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:10px;"></div>
+            <div style="aspect-ratio:1;background:var(--surface);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="show('post-creation')"><i class="fas fa-plus" style="color:var(--text-3);font-size:26px;"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-bar" style="position:absolute;bottom:0;left:0;right:0;">
+        <div class="tab" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
+        <div class="tab" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
+        <div class="tab" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
+        <div class="tab active" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+
+    <!-- ========== PROFILE EDIT ========== -->
+    <div class="screen" id="profile-edit">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Edit Profile</span><div class="nav-action" onclick="back()">Save</div></div>
+      <div class="screen-content p20">
+        <div style="display:flex;justify-content:center;margin-bottom:24px;">
+          <div style="position:relative;cursor:pointer;">
+            <div class="avatar-placeholder" style="width:88px;height:88px;font-size:34px;background:linear-gradient(135deg,#FF6B35,#FC4C02);">Y</div>
+            <div style="position:absolute;bottom:0;right:0;width:28px;height:28px;background:var(--primary);border-radius:50%;display:flex;align-items:center;justify-content:center;border:2.5px solid white;"><i class="fas fa-camera" style="color:white;font-size:11px;"></i></div>
+          </div>
+        </div>
+        <div style="margin-bottom:16px;"><label class="input-label">Full Name</label><input class="input-field" type="text" value="Your Name"></div>
+        <div style="margin-bottom:16px;"><label class="input-label">Bio</label><textarea class="input-field" rows="3" style="resize:none;">Marathon runner training for Boston 2026 🏃‍♀️</textarea></div>
+        <div style="margin-bottom:16px;"><label class="input-label">Run Types</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip active">Trail</div><div class="chip">Track</div><div class="chip">Treadmill</div></div></div>
+        <div style="margin-bottom:16px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Pace Range</span><span style="font-weight:500;text-transform:none;color:var(--text-2);">8:00 – 9:00 /mi</span></label><input type="range" style="margin-top:12px;"></div>
+      </div>
+    </div>
+
+    <!-- ========== SETTINGS ========== -->
+    <div class="screen" id="settings">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Settings</span></div>
+      <div class="screen-content">
+        <div class="settings-group-title">Account</div>
+        <div style="background:white;">
+          <div class="settings-row"><div class="settings-icon" style="background:#3B82F6;"><i class="fas fa-user"></i></div><div style="flex:1;font-weight:600;font-size:15px;">Account Info</div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+          <div class="settings-row" onclick="show('id-verification')"><div class="settings-icon" style="background:#8B5CF6;"><i class="fas fa-shield-halved"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:15px;">Verification</div><div style="font-size:12px;color:var(--text-3);margin-top:1px;">Not verified</div></div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+        </div>
+        <div class="settings-group-title">Discovery</div>
+        <div style="background:white;">
+          <div class="settings-row"><div class="settings-icon" style="background:var(--primary);"><i class="fas fa-compass"></i></div><div style="flex:1;font-weight:600;font-size:15px;">Pause Discovery</div><div class="toggle off"></div></div>
+          <div class="settings-row"><div class="settings-icon" style="background:var(--secondary);"><i class="fas fa-eye"></i></div><div style="flex:1;font-weight:600;font-size:15px;">Who Can See Me</div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+        </div>
+        <div class="settings-group-title">Notifications</div>
+        <div style="background:white;">
+          <div class="settings-row"><div class="settings-icon" style="background:var(--primary);"><i class="fas fa-person-running"></i></div><div style="flex:1;font-weight:600;font-size:15px;">New Matches</div><div class="toggle"></div></div>
+          <div class="settings-row"><div class="settings-icon" style="background:#3B82F6;"><i class="fas fa-comment-dots"></i></div><div style="flex:1;font-weight:600;font-size:15px;">Messages</div><div class="toggle"></div></div>
+          <div class="settings-row"><div class="settings-icon" style="background:var(--success);"><i class="fas fa-person-running"></i></div><div style="flex:1;font-weight:600;font-size:15px;">Runners Near You</div><div class="toggle"></div></div>
+        </div>
+        <div class="settings-group-title">Phase 2</div>
+        <div style="background:white;">
+          <div class="settings-row" onclick="show('run-clubs-discovery')"><div class="settings-icon" style="background:var(--primary);"><i class="fas fa-people-group"></i></div><div style="flex:1;"><div style="font-weight:600;font-size:15px;">Run Clubs</div><div style="font-size:12px;color:var(--text-3);margin-top:1px;">Coming soon</div></div><div style="background:rgba(252,76,2,0.1);color:var(--primary);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:800;">SOON</div></div>
+        </div>
+        <div class="settings-group-title">About</div>
+        <div style="background:white;">
+          <div class="settings-row"><div class="settings-icon" style="background:#6B7280;"><i class="fas fa-file-lines"></i></div><div style="flex:1;font-weight:600;font-size:15px;">Terms of Service</div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+          <div class="settings-row"><div class="settings-icon" style="background:#6B7280;"><i class="fas fa-lock"></i></div><div style="flex:1;font-weight:600;font-size:15px;">Privacy Policy</div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+        </div>
+        <div style="padding:24px 20px 32px;display:flex;flex-direction:column;gap:10px;">
+          <button class="btn btn-outline" style="color:var(--danger);border-color:var(--danger);" onclick="show('auth-options')">Log Out</button>
+          <button class="btn" style="background:transparent;color:var(--text-3);font-size:14px;">Delete Account</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== ID VERIFICATION ========== -->
+    <div class="screen" id="id-verification">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Get Verified</span></div>
+      <div class="screen-content p20">
+        <div style="text-align:center;margin-bottom:28px;">
+          <div style="width:76px;height:76px;background:rgba(252,76,2,0.1);border-radius:26px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+            <i class="fas fa-shield-halved" style="font-size:38px;color:var(--primary);"></i>
+          </div>
+          <h2 style="font-size:22px;font-weight:900;margin-bottom:10px;">Verified Badge</h2>
+          <p style="color:var(--text-2);font-size:14px;line-height:1.6;">Complete identity verification to show other runners you're a real person. Takes under 2 minutes.</p>
+        </div>
+        <div class="card" style="padding:16px;margin-bottom:20px;">
+          <div class="verify-step"><div class="step-num done"><i class="fas fa-check" style="font-size:12px;"></i></div><div><div style="font-weight:800;font-size:14px;">Create Account</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Done ✓</div></div></div>
+          <div class="verify-step"><div class="step-num active">2</div><div><div style="font-weight:800;font-size:14px;">Upload ID Document</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Passport, Driver's License, or National ID</div></div></div>
+          <div class="verify-step"><div class="step-num">3</div><div><div style="font-weight:800;font-size:14px;">Face Capture</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Quick selfie to match your ID</div></div></div>
+          <div class="verify-step"><div class="step-num">4</div><div><div style="font-weight:800;font-size:14px;">Review (2–5 min)</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">We'll notify you once verified</div></div></div>
+        </div>
+        <div style="display:flex;gap:12px;background:rgba(59,130,246,0.06);border-radius:14px;padding:14px;margin-bottom:24px;">
+          <i class="fas fa-lock" style="color:#3B82F6;font-size:16px;margin-top:1px;flex-shrink:0;"></i>
+          <p style="font-size:12px;color:var(--text-2);line-height:1.6;">Your ID is securely processed by a third-party provider and never stored on our servers. Your personal details are never visible to other users.</p>
+        </div>
+        <button class="btn btn-primary">Start Verification</button>
+        <button class="btn" style="background:transparent;color:var(--text-3);margin-top:10px;font-size:14px;" onclick="back()">Maybe Later</button>
+      </div>
+    </div>
+
+    <!-- ========== STORY CREATION ========== -->
+    <div class="screen" id="story-creation" style="background:#111;">
+      <div class="status-bar" style="color:white;position:relative;z-index:10;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar" style="background:#111;border-bottom-color:rgba(255,255,255,0.08);">
+        <div class="nav-back" style="background:rgba(255,255,255,0.1);color:white;" onclick="back()"><i class="fas fa-chevron-left"></i></div>
+        <span class="nav-title" style="color:white;">New Story</span>
+      </div>
+      <div class="screen-content" style="padding:16px 16px 24px;">
+        <p style="color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;">Choose a background</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px;">
+          <div class="story-bg-option selected" id="sbg-0" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);" onclick="selectStoryBg(0)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">🌅</div>
+          </div>
+          <div class="story-bg-option" id="sbg-1" style="background:linear-gradient(135deg,#4ECDC4,#44A08D);" onclick="selectStoryBg(1)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">🏃</div>
+          </div>
+          <div class="story-bg-option" id="sbg-2" style="background:linear-gradient(135deg,#667eea,#764ba2);" onclick="selectStoryBg(2)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">🌙</div>
+          </div>
+          <div class="story-bg-option" id="sbg-3" style="background:linear-gradient(135deg,#f093fb,#f5576c);" onclick="selectStoryBg(3)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">⚡</div>
+          </div>
+          <div class="story-bg-option" id="sbg-4" style="background:linear-gradient(135deg,#4facfe,#00f2fe);" onclick="selectStoryBg(4)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">💨</div>
+          </div>
+          <div class="story-bg-option" id="sbg-5" style="background:linear-gradient(135deg,#43e97b,#38f9d7);" onclick="selectStoryBg(5)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">🏆</div>
+          </div>
+        </div>
+        <p style="color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;">Or upload your photo</p>
+        <button class="btn" style="background:rgba(255,255,255,0.1);color:white;border:1.5px solid rgba(255,255,255,0.15);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px;" onclick="show('story-editor')">
+          <i class="fas fa-image" style="font-size:18px;color:var(--primary);"></i> Upload from Library
+        </button>
+        <button class="btn" style="background:rgba(255,255,255,0.1);color:white;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;gap:10px;" onclick="show('story-editor')">
+          <i class="fas fa-camera" style="font-size:18px;color:var(--primary);"></i> Take a Photo
+        </button>
+      </div>
+    </div>
+
+    <!-- ========== STORY EDITOR ========== -->
+    <div class="screen" id="story-editor">
+
+      <!-- Full-bleed canvas background -->
+      <div id="story-canvas-bg" style="position:absolute;inset:0;background:linear-gradient(135deg,#FF6B6B,#FF8E53);transition:background 0.3s;">
+        <div id="story-canvas" style="position:absolute;inset:0;overflow:hidden;"></div>
+      </div>
+
+      <!-- Status bar -->
+      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:40;color:white;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+
+      <!-- Top controls -->
+      <div style="position:absolute;top:52px;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 14px;">
+        <!-- Discard -->
+        <div style="width:38px;height:38px;background:rgba(0,0,0,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.15);" onclick="discardStory()">
+          <i class="fas fa-xmark" style="color:white;font-size:18px;"></i>
+        </div>
+        <!-- Audience toggle -->
+        <div class="audience-toggle" id="audience-toggle">
+          <div class="audience-opt active" onclick="setAudience('matches', this)">Matches</div>
+          <div class="audience-opt" onclick="setAudience('everyone', this)">Everyone</div>
+        </div>
+      </div>
+
+      <!-- Right toolbar -->
+      <div style="position:absolute;right:14px;top:50%;transform:translateY(-50%);z-index:40;display:flex;flex-direction:column;gap:12px;">
+        <div class="se-tool-btn" id="tool-text" onclick="toggleStoryPanel('story-text-panel', 'tool-text')" title="Text">
+          <i class="fas fa-t"></i>
+        </div>
+        <div class="se-tool-btn" id="tool-emoji" onclick="toggleStoryPanel('story-emoji-panel', 'tool-emoji')" title="Emoji">
+          <span style="font-size:20px;line-height:1;">😊</span>
+        </div>
+        <div class="se-tool-btn" id="tool-sticker" onclick="toggleStoryPanel('story-sticker-panel', 'tool-sticker')" title="Stickers">
+          <i class="fas fa-star"></i>
+        </div>
+        <div class="se-tool-btn" id="tool-undo" onclick="undoStoryLayer()" title="Undo">
+          <i class="fas fa-rotate-left"></i>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div style="position:absolute;bottom:0;left:0;right:0;z-index:40;padding:14px 16px 36px;">
+        <button class="btn btn-primary" style="font-size:16px;box-shadow:0 4px 20px rgba(252,76,2,0.4);" onclick="shareStory()">
+          Share to Story
+        </button>
+      </div>
+
+      <!-- TEXT PANEL -->
+      <div class="story-panel" id="story-text-panel">
+        <div class="story-panel-handle"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span style="color:rgba(255,255,255,0.5);font-size:14px;font-weight:600;cursor:pointer;" onclick="closeStoryPanel('story-text-panel','tool-text')">Cancel</span>
+          <span style="font-size:15px;font-weight:800;color:white;">Add Text</span>
+          <span style="color:var(--primary);font-size:14px;font-weight:800;cursor:pointer;" onclick="commitText()">Add</span>
+        </div>
+        <input id="story-text-input" class="story-text-input" placeholder="Type something..." style="color:white;">
+        <!-- Font styles -->
+        <div style="display:flex;gap:8px;margin-bottom:16px;">
+          <button class="font-style-btn active" data-style="plain" onclick="setFontStyle('plain', this)">Plain</button>
+          <button class="font-style-btn" data-style="bold" onclick="setFontStyle('bold', this)" style="font-weight:900;">Bold</button>
+          <button class="font-style-btn" data-style="outlined" onclick="setFontStyle('outlined', this)" style="-webkit-text-stroke:1px white;">Outlined</button>
+        </div>
+        <!-- Color swatches -->
+        <div style="display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;">
+          <div class="color-swatch selected" style="background:#ffffff;" onclick="setTextColor('#ffffff',this)" data-color="#ffffff"></div>
+          <div class="color-swatch" style="background:#000000;border:2px solid rgba(255,255,255,0.3);" onclick="setTextColor('#000000',this)" data-color="#000000"></div>
+          <div class="color-swatch" style="background:#FC4C02;" onclick="setTextColor('#FC4C02',this)" data-color="#FC4C02"></div>
+          <div class="color-swatch" style="background:#FBBF24;" onclick="setTextColor('#FBBF24',this)" data-color="#FBBF24"></div>
+          <div class="color-swatch" style="background:#F472B6;" onclick="setTextColor('#F472B6',this)" data-color="#F472B6"></div>
+          <div class="color-swatch" style="background:#38BDF8;" onclick="setTextColor('#38BDF8',this)" data-color="#38BDF8"></div>
+          <div class="color-swatch" style="background:#4ADE80;" onclick="setTextColor('#4ADE80',this)" data-color="#4ADE80"></div>
+          <div class="color-swatch" style="background:#F87171;" onclick="setTextColor('#F87171',this)" data-color="#F87171"></div>
+          <div class="color-swatch" style="background:linear-gradient(135deg,#f093fb,#4facfe,#43e97b);position:relative;" onclick="openColorWheel()" data-color="">
+            <i class="fas fa-plus" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:white;"></i>
+          </div>
+          <input type="color" id="color-wheel" style="position:absolute;opacity:0;pointer-events:none;width:0;height:0;" onchange="applyCustomColor(this.value)">
+        </div>
+      </div>
+
+      <!-- EMOJI PANEL -->
+      <div class="story-panel" id="story-emoji-panel">
+        <div class="story-panel-handle"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <span style="font-size:15px;font-weight:800;color:white;">Pick an Emoji</span>
+          <i class="fas fa-xmark" style="color:rgba(255,255,255,0.5);cursor:pointer;font-size:18px;" onclick="closeStoryPanel('story-emoji-panel','tool-emoji')"></i>
+        </div>
+        <p style="color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Running &amp; Sport</p>
+        <div class="emoji-grid" style="margin-bottom:12px;">
+          <span class="emoji-btn" onclick="addEmojiLayer('🏃')">🏃</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🏅')">🏅</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🥇')">🥇</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🏆')">🏆</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('👟')">👟</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('💪')">💪</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🎽')">🎽</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('⏱️')">⏱️</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Reactions</p>
+        <div class="emoji-grid" style="margin-bottom:12px;">
+          <span class="emoji-btn" onclick="addEmojiLayer('🔥')">🔥</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🏅')">🏅</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('⭐')">⭐</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('✨')">✨</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('💯')">💯</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('👏')">👏</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🙌')">🙌</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('😎')">😎</span>
+        </div>
+        <p style="color:rgba(255,255,255,0.4);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;">Nature &amp; Mood</p>
+        <div class="emoji-grid">
+          <span class="emoji-btn" onclick="addEmojiLayer('🌅')">🌅</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('☀️')">☀️</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🌙')">🌙</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('⚡')">⚡</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🎉')">🎉</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🚀')">🚀</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('💨')">💨</span>
+          <span class="emoji-btn" onclick="addEmojiLayer('🏔️')">🏔️</span>
+        </div>
+      </div>
+
+      <!-- STICKER PANEL -->
+      <div class="story-panel" id="story-sticker-panel">
+        <div class="story-panel-handle"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <span style="font-size:15px;font-weight:800;color:white;">GoWith Stickers</span>
+          <i class="fas fa-xmark" style="color:rgba(255,255,255,0.5);cursor:pointer;font-size:18px;" onclick="closeStoryPanel('story-sticker-panel','tool-sticker')"></i>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <div class="sticker-chip" style="background:var(--primary);" onclick="addStickerLayer('🏃 Let\'s Run!', 'var(--primary)')">🏃 Let's Run!</div>
+          <div class="sticker-chip" style="background:var(--secondary);" onclick="addStickerLayer('8:30 /mi', 'var(--secondary)')">8:30 /mi</div>
+          <div class="sticker-chip" style="background:var(--primary);" onclick="addStickerLayer('5.2 mi 🔥', 'var(--primary)')">5.2 mi 🔥</div>
+          <div class="sticker-chip" style="background:#EF4444;" onclick="addStickerLayer('🥇 New PR!', '#EF4444')">🥇 New PR!</div>
+          <div class="sticker-chip" style="background:var(--secondary);" onclick="addStickerLayer('⏰ Early Morning', 'var(--secondary)')">⏰ Early Morning</div>
+          <div class="sticker-chip" style="background:rgba(34,197,94,0.9);" onclick="addStickerLayer('✓ Verified Runner', 'rgba(34,197,94,0.9)')">✓ Verified Runner</div>
+          <div class="sticker-chip" style="background:var(--primary);" onclick="addStickerLayer('GoWith ✓', 'var(--primary)')">GoWith ✓</div>
+          <div class="sticker-chip" style="background:#3B82F6;" onclick="addStickerLayer('🏔️ Trail Runner', '#3B82F6')">🏔️ Trail Runner</div>
+        </div>
+      </div>
+
+    </div><!-- /story-editor -->
+
+    <!-- ========== STRAVA AUTH ========== -->
+    <div class="screen" id="strava-auth">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div></div>
+      <div class="screen-content p20" style="display:flex;flex-direction:column;">
+        <div style="text-align:center;margin-bottom:32px;">
+          <div style="width:80px;height:80px;background:var(--primary);border-radius:22px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 8px 28px rgba(252,76,2,0.4);">
+            <i class="fab fa-strava" style="font-size:42px;color:white;"></i>
+          </div>
+          <h2 style="font-size:24px;font-weight:900;color:var(--secondary);margin-bottom:8px;">Connect Strava</h2>
+          <p style="color:var(--text-2);font-size:14px;line-height:1.65;">GoWith uses your Strava data to verify you're a real runner and find your best matches.</p>
+        </div>
+        <div style="background:var(--surface);border-radius:16px;padding:16px;margin-bottom:24px;">
+          <div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:14px;">What we access</div>
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:30px;height:30px;background:rgba(252,76,2,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-check" style="color:var(--primary);font-size:12px;"></i></div>
+            <div><div style="font-weight:700;font-size:14px;">Activity stats</div><div style="font-size:12px;color:var(--text-3);margin-top:1px;">Distance, pace, elevation from your runs</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">
+            <div style="width:30px;height:30px;background:rgba(252,76,2,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-check" style="color:var(--primary);font-size:12px;"></i></div>
+            <div><div style="font-weight:700;font-size:14px;">Profile info</div><div style="font-size:12px;color:var(--text-3);margin-top:1px;">Your name and profile photo</div></div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:12px;">
+            <div style="width:30px;height:30px;background:rgba(34,197,94,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i class="fas fa-lock" style="color:var(--success);font-size:12px;"></i></div>
+            <div><div style="font-weight:700;font-size:14px;">Read-only access</div><div style="font-size:12px;color:var(--text-3);margin-top:1px;">We never post to Strava without permission</div></div>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="margin-bottom:10px;" onclick="show('setup-1')">
+          <i class="fab fa-strava" style="margin-right:8px;"></i>Connect Strava Account
+        </button>
+        <div style="text-align:center;margin-top:8px;">
+          <span style="color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;" onclick="openSheet('strava-info-sheet')">Why do I need Strava? →</span>
+        </div>
+      </div>
+      <!-- INFO BOTTOM SHEET -->
+      <div class="bottom-sheet-overlay" id="strava-info-sheet" onclick="overlayClose(event,'strava-info-sheet')">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div class="sheet-title">Why Strava?</div>
+          <p style="color:var(--text-2);font-size:14px;line-height:1.7;margin-bottom:16px;">GoWith is built for verified runners. Strava lets us confirm you're an active runner — so every person you match with is the real deal.</p>
+          <p style="color:var(--text-2);font-size:14px;line-height:1.7;margin-bottom:24px;">Your running data is used only to improve match quality. We never share it without your consent.</p>
+          <button class="btn btn-primary" onclick="closeSheet('strava-info-sheet')">Got It</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== RUN REQUEST INBOX ========== -->
+    <div class="screen" id="run-request-inbox">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Run Request</span><div class="nav-action" onclick="show('runner-detail')">View Profile</div></div>
+      <div class="screen-content">
+        <!-- Runner condensed card -->
+        <div style="margin:16px;background:white;border-radius:20px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+          <div style="height:180px;background:linear-gradient(135deg,#4ECDC4,#44A08D);position:relative;">
+            <div style="position:absolute;top:12px;right:12px;background:rgba(34,197,94,0.88);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;backdrop-filter:blur(4px);display:flex;align-items:center;gap:4px;"><i class="fas fa-check-circle"></i> Verified</div>
+            <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,0.75));">
+              <div style="color:white;font-weight:900;font-size:22px;">Emma L., 26</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:5px;">
+                <span style="background:rgba(255,255,255,0.18);color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;backdrop-filter:blur(4px);"><i class="fas fa-location-dot"></i> 0.8 mi</span>
+                <span style="background:var(--primary);color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;">8:45/mi</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:14px 16px;">
+            <div class="chips-row" style="gap:6px;margin-bottom:10px;">
+              <div class="chip active" style="font-size:11px;padding:4px 10px;">Trail</div>
+              <div class="chip active" style="font-size:11px;padding:4px 10px;">Road</div>
+              <div class="chip active" style="font-size:11px;padding:4px 10px;">🌅 Social</div>
+            </div>
+            <p style="font-size:13px;color:var(--text-2);line-height:1.6;">Half-marathon runner looking for trail buddies. Love weekend long runs! 🏃‍♀️</p>
+          </div>
+        </div>
+        <!-- Pre-request note -->
+        <div style="margin:0 16px 16px;background:rgba(252,76,2,0.06);border-radius:16px;padding:14px 16px;border-left:3px solid var(--primary);">
+          <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">Emma's Note</div>
+          <p style="font-size:14px;color:var(--text-2);line-height:1.65;">"Hey! I saw we both love trail running near Riverside. Would love a running buddy for weekend long runs!"</p>
+        </div>
+        <!-- Stats grid -->
+        <div style="margin:0 16px 24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+          <div style="background:white;border-radius:14px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);"><div style="font-size:18px;font-weight:900;">42</div><div style="font-size:11px;color:var(--text-3);margin-top:2px;">Total Runs</div></div>
+          <div style="background:white;border-radius:14px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);"><div style="font-size:18px;font-weight:900;">8:45</div><div style="font-size:11px;color:var(--text-3);margin-top:2px;">Avg Pace</div></div>
+          <div style="background:white;border-radius:14px;padding:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);"><div style="font-size:18px;font-weight:900;">218</div><div style="font-size:11px;color:var(--text-3);margin-top:2px;">Miles/Yr</div></div>
+        </div>
+      </div>
+      <!-- Action buttons -->
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px 36px;background:white;border-top:1px solid rgba(0,0,0,0.06);display:flex;gap:10px;">
+        <button class="btn btn-secondary" style="flex:1;" onclick="back()">Decline</button>
+        <button class="btn btn-primary" style="flex:2;" onclick="showRunRequestAccepted()"><i class="fas fa-check" style="margin-right:6px;"></i>Accept — Let's Run!</button>
+      </div>
+      <!-- ACCEPTED OVERLAY -->
+      <div class="req-accepted-overlay" id="run-req-accepted-overlay">
+        <div class="req-accepted-modal">
+          <div style="width:72px;height:72px;background:rgba(34,197,94,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+            <i class="fas fa-check-circle" style="font-size:34px;color:var(--success);"></i>
+          </div>
+          <h3 style="font-size:22px;font-weight:900;margin-bottom:8px;">Time to Run!</h3>
+          <p style="color:var(--text-2);font-size:14px;line-height:1.65;margin-bottom:24px;">You accepted Emma's run request. Start chatting to plan your run together!</p>
+          <button class="btn btn-primary" style="margin-bottom:10px;" onclick="closeReqAccepted();show('chat-thread')">Open Chat</button>
+          <button class="btn btn-secondary" onclick="closeReqAccepted();back()">Maybe Later</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== MAP LOCATION PICKER ========== -->
+    <div class="screen" id="map-location-picker" style="position:relative;">
+      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:30;background:transparent;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <!-- Search bar overlay -->
+      <div class="map-search-wrap">
+        <div style="position:relative;">
+          <i class="fas fa-magnifying-glass" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-3);font-size:15px;z-index:1;"></i>
+          <input class="map-search-input" type="text" value="Riverside Park, North Entrance">
+          <div style="position:absolute;left:0;top:0;bottom:0;display:flex;align-items:center;padding:0 12px;cursor:pointer;" onclick="back()"><i class="fas fa-chevron-left" style="color:var(--text-2);font-size:15px;"></i></div>
+          <div style="position:absolute;left:0;top:0;bottom:0;width:40px;"></div>
+        </div>
+      </div>
+      <!-- Fake map -->
+      <div class="map-tile" style="flex:1;position:relative;">
+        <div class="map-grid"></div>
+        <!-- roads -->
+        <div style="position:absolute;top:30%;left:0;right:0;height:10px;background:white;box-shadow:0 1px 4px rgba(0,0,0,0.1);"></div>
+        <div style="position:absolute;top:55%;left:0;right:0;height:8px;background:white;box-shadow:0 1px 4px rgba(0,0,0,0.1);"></div>
+        <div style="position:absolute;top:72%;left:0;right:0;height:10px;background:#fafafa;box-shadow:0 1px 4px rgba(0,0,0,0.08);"></div>
+        <div style="position:absolute;left:24%;top:0;bottom:0;width:10px;background:white;box-shadow:1px 0 4px rgba(0,0,0,0.1);"></div>
+        <div style="position:absolute;left:60%;top:0;bottom:0;width:8px;background:white;box-shadow:1px 0 4px rgba(0,0,0,0.1);"></div>
+        <!-- park -->
+        <div style="position:absolute;left:27%;top:10%;width:40%;height:18%;background:#c8e6c9;border-radius:12px;"></div>
+        <div style="position:absolute;left:29%;top:12%;width:36%;height:14%;background:#a5d6a7;border-radius:10px;opacity:0.5;"></div>
+        <div style="position:absolute;left:32%;top:13%;font-size:11px;font-weight:700;color:#2e7d32;letter-spacing:0.3px;">Riverside Park</div>
+        <!-- water -->
+        <div style="position:absolute;left:63%;top:10%;width:28%;height:16%;background:#b3d4e8;border-radius:8px;opacity:0.7;"></div>
+        <!-- blocks -->
+        <div style="position:absolute;left:4%;top:35%;width:18%;height:18%;background:#d4d4c8;border-radius:6px;"></div>
+        <div style="position:absolute;left:4%;top:58%;width:18%;height:12%;background:#d4d4c8;border-radius:6px;"></div>
+        <div style="position:absolute;left:65%;top:60%;width:15%;height:10%;background:#d4d4c8;border-radius:6px;"></div>
+        <!-- pin -->
+        <div style="position:absolute;left:50%;top:38%;transform:translate(-50%,-100%);display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 4px 10px rgba(0,0,0,0.3));">
+          <div style="width:40px;height:40px;background:var(--primary);border-radius:50% 50% 50% 0;transform:rotate(-45deg);border:3px solid white;display:flex;align-items:center;justify-content:center;">
+            <i class="fas fa-location-dot" style="transform:rotate(45deg);color:white;font-size:15px;"></i>
+          </div>
+        </div>
+        <!-- accuracy ring -->
+        <div style="position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;background:rgba(252,76,2,0.1);border:1.5px solid rgba(252,76,2,0.3);"></div>
+        <!-- zoom controls -->
+        <div style="position:absolute;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:1px;">
+          <div style="width:36px;height:36px;background:white;border-radius:8px 8px 0 0;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;font-size:20px;font-weight:300;color:var(--text-2);">+</div>
+          <div style="width:36px;height:36px;background:white;border-radius:0 0 8px 8px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);cursor:pointer;font-size:20px;font-weight:300;color:var(--text-2);">−</div>
+        </div>
+      </div>
+      <!-- Confirm footer -->
+      <div style="padding:12px 16px 36px;background:white;border-top:1px solid rgba(0,0,0,0.06);flex-shrink:0;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <div style="width:38px;height:38px;background:rgba(252,76,2,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <i class="fas fa-location-dot" style="color:var(--primary);font-size:15px;"></i>
+          </div>
+          <div>
+            <div style="font-weight:800;font-size:14px;">Riverside Park, North Entrance</div>
+            <div style="font-size:12px;color:var(--text-3);">New York, NY · Move pin to adjust</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="back()">Confirm Location</button>
+      </div>
+    </div>
+
+    <!-- ========== STORY VIEWER SELF ========== -->
+    <div class="screen" id="story-viewer-self">
+      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:30;color:white;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="story-bars">
+        <div class="story-bar"><div class="story-bar-fill" style="width:100%;"></div></div>
+        <div class="story-bar"><div class="story-bar-fill" style="width:0%;"></div></div>
+      </div>
+      <div class="story-user-row">
+        <div class="avatar-placeholder" style="width:36px;height:36px;font-size:14px;background:linear-gradient(135deg,#FF6B35,#FC4C02);">Y</div>
+        <div><div style="color:white;font-weight:800;font-size:14px;">Your Story</div><div style="color:rgba(255,255,255,0.55);font-size:12px;">Just now</div></div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
+          <div class="story-viewers-pill" onclick="openSheet('story-viewers-sheet')">
+            <i class="fas fa-eye" style="font-size:12px;"></i> 12
+          </div>
+          <i class="fas fa-trash" style="color:rgba(255,255,255,0.7);cursor:pointer;font-size:17px;" onclick="confirmDeleteStory()"></i>
+          <i class="fas fa-xmark" style="color:white;cursor:pointer;font-size:20px;" onclick="back()"></i>
+        </div>
+      </div>
+      <!-- Story content -->
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#FF6B6B,#FF8E53);display:flex;align-items:center;justify-content:center;z-index:0;">
+        <div style="text-align:center;padding:24px;">
+          <div style="background:rgba(255,255,255,0.15);border-radius:20px;padding:20px 28px;backdrop-filter:blur(10px);margin-bottom:24px;">
+            <div style="font-size:40px;font-weight:900;color:white;">5.2 mi</div>
+            <div style="color:rgba(255,255,255,0.65);font-size:13px;margin-top:4px;">at 8:30/mi pace 🔥</div>
+          </div>
+          <p style="color:white;font-size:20px;font-weight:900;">Morning done! ☀️</p>
+          <p style="color:rgba(255,255,255,0.75);font-size:14px;margin-top:10px;line-height:1.5;">Who's running with me this weekend?</p>
+        </div>
+      </div>
+      <!-- STORY VIEWERS LIST SHEET -->
+      <div class="bottom-sheet-overlay" id="story-viewers-sheet" onclick="overlayClose(event,'story-viewers-sheet')" style="z-index:40;">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <div class="sheet-title" style="margin-bottom:0;">Story Viewers</div>
+            <span style="color:var(--text-3);font-size:13px;font-weight:600;">12 views</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;" onclick="closeSheet('story-viewers-sheet');show('runner-detail')">
+            <div class="avatar-placeholder" style="width:44px;height:44px;font-size:16px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+            <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Sarah M.</div><div style="font-size:12px;color:var(--text-3);">2 minutes ago</div></div>
+            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:12px;"></i>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div class="avatar-placeholder" style="width:44px;height:44px;font-size:16px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div>
+            <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Jake T.</div><div style="font-size:12px;color:var(--text-3);">8 minutes ago</div></div>
+            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:12px;"></i>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div class="avatar-placeholder" style="width:44px;height:44px;font-size:16px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div>
+            <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Emma L.</div><div style="font-size:12px;color:var(--text-3);">15 minutes ago</div></div>
+            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:12px;"></i>
+          </div>
+          <div style="text-align:center;padding:14px 0;color:var(--text-3);font-size:13px;">+ 9 more viewers</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== SHARE SHEET ========== -->
+    <div class="screen" id="share-sheet-screen">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Share Run</span></div>
+      <div class="screen-content">
+        <!-- RUN_SUMMARY_CARD preview -->
+        <div style="margin:16px;border-radius:20px;overflow:hidden;background:var(--secondary);height:220px;position:relative;">
+          <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0F1B35,#1E3A6E);"></div>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
+            <div class="avatar-placeholder" style="width:48px;height:48px;font-size:18px;background:linear-gradient(135deg,#FF6B35,#FC4C02);border:2.5px solid white;margin-bottom:10px;">Y</div>
+            <div style="font-size:42px;font-weight:900;color:white;line-height:1;">5.2</div>
+            <div style="color:rgba(255,255,255,0.55);font-size:13px;margin-bottom:14px;">miles</div>
+            <div style="display:flex;gap:22px;">
+              <div style="text-align:center;"><div style="font-size:16px;font-weight:800;color:white;">8:30</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">/mi pace</div></div>
+              <div style="width:1px;background:rgba(255,255,255,0.12);"></div>
+              <div style="text-align:center;"><div style="font-size:16px;font-weight:800;color:white;">44:03</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">duration</div></div>
+              <div style="width:1px;background:rgba(255,255,255,0.12);"></div>
+              <div style="text-align:center;"><div style="font-size:16px;font-weight:800;color:white;">187 ft</div><div style="font-size:11px;color:rgba(255,255,255,0.45);">elevation</div></div>
+            </div>
+          </div>
+          <div style="position:absolute;bottom:10px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:10px;">
+            <span style="color:rgba(255,255,255,0.35);font-size:11px;font-weight:700;">GoWith</span>
+            <span style="color:rgba(255,255,255,0.2);font-size:11px;">·</span>
+            <span style="color:rgba(252,76,2,0.65);font-size:11px;font-weight:700;">Strava</span>
+          </div>
+        </div>
+        <!-- Format toggle: 9:16 / 1:1 -->
+        <div style="display:flex;gap:8px;margin:0 16px 16px;">
+          <div style="flex:1;padding:8px;border:2px solid var(--primary);border-radius:10px;text-align:center;font-size:13px;font-weight:700;color:var(--primary);cursor:pointer;">9:16 Stories</div>
+          <div style="flex:1;padding:8px;border:1.5px solid rgba(0,0,0,0.1);border-radius:10px;text-align:center;font-size:13px;font-weight:600;color:var(--text-3);cursor:pointer;">1:1 Feed</div>
+        </div>
+        <!-- Customization -->
+        <div style="margin:0 16px 16px;background:white;border-radius:16px;overflow:hidden;">
+          <div style="display:flex;align-items:center;padding:13px 16px;border-bottom:1px solid rgba(0,0,0,0.05);"><div style="flex:1;font-weight:600;font-size:14px;">Dark Theme</div><div class="toggle"></div></div>
+          <div style="display:flex;align-items:center;padding:13px 16px;border-bottom:1px solid rgba(0,0,0,0.05);"><div style="flex:1;font-weight:600;font-size:14px;">Show Route Map</div><div class="toggle"></div></div>
+          <div style="display:flex;align-items:center;padding:13px 16px;"><div style="flex:1;font-weight:600;font-size:14px;">Include Strava Stats</div><div class="toggle"></div></div>
+        </div>
+        <!-- Destinations -->
+        <div style="padding:0 16px 8px;"><span style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;">Share To</span></div>
+        <div class="share-dest-row">
+          <div class="share-dest"><div class="share-dest-icon" style="background:linear-gradient(45deg,#405DE6,#833AB4,#E1306C,#FD1D1D);"><i class="fab fa-instagram" style="color:white;font-size:22px;"></i></div><span>Instagram Stories</span></div>
+          <div class="share-dest"><div class="share-dest-icon" style="background:linear-gradient(45deg,#405DE6,#833AB4,#C13584);"><i class="fab fa-instagram" style="color:white;font-size:22px;"></i></div><span>Instagram Feed</span></div>
+          <div class="share-dest"><div class="share-dest-icon" style="background:#000;"><i class="fab fa-x-twitter" style="color:white;font-size:22px;"></i></div><span>X / Twitter</span></div>
+          <div class="share-dest"><div class="share-dest-icon" style="background:#1877F2;"><i class="fab fa-facebook" style="color:white;font-size:22px;"></i></div><span>Facebook</span></div>
+          <div class="share-dest"><div class="share-dest-icon" style="background:var(--surface);"><i class="fas fa-image" style="color:var(--text-2);font-size:22px;"></i></div><span>Save Photo</span></div>
+          <div class="share-dest"><div class="share-dest-icon" style="background:var(--surface);"><i class="fas fa-copy" style="color:var(--text-2);font-size:22px;"></i></div><span>Copy Image</span></div>
+          <div class="share-dest"><div class="share-dest-icon" style="background:var(--surface);"><i class="fas fa-ellipsis" style="color:var(--text-2);font-size:22px;"></i></div><span>More</span></div>
+        </div>
+        <div style="padding:16px 16px 32px;"><button class="btn btn-primary" onclick="back()">Share Now</button></div>
+      </div>
+    </div>
+
+    <!-- ========== RUN CLUBS DISCOVERY ========== -->
+    <div class="screen" id="run-clubs-discovery">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Run Clubs</span></div>
+      <div class="screen-content">
+        <!-- Header banner -->
+        <div style="margin:16px;background:linear-gradient(135deg,var(--secondary),#1E3A6E);border-radius:20px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;">
+          <div style="position:absolute;top:-20px;right:-20px;width:120px;height:120px;background:rgba(255,255,255,0.04);border-radius:50%;"></div>
+          <div style="position:absolute;bottom:-30px;left:-30px;width:140px;height:140px;background:rgba(252,76,2,0.08);border-radius:50%;"></div>
+          <div style="position:relative;z-index:1;">
+            <div style="width:56px;height:56px;background:rgba(252,76,2,0.2);border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+              <i class="fas fa-people-group" style="font-size:26px;color:var(--primary);"></i>
+            </div>
+            <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(252,76,2,0.2);border-radius:20px;padding:4px 12px;margin-bottom:10px;">
+              <div style="width:6px;height:6px;background:var(--primary);border-radius:50%;"></div>
+              <span style="font-size:12px;font-weight:700;color:var(--primary);">COMING SOON — PHASE 2</span>
+            </div>
+            <h2 style="font-size:22px;font-weight:900;color:white;margin-bottom:8px;">Run Clubs</h2>
+            <p style="color:rgba(255,255,255,0.6);font-size:14px;line-height:1.6;">Join local running clubs, find group runs, and train with your community.</p>
+          </div>
+        </div>
+        <!-- Locked club cards -->
+        <div style="padding:0 16px 8px;"><span style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.6px;">Clubs Near You</span></div>
+        <div class="clubs-card">
+          <div style="height:110px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);filter:blur(2px);"></div>
+          <div style="padding:12px 14px 14px;"><div style="font-weight:800;font-size:14px;color:var(--text-3);">████ ██████ Runners</div><div style="font-size:12px;color:var(--text-3);margin-top:5px;"><i class="fas fa-users"></i> ████ members · <i class="fas fa-route"></i> ████</div></div>
+          <div class="clubs-locked"><i class="fas fa-lock" style="font-size:20px;color:var(--text-3);"></i><span style="font-size:13px;font-weight:700;color:var(--text-3);">Coming Soon</span></div>
+        </div>
+        <div class="clubs-card">
+          <div style="height:110px;background:linear-gradient(135deg,#4ECDC4,#44A08D);filter:blur(2px);"></div>
+          <div style="padding:12px 14px 14px;"><div style="font-weight:800;font-size:14px;color:var(--text-3);">███████ Trail Club</div><div style="font-size:12px;color:var(--text-3);margin-top:5px;"><i class="fas fa-users"></i> ████ members · <i class="fas fa-route"></i> ████</div></div>
+          <div class="clubs-locked"><i class="fas fa-lock" style="font-size:20px;color:var(--text-3);"></i><span style="font-size:13px;font-weight:700;color:var(--text-3);">Coming Soon</span></div>
+        </div>
+        <div class="clubs-card">
+          <div style="height:110px;background:linear-gradient(135deg,#667eea,#764ba2);filter:blur(2px);"></div>
+          <div style="padding:12px 14px 14px;"><div style="font-weight:800;font-size:14px;color:var(--text-3);">████ Marathon Crew</div><div style="font-size:12px;color:var(--text-3);margin-top:5px;"><i class="fas fa-users"></i> ████ members · <i class="fas fa-route"></i> ████</div></div>
+          <div class="clubs-locked"><i class="fas fa-lock" style="font-size:20px;color:var(--text-3);"></i><span style="font-size:13px;font-weight:700;color:var(--text-3);">Coming Soon</span></div>
+        </div>
+        <!-- Waitlist CTA -->
+        <div style="margin:8px 16px 32px;background:white;border-radius:20px;padding:20px;box-shadow:0 2px 16px rgba(0,0,0,0.07);">
+          <h3 style="font-size:16px;font-weight:900;margin-bottom:6px;">Get early access</h3>
+          <p style="font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:16px;">Join the waitlist and be the first to know when Run Clubs launches in your area.</p>
+          <div style="display:flex;gap:8px;">
+            <input class="input-field" type="email" placeholder="your@email.com" style="flex:1;padding:12px 14px;font-size:14px;">
+            <button class="btn btn-primary" style="width:auto;padding:12px 18px;white-space:nowrap;font-size:14px;">Notify Me</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screen-container -->
+</div><!-- /phone -->
+
+<script>
+// ============ STATE ============
+const navStack = [];
+let current = 'splash';
+let obSlide = 0;
+
+// ============ NAVIGATION ============
+function show(id) {
+  const prev = document.getElementById(current);
+  const next = document.getElementById(id);
+  if (!next || id === current) return;
+  if (prev) prev.classList.remove('active');
+  next.classList.add('active');
+  navStack.push(current);
+  current = id;
+  closeAllSheets();
+}
+
+function showVerified(id) {
+  show(id);
+}
+
+function back() {
+  if (!navStack.length) return;
+  const prev = navStack.pop();
+  document.getElementById(current).classList.remove('active');
+  document.getElementById(prev).classList.add('active');
+  current = prev;
+  closeAllSheets();
+}
+
+// ============ SHEETS ============
+function openSheet(id) {
+  document.getElementById(id).classList.add('active');
+}
+
+function closeSheet(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+function overlayClose(e, id) {
+  if (e.target.id === id) closeSheet(id);
+}
+
+function closeAllSheets() {
+  document.querySelectorAll('.bottom-sheet-overlay.active').forEach(el => el.classList.remove('active'));
+}
+
+// ============ MATCH MODAL ============
+function showMatch() {
+  document.getElementById('match-modal').classList.add('active');
+  spawnConfetti();
+}
+
+function closeMatch() {
+  document.getElementById('match-modal').classList.remove('active');
+}
+
+function spawnConfetti() {
+  const wrap = document.getElementById('confetti-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  const colors = ['#FC4C02','#FF8E53','#22C55E','#3B82F6','#F59E0B','#EC4899','#FFFFFF'];
+  for (let i = 0; i < 50; i++) {
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const size = 6 + Math.random() * 10;
+    p.style.cssText = `
+      left:${Math.random()*100}%;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      width:${size}px; height:${size}px;
+      border-radius:${Math.random()>0.5?'50%':'3px'};
+      animation: confetti-drop ${1.8+Math.random()*2}s ${Math.random()*1.2}s linear infinite;
+    `;
+    wrap.appendChild(p);
+  }
+}
+
+// ============ ONBOARDING ============
+function obNext() {
+  if (obSlide < 2) {
+    obSlide++;
+    goToSlide(obSlide);
+    if (obSlide === 2) document.getElementById('ob-btn').textContent = 'Get Started';
+  } else {
+    show('auth-options');
+    obSlide = 0;
+  }
+}
+
+function goToSlide(n) {
+  obSlide = n;
+  document.getElementById('ob-slides').style.transform = `translateX(-${n*33.333}%)`;
+  document.querySelectorAll('#ob-dots .dot').forEach((d, i) => {
+    if (i === n) {
+      d.style.width = '24px'; d.style.height = '8px';
+      d.style.borderRadius = '4px'; d.style.background = 'var(--primary)';
+    } else {
+      d.style.width = '8px'; d.style.height = '8px';
+      d.style.borderRadius = '50%'; d.style.background = 'rgba(0,0,0,0.15)';
+    }
+  });
+}
+
+// ============ CHIP TOGGLE ============
+document.querySelectorAll('.chip').forEach(c => {
+  c.addEventListener('click', () => c.classList.toggle('active'));
+});
+
+// ============ TOGGLE ============
+document.querySelectorAll('.toggle').forEach(t => {
+  t.addEventListener('click', () => t.classList.toggle('off'));
+});
+
+// ============ SPLASH AUTO-ADVANCE ============
+setTimeout(() => show('onboarding'), 2000);
+
+// ============ DISCOVER SWIPE ============
+const RUNNER_POOL = [
+  { name:'Marcus', age:31, pace:'7:45/mi', dist:'0.7 mi', bg:'linear-gradient(135deg,#667eea,#764ba2)', tags:['Track','Road','⚡ Speed Work'], verified:true  },
+  { name:'Priya',  age:25, pace:'9:10/mi', dist:'1.2 mi', bg:'linear-gradient(135deg,#4ECDC4,#44A08D)', tags:['Trail','🌅 Social'],            verified:false },
+  { name:'Jake',   age:34, pace:'8:00/mi', dist:'0.5 mi', bg:'linear-gradient(135deg,#f093fb,#f5576c)', tags:['Road','🏃 Marathon'],            verified:true  },
+  { name:'Luna',   age:27, pace:'9:30/mi', dist:'2.1 mi', bg:'linear-gradient(135deg,#43e97b,#38f9d7)', tags:['Trail','🌄 Morning'],            verified:false },
+  { name:'Alex',   age:29, pace:'8:15/mi', dist:'1.8 mi', bg:'linear-gradient(135deg,#4facfe,#00f2fe)', tags:['Road','Track','🏁 Racing'],      verified:true  },
+];
+let runnerPoolIdx = 0;
+
+function getTopCard() {
+  const stack = document.getElementById('card-stack');
+  if (!stack) return null;
+  let top = null, maxZ = 0;
+  stack.querySelectorAll('.runner-card').forEach(c => {
+    const z = parseInt(c.style.zIndex) || 0;
+    if (z > maxZ) { maxZ = z; top = c; }
+  });
+  return top;
+}
+
+function initDiscoverSwipe() {
+  const card = getTopCard();
+  if (!card || card._swipeReady) return;
+  attachSwipe(card);
+}
+
+function attachSwipe(card) {
+  if (card._swipeReady) return;
+  card._swipeReady = true;
+
+  let startX = 0, dx = 0, isDragging = false, didDrag = false;
+
+  // GO / PASS indicator labels
+  const goLabel = Object.assign(document.createElement('div'), { textContent: 'GO 🏃' });
+  goLabel.style.cssText = 'position:absolute;top:32px;left:16px;background:var(--primary);color:white;font-size:18px;font-weight:900;padding:5px 14px;border-radius:10px;border:3px solid white;opacity:0;pointer-events:none;transform:rotate(-15deg);z-index:10;';
+  const passLabel = Object.assign(document.createElement('div'), { textContent: 'PASS ✕' });
+  passLabel.style.cssText = 'position:absolute;top:32px;right:16px;background:var(--danger);color:white;font-size:18px;font-weight:900;padding:5px 14px;border-radius:10px;border:3px solid white;opacity:0;pointer-events:none;transform:rotate(15deg);z-index:10;';
+  const photo = card.querySelector('.runner-photo');
+  if (photo) { photo.appendChild(goLabel); photo.appendChild(passLabel); }
+
+  function pos(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
+
+  function onStart(e) {
+    if (e.target.closest('button')) return;
+    startX = pos(e); dx = 0; isDragging = true; didDrag = false;
+    card.style.transition = 'none';
+  }
+
+  function onMove(e) {
+    if (!isDragging) return;
+    dx = pos(e) - startX;
+    if (Math.abs(dx) < 4) return;
+    didDrag = true;
+    if (e.cancelable) e.preventDefault();
+    card.style.transform = `translateX(${dx}px) rotate(${dx / 16}deg)`;
+    const p = Math.min(Math.abs(dx) / 80, 1);
+    goLabel.style.opacity   = dx > 8  ? p : 0;
+    passLabel.style.opacity = dx < -8 ? p : 0;
+  }
+
+  function onEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    goLabel.style.opacity = passLabel.style.opacity = 0;
+    if (!didDrag) { show('runner-detail'); return; }
+    if (Math.abs(dx) >= 80) {
+      flyOut(card, dx > 0 ? 'right' : 'left');
+    } else {
+      card.style.transition = 'transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275)';
+      card.style.transform = '';
+      setTimeout(() => { card.style.transition = ''; }, 400);
+    }
+  }
+
+  card.addEventListener('mousedown',  onStart);
+  card.addEventListener('touchstart', onStart, { passive: true });
+  document.addEventListener('mousemove',  onMove, { passive: false });
+  document.addEventListener('touchmove',  onMove, { passive: false });
+  document.addEventListener('mouseup',    onEnd);
+  document.addEventListener('touchend',   onEnd);
+
+  card._detachSwipe = () => {
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('mouseup',   onEnd);
+    document.removeEventListener('touchend',  onEnd);
+  };
+}
+
+function flyOut(card, dir) {
+  if (card._detachSwipe) card._detachSwipe();
+  const x = dir === 'right' ? 600 : -600;
+  card.style.transition = 'transform 0.35s ease-in, opacity 0.3s ease-in';
+  card.style.transform = `translateX(${x}px) rotate(${dir === 'right' ? 30 : -30}deg)`;
+  card.style.opacity = '0';
+  if (dir === 'right') setTimeout(showMatch, 180);
+  setTimeout(() => { card.remove(); promoteCards(); appendBottomCard(); }, 360);
+}
+
+function swipeCard(dir) {
+  const card = getTopCard();
+  if (!card) return;
+  flyOut(card, dir);
+}
+
+function promoteCards() {
+  const stack = document.getElementById('card-stack');
+  if (!stack) return;
+  const cards = [...stack.querySelectorAll('.runner-card')]
+    .sort((a, b) => (parseInt(b.style.zIndex) || 0) - (parseInt(a.style.zIndex) || 0));
+  const cfgs = [
+    { z: 3, top: '0px',  scale: '1'    },
+    { z: 2, top: '12px', scale: '0.97' },
+    { z: 1, top: '22px', scale: '0.94' },
+  ];
+  cards.forEach((c, i) => {
+    if (i >= cfgs.length) return;
+    const { z, top, scale } = cfgs[i];
+    if (i === 0) {
+      c.style.transition = 'transform 0.25s ease, top 0.25s ease';
+      setTimeout(() => { c.style.transition = ''; }, 260);
+    }
+    c.style.zIndex = z; c.style.top = top; c.style.transform = `scale(${scale})`;
+    if (i === 0) attachSwipe(c);
+  });
+}
+
+function appendBottomCard() {
+  const stack = document.getElementById('card-stack');
+  if (!stack) return;
+  const r = RUNNER_POOL[runnerPoolIdx % RUNNER_POOL.length];
+  runnerPoolIdx++;
+  const c = document.createElement('div');
+  c.className = 'runner-card';
+  c.style.cssText = 'top:22px;z-index:1;transform:scale(0.94);';
+  c.innerHTML = `
+    <div class="runner-photo" style="background:${r.bg};position:relative;">
+      ${r.verified ? '<div style="position:absolute;top:12px;right:12px;background:rgba(34,197,94,0.88);color:white;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;backdrop-filter:blur(4px);display:flex;align-items:center;gap:4px;"><i class="fas fa-check-circle"></i> Verified</div>' : ''}
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:14px 16px;background:linear-gradient(transparent,rgba(0,0,0,0.78));">
+        <div style="color:white;font-weight:900;font-size:22px;">${r.name}, ${r.age}</div>
+        <div style="display:flex;gap:8px;margin-top:5px;">
+          <span style="background:rgba(255,255,255,0.18);color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;backdrop-filter:blur(4px);"><i class="fas fa-location-dot"></i> ${r.dist}</span>
+          <span style="background:var(--primary);color:white;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700;">${r.pace}</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:12px 16px;background:white;">
+      <div class="chips-row" style="gap:6px;">
+        ${r.tags.map(t => `<div class="chip" style="font-size:11px;padding:4px 10px;">${t}</div>`).join('')}
+      </div>
+    </div>`;
+  stack.insertBefore(c, stack.firstChild);
+}
+
+// Init once DOM is ready
+initDiscoverSwipe();
+
+// ============ STORY EDITOR ============
+const storyBgs = [
+  'linear-gradient(135deg, #FF6B6B, #FF8E53)',
+  'linear-gradient(135deg, #4ECDC4, #44A08D)',
+  'linear-gradient(135deg, #667eea, #764ba2)',
+  'linear-gradient(135deg, #f093fb, #f5576c)',
+  'linear-gradient(135deg, #4facfe, #00f2fe)',
+  'linear-gradient(135deg, #43e97b, #38f9d7)',
+];
+let currentStoryBg = 0;
+let storyLayers = [];
+let activeFontStyle = 'plain';
+let activeTextColor = '#ffffff';
+let storyAudience = 'matches';
+
+function selectStoryBg(idx) {
+  // Update selection highlight in story-creation
+  document.querySelectorAll('.story-bg-option').forEach((el, i) => {
+    el.classList.toggle('selected', i === idx);
+  });
+  currentStoryBg = idx;
+  // Apply to editor canvas
+  document.getElementById('story-canvas-bg').style.background = storyBgs[idx];
+  clearStoryCanvas();
+  show('story-editor');
+}
+
+function clearStoryCanvas() {
+  storyLayers.forEach(l => l.el && l.el.remove());
+  storyLayers = [];
+}
+
+// ---- Panel management ----
+function toggleStoryPanel(panelId, btnId) {
+  const panel = document.getElementById(panelId);
+  const btn = document.getElementById(btnId);
+  const isOpen = panel.classList.contains('active');
+  // Close all panels + deactivate all tool btns
+  ['story-text-panel','story-emoji-panel','story-sticker-panel'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
+  ['tool-text','tool-emoji','tool-sticker'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
+  if (!isOpen) {
+    panel.classList.add('active');
+    btn.classList.add('active');
+    if (panelId === 'story-text-panel') {
+      setTimeout(() => document.getElementById('story-text-input').focus(), 350);
+    }
+  }
+}
+
+function closeStoryPanel(panelId, btnId) {
+  document.getElementById(panelId).classList.remove('active');
+  if (btnId) document.getElementById(btnId).classList.remove('active');
+}
+
+// ---- Text tool ----
+function setFontStyle(style, btn) {
+  activeFontStyle = style;
+  document.querySelectorAll('.font-style-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function setTextColor(color, swatchEl) {
+  activeTextColor = color;
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+  swatchEl.classList.add('selected');
+  const input = document.getElementById('story-text-input');
+  input.style.color = color === '#000000' ? '#000' : color;
+}
+
+function openColorWheel() {
+  document.getElementById('color-wheel').click();
+}
+
+function applyCustomColor(color) {
+  activeTextColor = color;
+  document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('selected'));
+  document.getElementById('story-text-input').style.color = color;
+}
+
+function commitText() {
+  const input = document.getElementById('story-text-input');
+  const text = input.value.trim();
+  if (!text) return;
+  addLayer({ type: 'text', content: text, color: activeTextColor, style: activeFontStyle });
+  input.value = '';
+  input.style.color = 'white';
+  closeStoryPanel('story-text-panel', 'tool-text');
+}
+
+// ---- Emoji & Sticker ----
+function addEmojiLayer(emoji) {
+  addLayer({ type: 'emoji', content: emoji });
+  closeStoryPanel('story-emoji-panel', 'tool-emoji');
+}
+
+function addStickerLayer(text, bg) {
+  addLayer({ type: 'sticker', content: text, bg });
+  closeStoryPanel('story-sticker-panel', 'tool-sticker');
+}
+
+// ---- Layer rendering ----
+function addLayer(data) {
+  const canvas = document.getElementById('story-canvas');
+  const el = document.createElement('div');
+  el.className = 'story-layer';
+
+  // Random-ish starting position spread around centre
+  const cx = 30 + Math.random() * 40; // 30–70%
+  const cy = 30 + Math.random() * 40; // 30–70%
+  el.style.left = cx + '%';
+  el.style.top  = cy + '%';
+
+  if (data.type === 'text') {
+    el.style.color = data.color;
+    el.style.fontSize = '26px';
+    el.style.maxWidth = '270px';
+    el.style.textAlign = 'center';
+    el.style.lineHeight = '1.3';
+    el.style.fontFamily = 'Inter, sans-serif';
+    if (data.style === 'bold') {
+      el.style.fontWeight = '900';
+      el.style.textShadow = '0 2px 8px rgba(0,0,0,0.4)';
+    } else if (data.style === 'outlined') {
+      el.style.fontWeight = '700';
+      el.style.webkitTextStroke = '1.5px ' + (data.color === '#000000' ? 'white' : 'black');
+    } else {
+      el.style.fontWeight = '600';
+      el.style.textShadow = '0 2px 12px rgba(0,0,0,0.6)';
+    }
+    el.textContent = data.content;
+  } else if (data.type === 'emoji') {
+    el.style.fontSize = '52px';
+    el.style.lineHeight = '1';
+    el.textContent = data.content;
+  } else if (data.type === 'sticker') {
+    el.style.background = data.bg;
+    el.style.color = 'white';
+    el.style.padding = '8px 16px';
+    el.style.borderRadius = '20px';
+    el.style.fontWeight = '800';
+    el.style.fontSize = '14px';
+    el.style.whiteSpace = 'nowrap';
+    el.style.boxShadow = '0 4px 16px rgba(0,0,0,0.3)';
+    el.textContent = data.content;
+  }
+
+  makeDraggable(el, canvas);
+  canvas.appendChild(el);
+  storyLayers.push({ data, el });
+}
+
+function undoStoryLayer() {
+  if (!storyLayers.length) return;
+  const last = storyLayers.pop();
+  last.el.remove();
+}
+
+// ---- Drag ----
+function makeDraggable(el, canvas) {
+  let startX, startY, startElX, startElY;
+
+  function getEventPos(e) {
+    return e.touches ? { x: e.touches[0].clientX, y: e.touches[0].clientY }
+                     : { x: e.clientX, y: e.clientY };
+  }
+
+  function onStart(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const pos = getEventPos(e);
+    const canvasRect = canvas.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+
+    // Convert to pixel centre coords relative to canvas
+    startElX = elRect.left - canvasRect.left + elRect.width  / 2;
+    startElY = elRect.top  - canvasRect.top  + elRect.height / 2;
+    startX = pos.x;
+    startY = pos.y;
+
+    // Switch from % to px positioning to allow smooth drag
+    el.style.transform = 'translate(-50%, -50%)';
+    el.style.left = startElX + 'px';
+    el.style.top  = startElY + 'px';
+
+    function onMove(e) {
+      e.preventDefault();
+      const p = getEventPos(e);
+      el.style.left = (startElX + p.x - startX) + 'px';
+      el.style.top  = (startElY + p.y - startY) + 'px';
+    }
+    function onEnd() {
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onEnd);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
+    }
+    document.addEventListener('mousemove', onMove, { passive: false });
+    document.addEventListener('mouseup', onEnd);
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onEnd);
+  }
+
+  el.addEventListener('mousedown', onStart);
+  el.addEventListener('touchstart', onStart, { passive: false });
+}
+
+// ============ RUN REQUEST ACCEPTED ============
+function showRunRequestAccepted() {
+  document.getElementById('run-req-accepted-overlay').classList.add('active');
+}
+function closeReqAccepted() {
+  document.getElementById('run-req-accepted-overlay').classList.remove('active');
+}
+
+// ============ DELETE OWN STORY ============
+function confirmDeleteStory() {
+  if (confirm('Delete this story?')) {
+    // Reset "Add Story" button in feed
+    const ownItem = document.querySelector('#feed .stories-row .story-item');
+    if (ownItem) {
+      ownItem.setAttribute('onclick', "show('story-creation')");
+      const ring = ownItem.querySelector('.story-ring');
+      if (ring) ring.classList.add('add-btn');
+      const lbl = ownItem.querySelector('span');
+      if (lbl) lbl.textContent = 'Add Story';
+    }
+    back();
+  }
+}
+
+// ---- Audience ----
+function setAudience(val, optEl) {
+  storyAudience = val;
+  document.querySelectorAll('.audience-opt').forEach(o => o.classList.remove('active'));
+  optEl.classList.add('active');
+}
+
+// ---- Share / Discard ----
+function shareStory() {
+  clearStoryCanvas();
+  show('feed');
+  // Update "Add Story" item in feed to "Your Story" → story-viewer-self
+  const ownItem = document.querySelector('#feed .stories-row .story-item');
+  if (ownItem) {
+    ownItem.setAttribute('onclick', "show('story-viewer-self')");
+    const ring = ownItem.querySelector('.story-ring');
+    if (ring) ring.classList.remove('add-btn');
+    const lbl = ownItem.querySelector('span');
+    if (lbl) lbl.textContent = 'Your Story';
+  }
+}
+
+function discardStory() {
+  if (storyLayers.length > 0 || true) {
+    // simple confirm for prototype
+    if (confirm('Discard this story?')) {
+      clearStoryCanvas();
+      back();
+    }
+  } else {
+    clearStoryCanvas();
+    back();
+  }
+}
+
+
+// ============ SCREEN MAP ============
+const SCREEN_DEFS = [
+  // Auth
+  { section: 'Auth Flow' },
+  { id: 'splash',            name: 'Splash',           icon: 'fa-person-running', bg: 'linear-gradient(135deg,#0F1B35,#1a2f60)' },
+  { id: 'onboarding',        name: 'Onboarding',       icon: 'fa-mobile-screen',  bg: 'linear-gradient(135deg,#0F1B35,#1a2f60)' },
+  { id: 'auth-options',      name: 'Sign In',          icon: 'fa-right-to-bracket',bg:'linear-gradient(135deg,#0F1B35,#1a2f60)' },
+  { id: 'strava-auth',       name: 'Strava Auth',      icon: 'fa-strava',         bg: 'linear-gradient(135deg,#FC4C02,#FF8E53)', fab: true },
+  { id: 'email-auth',        name: 'Email Auth',       icon: 'fa-envelope',       bg: 'linear-gradient(135deg,#0F1B35,#1a2f60)' },
+  // Setup
+  { section: 'Profile Setup' },
+  { id: 'setup-1',           name: 'Step 1 · Profile', icon: 'fa-user',           bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
+  { id: 'setup-2',           name: 'Step 2 · Pace',    icon: 'fa-stopwatch',      bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
+  { id: 'setup-3',           name: 'Step 3 · Goals',   icon: 'fa-bullseye',       bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
+  { id: 'setup-4',           name: 'Step 4 · Location',icon: 'fa-location-dot',   bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
+  { id: 'setup-5',           name: 'Step 5 · Review',  icon: 'fa-circle-check',   bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
+  // Discover
+  { section: 'Discover' },
+  { id: 'discover',          name: 'Discover',         icon: 'fa-compass',        bg: 'linear-gradient(135deg,#FC4C02,#FF6B35)' },
+  { id: 'runner-detail',     name: 'Runner Profile',   icon: 'fa-id-card',        bg: 'linear-gradient(135deg,#FF6B6B,#FF8E53)' },
+  // Matches & Chat
+  { section: 'Matches & Chat' },
+  { id: 'matches-list',      name: 'Matches List',     icon: 'fa-comment-dots',   bg: 'linear-gradient(135deg,#4ECDC4,#44A08D)' },
+  { id: 'run-request-inbox', name: 'Run Request',      icon: 'fa-inbox',          bg: 'linear-gradient(135deg,#43e97b,#38f9d7)' },
+  { id: 'chat-thread',       name: 'Chat Thread',      icon: 'fa-message',        bg: 'linear-gradient(135deg,#667eea,#764ba2)' },
+  { id: 'map-location-picker',name:'Map Picker',       icon: 'fa-map',            bg: 'linear-gradient(135deg,#a8edea,#6ec6b0)' },
+  // Feed & Stories
+  { section: 'Feed & Stories' },
+  { id: 'feed',              name: 'Feed',             icon: 'fa-fire-flame-curved',bg:'linear-gradient(135deg,#FF6B6B,#FC4C02)' },
+  { id: 'feed-post-detail',  name: 'Post Detail',      icon: 'fa-image',          bg: 'linear-gradient(135deg,#FF8E53,#FC4C02)' },
+  { id: 'post-creation',     name: 'New Post',         icon: 'fa-plus',           bg: 'linear-gradient(135deg,#FC4C02,#c73e00)' },
+  { id: 'story-creation',    name: 'Story Creation',   icon: 'fa-circle-plus',    bg: 'linear-gradient(135deg,#f093fb,#f5576c)' },
+  { id: 'story-editor',      name: 'Story Editor',     icon: 'fa-pen-nib',        bg: 'linear-gradient(135deg,#4facfe,#00f2fe)' },
+  { id: 'story-viewer',      name: 'Story Viewer',     icon: 'fa-play-circle',    bg: 'linear-gradient(135deg,#1a1a2e,#FF6B35)' },
+  { id: 'story-viewer-self', name: 'My Story',         icon: 'fa-eye',            bg: 'linear-gradient(135deg,#FF6B6B,#FF8E53)' },
+  { id: 'share-sheet-screen',name: 'Share Sheet',      icon: 'fa-share-nodes',    bg: 'linear-gradient(135deg,#43e97b,#38f9d7)' },
+  // Notifications
+  { section: 'Notifications' },
+  { id: 'notifications',     name: 'Notifications',    icon: 'fa-bell',           bg: 'linear-gradient(135deg,#4facfe,#00f2fe)' },
+  // Profile & Settings
+  { section: 'Profile & Settings' },
+  { id: 'my-profile',        name: 'My Profile',       icon: 'fa-user-circle',    bg: 'linear-gradient(135deg,#0F1B35,#1E3A6E)' },
+  { id: 'profile-edit',      name: 'Edit Profile',     icon: 'fa-user-pen',       bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
+  { id: 'settings',          name: 'Settings',         icon: 'fa-gear',           bg: 'linear-gradient(135deg,#374151,#6B7280)' },
+  { id: 'id-verification',   name: 'Verification',     icon: 'fa-shield-halved',  bg: 'linear-gradient(135deg,#8B5CF6,#6D28D9)' },
+  // Phase 2
+  { section: 'Phase 2' },
+  { id: 'run-clubs-discovery',name:'Run Clubs',        icon: 'fa-people-group',   bg: 'linear-gradient(135deg,#0F1B35,#FC4C02)' },
+];
+
+function buildScreenMap() {
+  const grid = document.getElementById('screen-map-grid');
+  if (grid.dataset.built) return;
+  grid.dataset.built = '1';
+
+  SCREEN_DEFS.forEach(item => {
+    if (item.section) {
+      const hdr = document.createElement('div');
+      hdr.style.cssText = 'grid-column:1/-1;font-size:11px;font-weight:800;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1.5px;padding:16px 0 6px;border-top:1px solid rgba(255,255,255,0.07);margin-top:4px;';
+      hdr.textContent = item.section;
+      grid.appendChild(hdr);
+      return;
+    }
+
+    const card = document.createElement('div');
+    card.style.cssText = 'border-radius:14px;overflow:hidden;cursor:pointer;background:#1a1a2e;transition:transform 0.15s,box-shadow 0.15s;';
+    card.onmouseenter = () => { card.style.transform='scale(1.04)'; card.style.boxShadow='0 8px 32px rgba(0,0,0,0.5)'; };
+    card.onmouseleave = () => { card.style.transform=''; card.style.boxShadow=''; };
+    card.onclick = () => { toggleScreenMap(); show(item.id); };
+
+    const preview = document.createElement('div');
+    preview.style.cssText = `height:100px;background:${item.bg};display:flex;align-items:center;justify-content:center;position:relative;`;
+    const ico = document.createElement('i');
+    ico.className = (item.fab ? 'fab ' : 'fas ') + item.icon;
+    ico.style.cssText = 'font-size:32px;color:rgba(255,255,255,0.85);filter:drop-shadow(0 2px 6px rgba(0,0,0,0.3));';
+    preview.appendChild(ico);
+
+    const label = document.createElement('div');
+    label.style.cssText = 'padding:9px 10px 10px;';
+    label.innerHTML = `<div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.9);line-height:1.3;">${item.name}</div><div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:2px;font-family:monospace;">#${item.id}</div>`;
+
+    card.appendChild(preview);
+    card.appendChild(label);
+    grid.appendChild(card);
+  });
+}
+
+function toggleScreenMap() {
+  const overlay = document.getElementById('screen-map-overlay');
+  const isOpen = overlay.style.display !== 'none';
+  overlay.style.display = isOpen ? 'none' : 'flex';
+  if (!isOpen) buildScreenMap();
+}
+</script>
+
+<!-- SCREEN MAP TOGGLE BUTTON -->
+<button onclick="toggleScreenMap()" style="
+  position:fixed; bottom:32px; right:32px; z-index:9999;
+  background:#FC4C02; color:white; border:none; border-radius:14px;
+  padding:12px 20px; font-family:'Inter',sans-serif;
+  font-size:14px; font-weight:700; cursor:pointer;
+  box-shadow:0 6px 24px rgba(252,76,2,0.45);
+  display:flex; align-items:center; gap:9px;
+  transition:transform 0.15s, opacity 0.15s;
+" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform=''">
+  <i class="fas fa-table-cells-large"></i> All Screens
+</button>
+
+<!-- SCREEN MAP OVERLAY -->
+<div id="screen-map-overlay" style="
+  display:none; position:fixed; inset:0; z-index:9998;
+  background:#0d0d1a; overflow-y:auto;
+  flex-direction:column; align-items:center;
+  padding:40px 32px 80px;
+">
+  <!-- Header -->
+  <div style="width:100%;max-width:1100px;display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-shrink:0;">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+        <i class="fas fa-person-running" style="color:#FC4C02;font-size:20px;"></i>
+        <span style="font-size:22px;font-weight:900;color:white;">GoWith</span>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.35);">Screen Map — click any screen to navigate</div>
+    </div>
+    <button onclick="toggleScreenMap()" style="
+      background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.7);
+      border:1.5px solid rgba(255,255,255,0.12); border-radius:10px;
+      padding:9px 16px; font-family:'Inter',sans-serif;
+      font-size:14px; font-weight:600; cursor:pointer;
+      display:flex; align-items:center; gap:7px;
+    ">
+      <i class="fas fa-xmark"></i> Close
+    </button>
+  </div>
+  <!-- Grid -->
+  <div id="screen-map-grid" style="
+    width:100%; max-width:1100px;
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));
+    gap:10px;
+  "></div>
+</div>
+
+</body>
+</html>
