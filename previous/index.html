@@ -804,12 +804,13 @@ input[type=range]::-webkit-slider-thumb {
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
           <button class="auth-btn" onclick="show('setup-1')"><i class="fab fa-google"></i><span>Continue with Google</span></button>
-          <button class="auth-btn" onclick="show('setup-1')"><i class="fab fa-facebook"></i><span>Continue with Facebook</span></button>
+          <button class="auth-btn" onclick="show('setup-1')"><i class="fab fa-apple"></i><span>Continue with Apple</span></button>
           <button class="auth-btn" onclick="show('email-auth')"><i class="fas fa-envelope"></i><span>Continue with Email</span></button>
           <div class="divider-or">or</div>
           <button class="auth-btn" style="border-color:var(--primary);border-width:2px;" onclick="show('strava-auth')">
             <i class="fab fa-strava"></i>
             <span>Continue with Strava</span>
+            <span style="margin-left:auto;background:rgba(34,197,94,0.12);color:#16A34A;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:700;">Auto-verified</span>
           </button>
           <p style="text-align:center;font-size:11px;color:var(--text-3);line-height:1.5;margin-top:4px;">By continuing you agree to our <span style="color:var(--primary);cursor:pointer;">Terms</span> &amp; <span style="color:var(--primary);cursor:pointer;">Privacy Policy</span></p>
         </div>
@@ -868,46 +869,14 @@ input[type=range]::-webkit-slider-thumb {
     <!-- ========== SETUP STEP 2 ========== -->
     <div class="screen" id="setup-2">
       <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
-      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Goals</span></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Run Preferences</span></div>
       <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
       <div class="screen-content p20">
         <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 2 of 5</p>
-        <h2 style="font-size:22px;font-weight:900;margin-bottom:24px;">What are your goals?</h2>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
-          <div class="card" style="padding:16px;cursor:pointer;border:2.5px solid var(--primary);"><div style="font-size:28px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-medal"></i></div><div style="font-weight:800;font-size:14px;">Race Training</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">5K to Marathon</div></div>
-          <div class="card" style="padding:16px;cursor:pointer;"><div style="font-size:28px;margin-bottom:8px;color:var(--text-2);"><i class="fas fa-dumbbell"></i></div><div style="font-weight:800;font-size:14px;">Get Fit</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Build a habit</div></div>
-          <div class="card" style="padding:16px;cursor:pointer;border:2.5px solid var(--primary);"><div style="font-size:28px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-people-group"></i></div><div style="font-weight:800;font-size:14px;">Social Running</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Meet new people</div></div>
-          <div class="card" style="padding:16px;cursor:pointer;"><div style="font-size:28px;margin-bottom:8px;color:var(--text-2);"><i class="fas fa-leaf"></i></div><div style="font-weight:800;font-size:14px;">Stress Relief</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Run to unwind</div></div>
-          <div class="card" style="padding:16px;cursor:pointer;"><div style="font-size:28px;margin-bottom:8px;color:var(--text-2);"><i class="fas fa-bolt"></i></div><div style="font-weight:800;font-size:14px;">Improve Speed</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Run faster</div></div>
-          <div class="card" style="padding:16px;cursor:pointer;"><div style="font-size:28px;margin-bottom:8px;color:var(--text-2);"><i class="fas fa-mountain"></i></div><div style="font-weight:800;font-size:14px;">Build Endurance</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Go the distance</div></div>
-        </div>
-        <label class="input-label">Weekly Mileage Goal</label>
-        <div style="display:flex;align-items:center;gap:12px;margin-top:12px;">
-          <div style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;font-weight:300;">−</div>
-          <div style="flex:1;text-align:center;font-size:26px;font-weight:900;">20 <span style="font-size:14px;font-weight:500;color:var(--text-2);" id="setup2-weekly-unit">mi/wk</span></div>
-          <div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;font-weight:300;color:white;">+</div>
-        </div>
-      </div>
-      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('setup-3')">Continue</button></div>
-    </div>
-
-    <!-- ========== SETUP STEP 3 ========== -->
-    <div class="screen" id="setup-3">
-      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
-      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Run Preferences</span></div>
-      <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
-      <div class="screen-content p20">
-        <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 3 of 5</p>
         <h2 style="font-size:22px;font-weight:900;margin-bottom:24px;">How do you run?</h2>
-        <div style="margin-bottom:20px;"><label class="input-label">Run Types</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip">Trail</div><div class="chip active">Track</div><div class="chip">Ultra</div></div></div>
-        <div style="border-top:1px solid rgba(0,0,0,0.07);padding-top:20px;margin-bottom:20px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
-            <div><div style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;">Distance Unit</div><div style="font-size:13px;font-weight:500;color:var(--text-2);margin-top:2px;" id="pref-unit-label">Miles</div></div>
-            <div id="pref-unit-toggle" class="toggle off" onclick="togglePrefUnit()" style="background:var(--primary);"></div>
-          </div>
-          <label class="input-label" style="display:flex;justify-content:space-between;"><span>Pace Range</span><span id="pref-pace-label" style="font-weight:500;text-transform:none;font-size:13px;color:var(--text-2);">8:00 – 10:00 /mi</span></label><input type="range" style="margin-top:12px;" min="5" max="15" value="8">
-        </div>
-        <div style="border-top:1px solid rgba(0,0,0,0.07);padding-top:20px;margin-bottom:20px;">
+        <div style="margin-bottom:20px;"><label class="input-label">Run Types</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip">Trail</div><div class="chip active">Track</div><div class="chip">Treadmill</div><div class="chip">Ultra</div></div></div>
+        <div style="margin-bottom:20px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Pace Range</span><span style="font-weight:500;text-transform:none;font-size:13px;color:var(--text-2);">8:00 – 10:00 /mi</span></label><input type="range" style="margin-top:12px;" min="5" max="15" value="8"></div>
+        <div style="margin-bottom:20px;">
           <label class="input-label">Typical Distance</label>
           <div style="display:flex;background:var(--surface);border-radius:var(--radius-btn);padding:4px;margin-top:8px;">
             <div style="flex:1;padding:10px;background:white;border-radius:10px;text-align:center;font-size:14px;font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,0.08);cursor:pointer;">5K</div>
@@ -916,8 +885,30 @@ input[type=range]::-webkit-slider-thumb {
             <div style="flex:1;padding:10px;text-align:center;font-size:14px;color:var(--text-3);font-weight:600;cursor:pointer;">Full</div>
           </div>
         </div>
-        <div style="border-top:1px solid rgba(0,0,0,0.07);padding-top:20px;">
-          <label class="input-label">Time of Day</label><div class="chips-row mt8"><div class="chip active">Early Morning</div><div class="chip">Morning</div><div class="chip">Afternoon</div><div class="chip">Evening</div></div>
+        <div><label class="input-label">Time of Day</label><div class="chips-row mt8"><div class="chip active">Early Morning</div><div class="chip">Morning</div><div class="chip">Afternoon</div><div class="chip">Evening</div></div></div>
+      </div>
+      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('setup-3')">Continue</button></div>
+    </div>
+
+    <!-- ========== SETUP STEP 3 ========== -->
+    <div class="screen" id="setup-3">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Goals</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:60%"></div></div>
+      <div class="screen-content p20">
+        <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 3 of 5</p>
+        <h2 style="font-size:22px;font-weight:900;margin-bottom:24px;">What are you training for?</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+          <div class="card" style="padding:16px;cursor:pointer;border:2.5px solid var(--primary);"><div style="font-size:28px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-medal"></i></div><div style="font-weight:800;font-size:14px;">Race Training</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">5K to Marathon</div></div>
+          <div class="card" style="padding:16px;cursor:pointer;"><div style="font-size:28px;margin-bottom:8px;color:var(--text-2);"><i class="fas fa-dumbbell"></i></div><div style="font-weight:800;font-size:14px;">Get Fit</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Build a habit</div></div>
+          <div class="card" style="padding:16px;cursor:pointer;border:2.5px solid var(--primary);"><div style="font-size:28px;margin-bottom:8px;color:var(--primary);"><i class="fas fa-people-group"></i></div><div style="font-weight:800;font-size:14px;">Social Running</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Meet new people</div></div>
+          <div class="card" style="padding:16px;cursor:pointer;"><div style="font-size:28px;margin-bottom:8px;color:var(--text-2);"><i class="fas fa-leaf"></i></div><div style="font-weight:800;font-size:14px;">Stress Relief</div><div style="font-size:12px;color:var(--text-2);margin-top:4px;">Run to unwind</div></div>
+        </div>
+        <label class="input-label">Weekly Mileage Goal</label>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:12px;">
+          <div style="width:40px;height:40px;border-radius:50%;border:2px solid rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;font-weight:300;">−</div>
+          <div style="flex:1;text-align:center;font-size:26px;font-weight:900;">20 <span style="font-size:14px;font-weight:500;color:var(--text-2);">mi/wk</span></div>
+          <div style="width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:22px;font-weight:300;color:white;">+</div>
         </div>
       </div>
       <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('setup-4')">Continue</button></div>
@@ -932,34 +923,13 @@ input[type=range]::-webkit-slider-thumb {
         <p style="font-size:12px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Step 4 of 5</p>
         <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;">Where do you run?</h2>
         <p style="color:var(--text-2);font-size:14px;margin-bottom:20px;line-height:1.5;">We use your location to find runners near you. Your exact address is never shared.</p>
-        <!-- Location input + suggestions -->
-        <div style="position:relative;margin-bottom:16px;">
-          <i class="fas fa-magnifying-glass" style="position:absolute;left:14px;top:16px;color:var(--text-3);font-size:14px;pointer-events:none;z-index:1;"></i>
-          <input id="setup4-location-input" class="input-field" type="text" placeholder="Enter your neighbourhood or city…" style="padding-left:40px;" autocomplete="off" oninput="setup4Suggest(this.value)" onfocus="setup4Suggest(this.value)">
-          <div id="setup4-suggestions" style="display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:white;border-radius:14px;box-shadow:0 8px 32px rgba(0,0,0,0.14);overflow:hidden;z-index:50;"></div>
-        </div>
-        <!-- Map preview -->
-        <div style="width:100%;height:200px;border-radius:20px;overflow:hidden;position:relative;margin-bottom:16px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
-          <!-- idle state -->
-          <div id="setup4-map-idle" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="text-align:center;color:#3B82F6;opacity:0.4;"><i class="fas fa-map" style="font-size:52px;"></i><p style="font-size:13px;margin-top:8px;">Map Preview</p></div></div>
-          <!-- active state: fake street grid -->
-          <div id="setup4-map-active" style="display:none;position:absolute;inset:0;background:linear-gradient(135deg,#e8f4e8,#d4edda);">
-            <!-- fake roads -->
-            <div style="position:absolute;top:40%;left:0;right:0;height:2px;background:rgba(255,255,255,0.8);"></div>
-            <div style="position:absolute;top:65%;left:0;right:0;height:1px;background:rgba(255,255,255,0.5);"></div>
-            <div style="position:absolute;top:20%;left:0;right:0;height:1px;background:rgba(255,255,255,0.5);"></div>
-            <div style="position:absolute;left:30%;top:0;bottom:0;width:2px;background:rgba(255,255,255,0.8);"></div>
-            <div style="position:absolute;left:60%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.5);"></div>
-            <div style="position:absolute;left:80%;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.5);"></div>
-            <!-- park block -->
-            <div style="position:absolute;top:42%;left:32%;width:27%;height:22%;background:rgba(100,180,100,0.35);border-radius:4px;"></div>
-          </div>
-          <!-- pin (always centred, hidden until location chosen) -->
-          <div id="setup4-map-pin" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-100%);pointer-events:none;">
-            <i class="fas fa-map-pin" style="font-size:38px;color:var(--primary);filter:drop-shadow(0 3px 8px rgba(252,76,2,0.5));"></i>
+        <div style="width:100%;height:220px;border-radius:20px;overflow:hidden;position:relative;margin-bottom:20px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);">
+          <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;"><div style="text-align:center;color:#3B82F6;opacity:0.4;"><i class="fas fa-map" style="font-size:52px;"></i><p style="font-size:13px;margin-top:8px;">Map Preview</p></div></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);">
+            <i class="fas fa-map-pin" style="font-size:36px;color:var(--primary);filter:drop-shadow(0 3px 6px rgba(0,0,0,0.3));"></i>
           </div>
         </div>
-        <button class="btn btn-secondary" style="margin-bottom:16px;" onclick="setup4SelectLocation('Current Location')"><i class="fas fa-location-arrow" style="margin-right:8px;color:var(--primary);"></i>Use My Current Location</button>
+        <button class="btn btn-secondary" style="margin-bottom:16px;"><i class="fas fa-location-arrow" style="margin-right:8px;color:var(--primary);"></i>Use My Current Location</button>
         <div style="display:flex;align-items:center;padding:14px 0;border-top:1px solid rgba(0,0,0,0.06);">
           <div style="flex:1;"><div style="font-weight:700;font-size:15px;">Precise Location</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Show within exact radius</div></div>
           <div class="toggle"></div>
@@ -986,11 +956,11 @@ input[type=range]::-webkit-slider-thumb {
           <div style="padding:12px 14px;"><p style="font-size:13px;color:var(--text-2);">Your bio will appear here...</p></div>
         </div>
         <div class="card" style="padding:16px;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span style="font-weight:800;">Run Preferences</span><span style="color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;" onclick="show('setup-3')">Edit</span></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span style="font-weight:800;">Run Preferences</span><span style="color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;" onclick="show('setup-2')">Edit</span></div>
           <div class="chips-row"><div class="chip active" style="font-size:12px;">Road</div><div class="chip active" style="font-size:12px;">Track</div><div class="chip active" style="font-size:12px;">Race Training</div><div class="chip active" style="font-size:12px;">Social Running</div></div>
         </div>
       </div>
-      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('id-verification')">Start Running With People 🎉</button></div>
+      <div style="padding:16px 20px 32px;flex-shrink:0;"><button class="btn btn-primary" onclick="show('discover')">Start Running With People 🎉</button></div>
     </div>
 
     <!-- ========== DISCOVER ========== -->
@@ -1038,6 +1008,7 @@ input[type=range]::-webkit-slider-thumb {
       <div class="tab-bar">
         <div class="tab active" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
         <div class="tab" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
         <div class="tab" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
         <div class="tab" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
       </div>
@@ -1050,13 +1021,9 @@ input[type=range]::-webkit-slider-thumb {
             <div class="sheet-title" style="margin-bottom:0;">Filter Runners</div>
             <span style="color:var(--primary);font-weight:700;cursor:pointer;">Reset</span>
           </div>
-          <div style="display:flex;align-items:center;justify-content:space-between;padding-bottom:16px;margin-bottom:16px;border-bottom:1px solid rgba(0,0,0,0.07);">
-            <div><div style="font-size:13px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:0.5px;">Pace Unit</div><div style="font-size:13px;font-weight:500;color:var(--text-2);margin-top:2px;" id="filter-unit-label">Miles</div></div>
-            <div id="filter-unit-toggle" class="toggle off" onclick="toggleFilterUnit()" style="background:var(--primary);"></div>
-          </div>
-          <div style="margin-bottom:16px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Distance Radius</span><span id="filter-radius-label" style="font-weight:500;text-transform:none;color:var(--text-2);">5 mi</span></label><input type="range" style="margin-top:12px;" min="1" max="25" value="5"></div>
-          <div style="margin-bottom:16px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Pace Range</span><span id="filter-pace-label" style="font-weight:500;text-transform:none;color:var(--text-2);">7:00–11:00 /mi</span></label><input type="range" style="margin-top:12px;" min="5" max="15" value="9"></div>
-          <div style="margin-bottom:16px;"><label class="input-label">Run Type</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip">Trail</div><div class="chip active">Track</div><div class="chip">Ultra</div></div></div>
+          <div style="margin-bottom:20px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Distance Radius</span><span style="font-weight:500;text-transform:none;color:var(--text-2);">5 miles</span></label><input type="range" style="margin-top:12px;" min="1" max="25" value="5"></div>
+          <div style="margin-bottom:20px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Pace Range</span><span style="font-weight:500;text-transform:none;color:var(--text-2);">7:00–11:00/mi</span></label><input type="range" style="margin-top:12px;" min="5" max="15" value="9"></div>
+          <div style="margin-bottom:16px;"><label class="input-label">Run Type</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip">Trail</div><div class="chip active">Track</div><div class="chip">Treadmill</div></div></div>
           <div style="margin-bottom:16px;"><label class="input-label">Goals</label><div class="chips-row mt8"><div class="chip active">Race Training</div><div class="chip">Social</div><div class="chip">Fitness</div></div></div>
           <div style="margin-bottom:20px;"><label class="input-label">Availability</label><div class="chips-row mt8"><div class="chip active">Early Morning</div><div class="chip">Morning</div><div class="chip">Evening</div></div></div>
           <button class="btn btn-primary" onclick="closeSheet('filters-sheet')">Apply Filters</button>
@@ -1176,6 +1143,7 @@ input[type=range]::-webkit-slider-thumb {
       <div class="tab-bar">
         <div class="tab" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
         <div class="tab active" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
         <div class="tab" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
         <div class="tab" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
       </div>
@@ -1202,11 +1170,6 @@ input[type=range]::-webkit-slider-thumb {
         </div>
         <div class="bubble bubble-in">Sounds perfect! See you at 6am 🏃</div>
         <div class="bubble bubble-out">Can't wait! 🔥</div>
-        <div class="run-card" style="margin-top:4px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;"><i class="fas fa-route" style="color:var(--primary);"></i><span style="font-weight:800;font-size:13px;">Run Invite</span><span style="margin-left:auto;background:rgba(34,197,94,0.12);color:var(--success);padding:2px 8px;border-radius:20px;font-size:11px;font-weight:800;"><i class="fas fa-check-circle" style="margin-right:3px;"></i>Accepted</span></div>
-          <div style="font-size:13px;color:var(--text-2);line-height:1.8;">📅 Saturday, Apr 12 · 6:00 AM<br>📍 Riverside Park, North Entrance<br>🏃 5 miles easy pace</div>
-          <button class="btn btn-primary btn-sm" style="width:100%;margin-top:10px;padding:10px;" onclick="show('moment-creation')"><i class="fas fa-fire" style="margin-right:6px;"></i>We Ran It! 🎉</button>
-        </div>
       </div>
       <div class="chat-bar">
         <div class="icon-btn" onclick="openSheet('run-sheet')"><i class="fas fa-shoe-prints"></i></div>
@@ -1232,6 +1195,180 @@ input[type=range]::-webkit-slider-thumb {
         </div>
       </div>
     </div>
+
+    <!-- ========== FEED ========== -->
+    <div class="screen" id="feed">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><span style="font-size:22px;font-weight:900;color:var(--secondary);">Feed</span><div style="margin-left:auto;color:var(--text-2);font-size:18px;cursor:pointer;"><i class="fas fa-paper-plane"></i></div></div>
+      <div class="screen-content">
+        <div class="stories-row">
+          <div class="story-item" onclick="show('story-creation')">
+            <div class="story-ring add-btn" style="padding:2.5px;"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#FF6B35,#FC4C02);">Y</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Add Story</span>
+          </div>
+          <div class="story-item" onclick="show('story-viewer')">
+            <div class="story-ring" style="padding:2.5px;"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Sarah</span>
+          </div>
+          <div class="story-item" onclick="show('story-viewer')">
+            <div class="story-ring" style="padding:2.5px;"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Emma</span>
+          </div>
+          <div class="story-item">
+            <div class="story-ring viewed" style="padding:2.5px;"><div class="avatar-placeholder" style="width:56px;height:56px;font-size:18px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div></div>
+            <span style="font-size:11px;color:var(--text-2);">Jake</span>
+          </div>
+        </div>
+        <div class="post-card" onclick="show('feed-post-detail')">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="width:40px;height:40px;font-size:14px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+            <div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-weight:800;font-size:14px;">Sarah M.</span><span class="badge badge-verified" style="font-size:10px;"><i class="fas fa-check-circle"></i> Verified</span></div><div style="font-size:12px;color:var(--text-3);">2 hours ago</div></div>
+            <div style="color:var(--text-3);cursor:pointer;"><i class="fas fa-ellipsis"></i></div>
+          </div>
+          <div class="post-img" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);"><div style="text-align:center;color:#3B82F6;opacity:0.35;"><i class="fas fa-image" style="font-size:48px;"></i><p style="font-size:12px;margin-top:8px;">Post Photo</p></div></div>
+          <div style="padding:10px 16px 6px;"><p style="font-size:14px;line-height:1.55;"><span style="font-weight:800;">Sarah M.</span> Morning run done! 🌅 5 miles at Riverside Park. The sunrise was 🔥 Who's down to run this weekend?</p></div>
+          <div class="post-actions">
+            <div class="post-action"><i class="fas fa-fire" style="color:var(--primary);"></i><span>24</span></div>
+            <div class="post-action"><i class="fas fa-comment"></i><span>8</span></div>
+            <div class="post-action" style="margin-left:auto;" onclick="show('share-sheet-screen')"><i class="fas fa-share-nodes"></i></div>
+          </div>
+        </div>
+        <div class="post-card">
+          <div class="post-header">
+            <div class="avatar-placeholder" style="width:40px;height:40px;font-size:14px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Jake T.</div><div style="font-size:12px;color:var(--text-3);">5 hours ago</div></div>
+            <div style="color:var(--text-3);cursor:pointer;"><i class="fas fa-ellipsis"></i></div>
+          </div>
+          <div style="padding:0 16px 10px;"><p style="font-size:14px;line-height:1.55;"><span style="font-weight:800;">Jake T.</span> Crushed my tempo run today! 8 miles at 7:45/mi. Chicago Marathon training is going well 💪 Anyone else running Chicago this fall?</p></div>
+          <div class="post-actions">
+            <div class="post-action"><i class="fas fa-fire" style="color:var(--primary);"></i><span>31</span></div>
+            <div class="post-action"><i class="fas fa-comment"></i><span>12</span></div>
+            <div class="post-action" style="margin-left:auto;" onclick="show('share-sheet-screen')"><i class="fas fa-share-nodes"></i></div>
+          </div>
+        </div>
+        <div style="height:20px;"></div>
+      </div>
+      <!-- FAB -->
+      <div style="position:absolute;bottom:96px;right:20px;z-index:20;">
+        <div style="width:52px;height:52px;background:var(--primary);border-radius:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(252,76,2,0.45);cursor:pointer;" onclick="show('post-creation')"><i class="fas fa-plus" style="color:white;font-size:22px;"></i></div>
+      </div>
+      <div class="tab-bar">
+        <div class="tab" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
+        <div class="tab" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab active" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
+        <div class="tab" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
+        <div class="tab" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
+      </div>
+    </div>
+
+    <!-- ========== FEED POST DETAIL ========== -->
+    <div class="screen" id="feed-post-detail">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Post</span></div>
+      <div class="screen-content">
+        <div class="post-header">
+          <div class="avatar-placeholder" style="width:40px;height:40px;font-size:14px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+          <div style="flex:1;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-weight:800;font-size:14px;">Sarah M.</span><span class="badge badge-verified" style="font-size:10px;"><i class="fas fa-check-circle"></i> Verified</span></div><div style="font-size:12px;color:var(--text-3);">2 hours ago</div></div>
+        </div>
+        <div class="post-img" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);"><div style="text-align:center;color:#3B82F6;opacity:0.35;"><i class="fas fa-image" style="font-size:48px;"></i></div></div>
+        <div style="padding:12px 16px;"><p style="font-size:14px;line-height:1.55;"><span style="font-weight:800;">Sarah M.</span> Morning run done! 🌅 5 miles at Riverside Park. The sunrise was 🔥 Who's down to run this weekend?</p></div>
+        <div style="display:flex;gap:20px;padding:10px 16px;border-bottom:1px solid rgba(0,0,0,0.06);"><span style="font-size:13px;color:var(--text-3);">24 reactions</span><span style="font-size:13px;color:var(--text-3);">8 comments</span></div>
+        <div style="padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.04);">
+          <div style="display:flex;gap:10px;"><div class="avatar-placeholder" style="width:32px;height:32px;font-size:12px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div><div><div style="background:var(--surface);border-radius:12px;padding:10px 12px;"><span style="font-weight:800;font-size:13px;">Jake T. </span><span style="font-size:13px;">Riverside Park is amazing in the morning! 🌄</span></div><div style="font-size:11px;color:var(--text-3);margin-top:4px;padding-left:4px;">1h ago · Cheer</div></div></div>
+        </div>
+        <div style="padding:14px 16px;border-bottom:1px solid rgba(0,0,0,0.04);">
+          <div style="display:flex;gap:10px;"><div class="avatar-placeholder" style="width:32px;height:32px;font-size:12px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div><div><div style="background:var(--surface);border-radius:12px;padding:10px 12px;"><span style="font-weight:800;font-size:13px;">Emma L. </span><span style="font-size:13px;">I'm in for Saturday! What time? 🏃‍♀️</span></div><div style="font-size:11px;color:var(--text-3);margin-top:4px;padding-left:4px;">30m ago · Cheer</div></div></div>
+        </div>
+        <div style="height:80px;"></div>
+      </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;display:flex;align-items:center;gap:8px;padding:10px 16px 28px;background:white;border-top:1px solid rgba(0,0,0,0.06);">
+        <div class="avatar-placeholder" style="width:32px;height:32px;font-size:12px;background:linear-gradient(135deg,#FF6B35,#FC4C02);">Y</div>
+        <input class="chat-input-field" style="flex:1;" placeholder="Add a comment...">
+        <div class="send-btn"><i class="fas fa-paper-plane"></i></div>
+      </div>
+    </div>
+
+    <!-- ========== POST CREATION ========== -->
+    <div class="screen" id="post-creation">
+      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">New Post</span><div class="nav-action" style="background:var(--primary);color:white;padding:6px 16px;border-radius:20px;font-size:14px;" onclick="back()">Post</div></div>
+      <div class="screen-content p20">
+        <div style="height:160px;border:2px dashed rgba(0,0,0,0.12);border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;color:var(--text-3);margin-bottom:16px;">
+          <i class="fas fa-image" style="font-size:34px;color:var(--surface-2);"></i>
+          <div style="font-weight:700;font-size:14px;">Add Photo</div>
+          <div style="font-size:12px;">Tap to upload from library</div>
+        </div>
+        <div style="margin-bottom:16px;"><textarea class="input-field" rows="4" placeholder="Share your run story..." style="resize:none;"></textarea></div>
+        <div class="list-item" style="border-top:1px solid rgba(0,0,0,0.06);"><div class="list-item-icon" style="background:rgba(252,76,2,0.1);color:var(--primary);"><i class="fas fa-globe"></i></div><div style="flex:1;"><div class="list-item-title">Audience</div><div class="list-item-subtitle">Matches only</div></div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+        <div class="list-item"><div class="list-item-icon" style="background:rgba(59,130,246,0.1);color:#3B82F6;"><i class="fas fa-user-tag"></i></div><div style="flex:1;"><div class="list-item-title">Tag People</div><div class="list-item-subtitle">Tag your run partner</div></div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+        <div class="list-item" onclick="openSheet('strava-picker-sheet')"><div class="list-item-icon" style="background:rgba(252,76,2,0.1);color:var(--primary);"><i class="fab fa-strava"></i></div><div style="flex:1;"><div class="list-item-title">Attach Strava Activity</div><div class="list-item-subtitle">Link your latest run</div></div><i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i></div>
+      </div>
+      <!-- STRAVA ACTIVITY PICKER SHEET -->
+      <div class="bottom-sheet-overlay" id="strava-picker-sheet" onclick="overlayClose(event,'strava-picker-sheet')">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div class="sheet-title">Recent Strava Runs</div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;background:rgba(252,76,2,0.05);border-radius:10px;padding:12px 8px;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#4ECDC4,#44A08D);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Morning Run</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Today · 5.2 mi · 8:30/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;"><i class="fas fa-check" style="color:white;font-size:10px;"></i></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Riverside Trail</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Yesterday · 8.1 mi · 8:55/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.12);"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Tempo Run</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Apr 4 · 6.0 mi · 7:50/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.12);"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#f093fb,#f5576c);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Long Run</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Apr 2 · 12.3 mi · 9:15/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.12);"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:12px 8px;cursor:pointer;">
+            <div style="width:52px;height:52px;border-radius:10px;background:linear-gradient(135deg,#43e97b,#38f9d7);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;">🗺️</div>
+            <div style="flex:1;"><div style="font-weight:800;font-size:14px;">Recovery Jog</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Apr 1 · 3.5 mi · 9:45/mi</div></div>
+            <div style="width:22px;height:22px;border-radius:50%;border:2px solid rgba(0,0,0,0.12);"></div>
+          </div>
+          <div style="margin-top:16px;"><button class="btn btn-primary" onclick="closeSheet('strava-picker-sheet')">Attach Activity</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== STORY VIEWER ========== -->
+    <div class="screen" id="story-viewer">
+      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:30;color:white;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="story-bars">
+        <div class="story-bar"><div class="story-bar-fill" style="width:100%;"></div></div>
+        <div class="story-bar"><div class="story-bar-fill" style="width:45%;"></div></div>
+        <div class="story-bar"><div class="story-bar-fill" style="width:0%;"></div></div>
+      </div>
+      <div class="story-user-row">
+        <div class="avatar-placeholder" style="width:36px;height:36px;font-size:14px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+        <div><div style="color:white;font-weight:800;font-size:14px;">Sarah M.</div><div style="color:rgba(255,255,255,0.55);font-size:12px;">2 hours ago</div></div>
+        <div style="margin-left:auto;display:flex;gap:16px;"><i class="fas fa-ellipsis" style="color:white;cursor:pointer;font-size:16px;"></i><i class="fas fa-xmark" style="color:white;cursor:pointer;font-size:20px;" onclick="back()"></i></div>
+      </div>
+      <div style="position:absolute;inset:0;background:linear-gradient(180deg,#1a1a2e 0%,#FF6B35 100%);display:flex;align-items:center;justify-content:center;z-index:0;">
+        <div style="text-align:center;padding:24px;">
+          <div style="background:rgba(255,255,255,0.12);border-radius:20px;padding:20px 28px;backdrop-filter:blur(10px);margin-bottom:24px;">
+            <div style="font-size:40px;font-weight:900;color:white;">5.2 mi</div>
+            <div style="color:rgba(255,255,255,0.65);font-size:13px;margin-top:4px;">at 8:30/mi pace 🔥</div>
+          </div>
+          <p style="color:white;font-size:20px;font-weight:900;">Morning done! ☀️</p>
+          <p style="color:rgba(255,255,255,0.75);font-size:14px;margin-top:10px;line-height:1.5;">Who's running with me this weekend?</p>
+        </div>
+      </div>
+      <div class="story-reply">
+        <input class="story-reply-input" placeholder="Reply to Sarah...">
+        <span style="font-size:24px;cursor:pointer;">🔥</span>
+        <span style="font-size:24px;cursor:pointer;">👏</span>
+        <span style="font-size:24px;cursor:pointer;">💪</span>
+      </div>
+    </div>
+
     <!-- ========== NOTIFICATIONS ========== -->
     <div class="screen" id="notifications">
       <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
@@ -1240,6 +1377,7 @@ input[type=range]::-webkit-slider-thumb {
         <div class="chip active" style="padding:6px 14px;font-size:13px;">All</div>
         <div class="chip" style="padding:6px 14px;font-size:13px;">Matches</div>
         <div class="chip" style="padding:6px 14px;font-size:13px;">Messages</div>
+        <div class="chip" style="padding:6px 14px;font-size:13px;">Likes</div>
         <div class="chip" style="padding:6px 14px;font-size:13px;">Runs</div>
       </div>
       <div class="screen-content">
@@ -1254,6 +1392,11 @@ input[type=range]::-webkit-slider-thumb {
           <div style="flex:1;"><div style="font-size:14px;line-height:1.45;"><span style="font-weight:800;">Emma L.</span> sent you a message</div><div style="font-size:12px;color:var(--text-3);margin-top:3px;">1 hour ago</div></div>
           <div class="avatar-placeholder" style="width:36px;height:36px;font-size:12px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div>
         </div>
+        <div class="notif-row" onclick="show('feed-post-detail')">
+          <div class="notif-icon" style="background:rgba(252,76,2,0.1);color:var(--primary);"><i class="fas fa-fire"></i></div>
+          <div style="flex:1;"><div style="font-size:14px;line-height:1.45;"><span style="font-weight:800;">Jake T.</span> reacted 🔥 to your post</div><div style="font-size:12px;color:var(--text-3);margin-top:3px;">3 hours ago</div></div>
+          <div class="avatar-placeholder" style="width:36px;height:36px;font-size:12px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div>
+        </div>
         <div class="notif-group-title" style="border-top:8px solid var(--surface);">This Week</div>
         <div class="notif-row" onclick="show('discover')">
           <div class="notif-icon" style="background:rgba(34,197,94,0.1);color:var(--success);"><i class="fas fa-person-running"></i></div>
@@ -1263,6 +1406,7 @@ input[type=range]::-webkit-slider-thumb {
       <div class="tab-bar">
         <div class="tab" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
         <div class="tab" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
         <div class="tab active" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
         <div class="tab" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
       </div>
@@ -1307,32 +1451,6 @@ input[type=range]::-webkit-slider-thumb {
             <div class="chip active" style="font-size:12px;">Early AM</div>
           </div>
         </div>
-        <!-- My Journal -->
-        <div style="padding:0 20px 12px;">
-          <div style="background:var(--surface);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;border:1.5px solid rgba(252,76,2,0.15);" onclick="show('my-journal')">
-            <div style="width:44px;height:44px;background:rgba(252,76,2,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <i class="fas fa-book-open" style="font-size:20px;color:var(--primary);"></i>
-            </div>
-            <div style="flex:1;">
-              <div style="font-weight:800;font-size:14px;color:var(--secondary);">My Running Journal</div>
-              <div style="font-size:12px;color:var(--text-3);margin-top:2px;">12 runs logged</div>
-            </div>
-            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i>
-          </div>
-        </div>
-        <!-- Year in Review teaser -->
-        <div style="padding:0 20px 12px;">
-          <div style="background:linear-gradient(135deg,#1a1a2e,#2d1b4e);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;opacity:0.85;">
-            <div style="width:44px;height:44px;background:rgba(252,76,2,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              <i class="fas fa-film" style="font-size:20px;color:var(--primary);"></i>
-            </div>
-            <div style="flex:1;">
-              <div style="font-weight:800;font-size:14px;color:white;">Year in Review 2026 🎬</div>
-              <div style="font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px;">12 runs logged · Your movie arrives Dec 31</div>
-            </div>
-            <span style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;flex-shrink:0;">SOON</span>
-          </div>
-        </div>
         <!-- Run Clubs Teaser -->
         <div style="padding:0 20px 16px;">
           <div style="background:linear-gradient(135deg,var(--secondary),#1E3A6E);border-radius:16px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;" onclick="show('run-clubs-discovery')">
@@ -1346,11 +1464,20 @@ input[type=range]::-webkit-slider-thumb {
             <i class="fas fa-chevron-right" style="color:rgba(255,255,255,0.3);font-size:13px;"></i>
           </div>
         </div>
-        <div style="height:110px;"></div>
+        <div style="padding:0 20px 110px;">
+          <div style="font-size:16px;font-weight:800;margin-bottom:12px;">My Posts</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;">
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#FF6B6B,#FF8E53);border-radius:10px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#4ECDC4,#44A08D);border-radius:10px;"></div>
+            <div style="aspect-ratio:1;background:linear-gradient(135deg,#667eea,#764ba2);border-radius:10px;"></div>
+            <div style="aspect-ratio:1;background:var(--surface);border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;" onclick="show('post-creation')"><i class="fas fa-plus" style="color:var(--text-3);font-size:26px;"></i></div>
+          </div>
+        </div>
       </div>
       <div class="tab-bar" style="position:absolute;bottom:0;left:0;right:0;">
         <div class="tab" onclick="show('discover')"><i class="fas fa-compass"></i><span>Discover</span></div>
         <div class="tab" onclick="show('matches-list')"><i class="fas fa-comment-dots"></i><span>Matches</span></div>
+        <div class="tab center-tab" onclick="show('feed')"><div class="center-btn"><i class="fas fa-fire-flame-curved"></i></div><span style="margin-top:4px;">Feed</span></div>
         <div class="tab" onclick="show('notifications')"><i class="fas fa-bell"></i><span>Activity</span></div>
         <div class="tab active" onclick="show('my-profile')"><i class="fas fa-user"></i><span>Profile</span></div>
       </div>
@@ -1369,7 +1496,7 @@ input[type=range]::-webkit-slider-thumb {
         </div>
         <div style="margin-bottom:16px;"><label class="input-label">Full Name</label><input class="input-field" type="text" value="Your Name"></div>
         <div style="margin-bottom:16px;"><label class="input-label">Bio</label><textarea class="input-field" rows="3" style="resize:none;">Marathon runner training for Boston 2026 🏃‍♀️</textarea></div>
-        <div style="margin-bottom:16px;"><label class="input-label">Run Types</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip active">Trail</div><div class="chip">Track</div><div class="chip">Ultra</div></div></div>
+        <div style="margin-bottom:16px;"><label class="input-label">Run Types</label><div class="chips-row mt8"><div class="chip active">Road</div><div class="chip active">Trail</div><div class="chip">Track</div><div class="chip">Treadmill</div></div></div>
         <div style="margin-bottom:16px;"><label class="input-label" style="display:flex;justify-content:space-between;"><span>Pace Range</span><span style="font-weight:500;text-transform:none;color:var(--text-2);">8:00 – 9:00 /mi</span></label><input type="range" style="margin-top:12px;"></div>
       </div>
     </div>
@@ -1421,146 +1548,59 @@ input[type=range]::-webkit-slider-thumb {
             <i class="fas fa-shield-halved" style="font-size:38px;color:var(--primary);"></i>
           </div>
           <h2 style="font-size:22px;font-weight:900;margin-bottom:10px;">Verified Badge</h2>
-          <p style="color:var(--text-2);font-size:14px;line-height:1.6;">Take a quick selfie to confirm you're a real person. Takes under 30 seconds.</p>
+          <p style="color:var(--text-2);font-size:14px;line-height:1.6;">Complete identity verification to show other runners you're a real person. Takes under 2 minutes.</p>
         </div>
-        <div class="card" style="padding:16px;margin-bottom:28px;">
-          <div class="verify-step"><div class="step-num done"><i class="fas fa-check" style="font-size:12px;"></i></div><div><div style="font-weight:800;font-size:14px;">Account Created</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Done ✓</div></div></div>
-          <div class="verify-step"><div class="step-num active">2</div><div><div style="font-weight:800;font-size:14px;">Face Selfie</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Quick photo to confirm it's you</div></div></div>
-          <div class="verify-step"><div class="step-num">3</div><div><div style="font-weight:800;font-size:14px;">Done</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Your verified badge is live</div></div></div>
+        <div class="card" style="padding:16px;margin-bottom:20px;">
+          <div class="verify-step"><div class="step-num done"><i class="fas fa-check" style="font-size:12px;"></i></div><div><div style="font-weight:800;font-size:14px;">Create Account</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Done ✓</div></div></div>
+          <div class="verify-step"><div class="step-num active">2</div><div><div style="font-weight:800;font-size:14px;">Upload ID Document</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Passport, Driver's License, or National ID</div></div></div>
+          <div class="verify-step"><div class="step-num">3</div><div><div style="font-weight:800;font-size:14px;">Face Capture</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">Quick selfie to match your ID</div></div></div>
+          <div class="verify-step"><div class="step-num">4</div><div><div style="font-weight:800;font-size:14px;">Review (2–5 min)</div><div style="font-size:12px;color:var(--text-3);margin-top:2px;">We'll notify you once verified</div></div></div>
         </div>
-        <button class="btn btn-primary" onclick="show('discover')">Start Verification</button>
+        <div style="display:flex;gap:12px;background:rgba(59,130,246,0.06);border-radius:14px;padding:14px;margin-bottom:24px;">
+          <i class="fas fa-lock" style="color:#3B82F6;font-size:16px;margin-top:1px;flex-shrink:0;"></i>
+          <p style="font-size:12px;color:var(--text-2);line-height:1.6;">Your ID is securely processed by a third-party provider and never stored on our servers. Your personal details are never visible to other users.</p>
+        </div>
+        <button class="btn btn-primary">Start Verification</button>
+        <button class="btn" style="background:transparent;color:var(--text-3);margin-top:10px;font-size:14px;" onclick="back()">Maybe Later</button>
       </div>
     </div>
 
     <!-- ========== STORY CREATION ========== -->
-    <div class="screen" id="story-creation">
-      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
-      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Log a Run</span></div>
-      <div class="screen-content p20">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;">
-          <div style="width:52px;height:52px;background:rgba(252,76,2,0.1);border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <i class="fas fa-person-running" style="font-size:24px;color:var(--primary);"></i>
-          </div>
-          <div><div style="font-size:18px;font-weight:900;color:var(--secondary);">How did your run go?</div><div style="font-size:13px;color:var(--text-3);margin-top:2px;">This is private — only you can see it</div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;">
-          <div>
-            <label class="input-label">Distance</label>
-            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-              <input class="input-field" type="number" placeholder="0.0" style="text-align:center;font-size:20px;font-weight:800;padding:12px 8px;">
-              <span style="font-size:13px;font-weight:700;color:var(--text-2);flex-shrink:0;">mi</span>
-            </div>
-          </div>
-          <div>
-            <label class="input-label">Duration</label>
-            <input class="input-field" type="text" placeholder="00:00" style="margin-top:8px;text-align:center;font-size:20px;font-weight:800;padding:12px 8px;">
-          </div>
-        </div>
-        <div style="border-top:1px solid rgba(0,0,0,0.07);padding-top:20px;margin-bottom:20px;">
-          <label class="input-label">How did it feel?</label>
-          <div class="chips-row mt8">
-            <div class="chip">Easy</div>
-            <div class="chip active">Moderate</div>
-            <div class="chip">Hard</div>
-            <div class="chip">PR! 🏆</div>
-          </div>
-        </div>
-        <div style="border-top:1px solid rgba(0,0,0,0.07);padding-top:20px;margin-bottom:28px;">
-          <label class="input-label">Note <span style="font-weight:400;text-transform:none;font-size:12px;color:var(--text-3);">— optional</span></label>
-          <textarea class="input-field" rows="3" placeholder="Anything to remember about this run…" style="margin-top:8px;resize:none;"></textarea>
-        </div>
-        <button class="btn btn-primary" style="margin-bottom:12px;" onclick="show('story-editor')">Add a Visual <i class="fas fa-arrow-right" style="margin-left:6px;"></i></button>
-        <button class="btn btn-secondary" onclick="logRunWithoutVisual()">Save to Journal</button>
+    <div class="screen" id="story-creation" style="background:#111;">
+      <div class="status-bar" style="color:white;position:relative;z-index:10;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="nav-bar" style="background:#111;border-bottom-color:rgba(255,255,255,0.08);">
+        <div class="nav-back" style="background:rgba(255,255,255,0.1);color:white;" onclick="back()"><i class="fas fa-chevron-left"></i></div>
+        <span class="nav-title" style="color:white;">New Story</span>
       </div>
-    </div>
-
-    <!-- ========== MY JOURNAL ========== -->
-    <div class="screen" id="my-journal">
-      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
-      <div class="nav-bar">
-        <div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div>
-        <div style="display:flex;flex-direction:column;align-items:center;">
-          <span class="nav-title" style="line-height:1.2;">My Running Journal</span>
-          <span style="font-size:11px;color:var(--text-3);font-weight:600;" id="journal-run-count">12 runs</span>
-        </div>
-        <div class="nav-action" style="background:var(--primary);color:white;padding:6px 14px;border-radius:20px;font-size:13px;font-weight:700;" onclick="show('story-creation')">+ Log Run</div>
-      </div>
-      <div class="screen-content" id="journal-list">
-        <!-- April 2026 -->
-        <div style="padding:14px 20px 8px;font-size:11px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid rgba(0,0,0,0.05);">April 2026</div>
-        <div style="padding:16px 20px;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer;" onclick="show('journal-entry')">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <div style="flex:1;"><div style="font-weight:800;font-size:15px;">Apr 7 · Monday</div><div style="display:flex;gap:10px;margin-top:4px;"><span style="font-size:13px;font-weight:700;color:var(--primary);">5.2 mi</span><span style="font-size:13px;color:var(--text-3);">42 min</span><span style="font-size:12px;background:rgba(252,76,2,0.1);color:var(--primary);padding:2px 8px;border-radius:20px;font-weight:700;">Moderate</span></div></div>
-            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i>
+      <div class="screen-content" style="padding:16px 16px 24px;">
+        <p style="color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;">Choose a background</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:20px;">
+          <div class="story-bg-option selected" id="sbg-0" style="background:linear-gradient(135deg,#FF6B6B,#FF8E53);" onclick="selectStoryBg(0)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">🌅</div>
           </div>
-          <div style="height:120px;border-radius:14px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);position:relative;overflow:hidden;">
-            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-              <div style="text-align:center;"><div style="font-size:28px;font-weight:900;color:white;">5.2 mi</div><div style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:4px;">at 8:30/mi pace 🔥</div></div>
-            </div>
+          <div class="story-bg-option" id="sbg-1" style="background:linear-gradient(135deg,#4ECDC4,#44A08D);" onclick="selectStoryBg(1)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">🏃</div>
           </div>
-          <p style="font-size:13px;color:var(--text-2);margin-top:10px;line-height:1.5;">Morning done! ☀️</p>
-        </div>
-        <div style="padding:16px 20px;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer;" onclick="show('journal-entry')">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <div style="flex:1;"><div style="font-weight:800;font-size:15px;">Apr 4 · Friday</div><div style="display:flex;gap:10px;margin-top:4px;"><span style="font-size:13px;font-weight:700;color:var(--primary);">8.1 mi</span><span style="font-size:13px;color:var(--text-3);">1h 05m</span><span style="font-size:12px;background:rgba(239,68,68,0.1);color:#EF4444;padding:2px 8px;border-radius:20px;font-weight:700;">Hard</span></div></div>
-            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i>
+          <div class="story-bg-option" id="sbg-2" style="background:linear-gradient(135deg,#667eea,#764ba2);" onclick="selectStoryBg(2)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">🌙</div>
           </div>
-          <div style="height:120px;border-radius:14px;background:linear-gradient(135deg,#4ECDC4,#44A08D);position:relative;overflow:hidden;">
-            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-              <div style="text-align:center;"><div style="font-size:28px;font-weight:900;color:white;">8.1 mi</div><div style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:4px;">Riverside Trail 💪</div></div>
-            </div>
+          <div class="story-bg-option" id="sbg-3" style="background:linear-gradient(135deg,#f093fb,#f5576c);" onclick="selectStoryBg(3)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">⚡</div>
           </div>
-          <p style="font-size:13px;color:var(--text-2);margin-top:10px;line-height:1.5;">Tempo run felt strong today. Kept 8:00/mi for the middle 5 miles.</p>
-        </div>
-        <!-- March 2026 -->
-        <div style="padding:14px 20px 8px;font-size:11px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:1px;border-bottom:1px solid rgba(0,0,0,0.05);">March 2026</div>
-        <div style="padding:16px 20px;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer;" onclick="show('journal-entry')">
-          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <div style="flex:1;"><div style="font-weight:800;font-size:15px;">Mar 29 · Saturday</div><div style="display:flex;gap:10px;margin-top:4px;"><span style="font-size:13px;font-weight:700;color:var(--primary);">13.1 mi</span><span style="font-size:13px;color:var(--text-3);">1h 52m</span><span style="font-size:12px;background:rgba(234,179,8,0.15);color:#B45309;padding:2px 8px;border-radius:20px;font-weight:700;">PR! 🏆</span></div></div>
-            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i>
+          <div class="story-bg-option" id="sbg-4" style="background:linear-gradient(135deg,#4facfe,#00f2fe);" onclick="selectStoryBg(4)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">💨</div>
           </div>
-          <div style="height:120px;border-radius:14px;background:linear-gradient(135deg,#667eea,#764ba2);position:relative;overflow:hidden;">
-            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
-              <div style="text-align:center;"><div style="font-size:28px;font-weight:900;color:white;">🥇 New PR!</div><div style="color:rgba(255,255,255,0.7);font-size:12px;margin-top:4px;">Half Marathon · 1:52:04</div></div>
-            </div>
+          <div class="story-bg-option" id="sbg-5" style="background:linear-gradient(135deg,#43e97b,#38f9d7);" onclick="selectStoryBg(5)">
+            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;">🏆</div>
           </div>
-          <p style="font-size:13px;color:var(--text-2);margin-top:10px;line-height:1.5;">Half marathon PR! Couldn't believe the last mile. Boston here I come 🎉</p>
         </div>
-        <div style="height:24px;"></div>
-      </div>
-    </div>
-
-    <!-- ========== JOURNAL ENTRY (read-only view) ========== -->
-    <div class="screen" id="journal-entry">
-      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:30;color:white;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
-      <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,#FF6B6B,#FF8E53);z-index:0;">
-        <div id="journal-entry-canvas" style="position:absolute;inset:0;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-          <div style="text-align:center;padding:24px;"><div style="font-size:48px;font-weight:900;color:white;">5.2 mi</div><div style="color:rgba(255,255,255,0.7);font-size:15px;margin-top:6px;">at 8:30/mi pace 🔥</div></div>
-        </div>
-      </div>
-      <!-- Top bar -->
-      <div style="position:absolute;top:52px;left:0;right:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:0 16px;">
-        <div style="width:38px;height:38px;background:rgba(0,0,0,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);" onclick="back()">
-          <i class="fas fa-chevron-left" style="color:white;font-size:14px;"></i>
-        </div>
-        <div style="background:rgba(0,0,0,0.35);border-radius:20px;padding:8px 14px;backdrop-filter:blur(6px);">
-          <span style="color:white;font-size:13px;font-weight:700;">Apr 7, 2026</span>
-        </div>
-        <div style="width:38px;height:38px;background:rgba(0,0,0,0.35);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);" onclick="if(confirm('Delete this entry?'))back()">
-          <i class="fas fa-trash" style="color:rgba(255,255,255,0.8);font-size:14px;"></i>
-        </div>
-      </div>
-      <!-- Stats strip at bottom -->
-      <div style="position:absolute;bottom:0;left:0;right:0;z-index:40;padding:16px 20px 40px;background:linear-gradient(transparent,rgba(0,0,0,0.7));">
-        <div style="display:flex;gap:16px;margin-bottom:10px;">
-          <div style="text-align:center;"><div style="font-size:20px;font-weight:900;color:white;">5.2</div><div style="font-size:11px;color:rgba(255,255,255,0.6);">miles</div></div>
-          <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
-          <div style="text-align:center;"><div style="font-size:20px;font-weight:900;color:white;">42m</div><div style="font-size:11px;color:rgba(255,255,255,0.6);">duration</div></div>
-          <div style="width:1px;background:rgba(255,255,255,0.2);"></div>
-          <div style="text-align:center;"><div style="font-size:20px;font-weight:900;color:white;">8:30</div><div style="font-size:11px;color:rgba(255,255,255,0.6);">/mi</div></div>
-          <div style="margin-left:auto;background:rgba(252,76,2,0.85);border-radius:20px;padding:4px 12px;display:flex;align-items:center;"><span style="color:white;font-size:12px;font-weight:700;">Moderate</span></div>
-        </div>
-        <p style="color:rgba(255,255,255,0.85);font-size:13px;line-height:1.5;">Morning done! ☀️</p>
+        <p style="color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:12px;">Or upload your photo</p>
+        <button class="btn" style="background:rgba(255,255,255,0.1);color:white;border:1.5px solid rgba(255,255,255,0.15);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:10px;" onclick="show('story-editor')">
+          <i class="fas fa-image" style="font-size:18px;color:var(--primary);"></i> Upload from Library
+        </button>
+        <button class="btn" style="background:rgba(255,255,255,0.1);color:white;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;gap:10px;" onclick="show('story-editor')">
+          <i class="fas fa-camera" style="font-size:18px;color:var(--primary);"></i> Take a Photo
+        </button>
       </div>
     </div>
 
@@ -1581,10 +1621,10 @@ input[type=range]::-webkit-slider-thumb {
         <div style="width:38px;height:38px;background:rgba(0,0,0,0.4);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.15);" onclick="discardStory()">
           <i class="fas fa-xmark" style="color:white;font-size:18px;"></i>
         </div>
-        <!-- Private label -->
-        <div style="background:rgba(0,0,0,0.35);border-radius:20px;padding:6px 12px;backdrop-filter:blur(6px);display:flex;align-items:center;gap:6px;">
-          <i class="fas fa-lock" style="color:rgba(255,255,255,0.7);font-size:11px;"></i>
-          <span style="color:rgba(255,255,255,0.8);font-size:12px;font-weight:600;">Only you</span>
+        <!-- Audience toggle -->
+        <div class="audience-toggle" id="audience-toggle">
+          <div class="audience-opt active" onclick="setAudience('matches', this)">Matches</div>
+          <div class="audience-opt" onclick="setAudience('everyone', this)">Everyone</div>
         </div>
       </div>
 
@@ -1606,8 +1646,8 @@ input[type=range]::-webkit-slider-thumb {
 
       <!-- Bottom bar -->
       <div style="position:absolute;bottom:0;left:0;right:0;z-index:40;padding:14px 16px 36px;">
-        <button class="btn btn-primary" style="font-size:16px;box-shadow:0 4px 20px rgba(252,76,2,0.4);" onclick="saveToJournal()">
-          Save to Journal
+        <button class="btn btn-primary" style="font-size:16px;box-shadow:0 4px 20px rgba(252,76,2,0.4);" onclick="shareStory()">
+          Share to Story
         </button>
       </div>
 
@@ -1791,12 +1831,9 @@ input[type=range]::-webkit-slider-thumb {
         </div>
       </div>
       <!-- Action buttons -->
-      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px 36px;background:white;border-top:1px solid rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;">
-        <button class="btn btn-primary" style="width:100%;" onclick="show('moment-creation')"><i class="fas fa-fire" style="margin-right:6px;"></i>We Ran It! 🎉</button>
-        <div style="display:flex;gap:10px;">
-          <button class="btn btn-secondary" style="flex:1;" onclick="back()">Decline</button>
-          <button class="btn btn-primary" style="flex:2;" onclick="showRunRequestAccepted()"><i class="fas fa-check" style="margin-right:6px;"></i>Accept — Let's Run!</button>
-        </div>
+      <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 16px 36px;background:white;border-top:1px solid rgba(0,0,0,0.06);display:flex;gap:10px;">
+        <button class="btn btn-secondary" style="flex:1;" onclick="back()">Decline</button>
+        <button class="btn btn-primary" style="flex:2;" onclick="showRunRequestAccepted()"><i class="fas fa-check" style="margin-right:6px;"></i>Accept — Let's Run!</button>
       </div>
       <!-- ACCEPTED OVERLAY -->
       <div class="req-accepted-overlay" id="run-req-accepted-overlay">
@@ -1809,137 +1846,6 @@ input[type=range]::-webkit-slider-thumb {
           <button class="btn btn-primary" style="margin-bottom:10px;" onclick="closeReqAccepted();show('chat-thread')">Open Chat</button>
           <button class="btn btn-secondary" onclick="closeReqAccepted();back()">Maybe Later</button>
         </div>
-      </div>
-    </div>
-
-    <!-- ========== MOMENT CREATION ========== -->
-    <div class="screen" id="moment-creation">
-      <div class="status-bar"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
-      <div class="nav-bar"><div class="nav-back" onclick="back()"><i class="fas fa-chevron-left"></i></div><span class="nav-title">Our Run</span></div>
-      <div class="screen-content" style="padding-bottom:24px;">
-        <!-- Live branded card preview -->
-        <div style="margin:16px;border-radius:20px;overflow:hidden;background:var(--secondary);min-height:220px;position:relative;">
-          <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0F1B35,#1E3A6E);"></div>
-          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;">
-            <!-- Avatars row -->
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:16px;">
-              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-                <div class="avatar-placeholder" style="width:52px;height:52px;font-size:20px;background:linear-gradient(135deg,#FF6B35,#FC4C02);border:2.5px solid rgba(255,255,255,0.3);">Y</div>
-                <span style="color:rgba(255,255,255,0.6);font-size:11px;font-weight:700;">You</span>
-              </div>
-              <div style="color:rgba(255,255,255,0.3);font-size:18px;font-weight:900;">×</div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-                <div class="avatar-placeholder" style="width:52px;height:52px;font-size:20px;background:linear-gradient(135deg,#4ECDC4,#44A08D);border:2.5px solid rgba(255,255,255,0.3);">S</div>
-                <span style="color:rgba(255,255,255,0.6);font-size:11px;font-weight:700;">Sarah</span>
-              </div>
-            </div>
-            <!-- Distance (live) -->
-            <div id="moment-preview-dist" style="font-size:42px;font-weight:900;color:white;line-height:1;">—</div>
-            <div style="color:rgba(255,255,255,0.45);font-size:12px;margin-bottom:10px;" id="moment-preview-unit">miles</div>
-            <!-- Stats row (live) -->
-            <div id="moment-preview-stats" style="color:rgba(255,255,255,0.65);font-size:13px;font-weight:600;">— min · —</div>
-            <!-- Brand footer -->
-            <div style="position:absolute;bottom:12px;left:0;right:0;display:flex;align-items:center;justify-content:center;gap:8px;">
-              <i class="fas fa-person-running" style="color:rgba(252,76,2,0.6);font-size:11px;"></i>
-              <span style="color:rgba(255,255,255,0.3);font-size:11px;font-weight:700;">GoWith</span>
-              <span style="color:rgba(255,255,255,0.15);font-size:11px;">·</span>
-              <span style="color:rgba(255,255,255,0.3);font-size:11px;">Apr 7, 2026</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Form -->
-        <div style="padding:0 16px;">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-            <div>
-              <label class="input-label">Distance</label>
-              <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-                <input id="moment-dist" class="input-field" type="number" placeholder="5.2" style="flex:1;" oninput="updateMomentPreview()">
-                <span id="moment-dist-unit" style="font-size:13px;font-weight:700;color:var(--text-3);flex-shrink:0;">mi</span>
-              </div>
-            </div>
-            <div>
-              <label class="input-label">Duration</label>
-              <input id="moment-dur" class="input-field" type="text" placeholder="44:00" style="margin-top:8px;" oninput="updateMomentPreview()">
-            </div>
-          </div>
-
-          <div style="margin-bottom:16px;">
-            <label class="input-label">How was it?</label>
-            <div class="chips-row" style="margin-top:10px;gap:8px;" id="moment-feel-chips">
-              <div class="chip" onclick="selectMomentFeel('Easy',this)">Easy</div>
-              <div class="chip active" onclick="selectMomentFeel('Moderate',this)">Moderate</div>
-              <div class="chip" onclick="selectMomentFeel('Hard',this)">Hard</div>
-              <div class="chip" onclick="selectMomentFeel('PR! 🏆',this)">PR! 🏆</div>
-            </div>
-          </div>
-
-          <div style="margin-bottom:24px;">
-            <label class="input-label">Caption <span style="color:var(--text-3);font-weight:400;">(optional)</span></label>
-            <textarea id="moment-caption" class="input-field" rows="2" placeholder="Add a note about this run…" style="margin-top:8px;resize:none;"></textarea>
-          </div>
-
-          <button class="btn btn-primary" style="width:100%;font-size:16px;box-shadow:0 4px 20px rgba(252,76,2,0.35);" onclick="createMoment()">
-            <i class="fas fa-fire" style="margin-right:8px;"></i>Create Moment →
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- ========== MOMENT CARD ========== -->
-    <div class="screen" id="moment-card" style="background:#0F1B35;">
-      <div class="status-bar" style="background:transparent;"><span class="time" style="color:rgba(255,255,255,0.7);">9:41</span><div class="icons" style="color:rgba(255,255,255,0.7);"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
-      <!-- Full-screen branded card -->
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;gap:0;">
-        <!-- Avatars -->
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-            <div class="avatar-placeholder" style="width:60px;height:60px;font-size:24px;background:linear-gradient(135deg,#FF6B35,#FC4C02);border:3px solid rgba(255,255,255,0.2);">Y</div>
-            <span style="color:rgba(255,255,255,0.55);font-size:12px;font-weight:700;">You</span>
-          </div>
-          <div style="color:rgba(255,255,255,0.2);font-size:22px;font-weight:900;margin-bottom:18px;">×</div>
-          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
-            <div class="avatar-placeholder" style="width:60px;height:60px;font-size:24px;background:linear-gradient(135deg,#4ECDC4,#44A08D);border:3px solid rgba(255,255,255,0.2);">S</div>
-            <span style="color:rgba(255,255,255,0.55);font-size:12px;font-weight:700;" id="moment-card-partner">Sarah</span>
-          </div>
-        </div>
-        <!-- Distance big -->
-        <div id="moment-card-dist" style="font-size:64px;font-weight:900;color:white;line-height:1;">5.2</div>
-        <div id="moment-card-unit" style="color:rgba(255,255,255,0.4);font-size:16px;margin-bottom:16px;">miles</div>
-        <!-- Stats row -->
-        <div style="display:flex;gap:24px;align-items:center;margin-bottom:16px;">
-          <div style="text-align:center;"><div id="moment-card-dur" style="font-size:20px;font-weight:800;color:white;">44:00</div><div style="font-size:11px;color:rgba(255,255,255,0.35);">duration</div></div>
-          <div style="width:1px;height:32px;background:rgba(255,255,255,0.1);"></div>
-          <div style="background:rgba(252,76,2,0.25);border:1px solid rgba(252,76,2,0.4);border-radius:20px;padding:4px 14px;"><span id="moment-card-feel" style="color:white;font-size:13px;font-weight:700;">Moderate</span></div>
-        </div>
-        <!-- Caption -->
-        <p id="moment-card-caption" style="color:rgba(255,255,255,0.65);font-size:14px;line-height:1.6;max-width:260px;margin-bottom:24px;min-height:20px;"></p>
-        <!-- GoWith brand -->
-        <div style="display:flex;align-items:center;gap:8px;">
-          <i class="fas fa-person-running" style="color:var(--primary);font-size:13px;"></i>
-          <span style="color:rgba(255,255,255,0.35);font-size:12px;font-weight:800;letter-spacing:0.5px;">GoWith</span>
-          <span style="color:rgba(255,255,255,0.15);">·</span>
-          <span style="color:rgba(255,255,255,0.25);font-size:12px;">Apr 7, 2026</span>
-        </div>
-      </div>
-      <!-- Share destinations -->
-      <div style="background:rgba(255,255,255,0.05);border-top:1px solid rgba(255,255,255,0.08);padding:12px 0 4px;">
-        <div class="share-dest-row">
-          <div class="share-dest"><div class="share-dest-icon" style="background:linear-gradient(45deg,#405DE6,#833AB4,#E1306C,#FD1D1D);"><i class="fab fa-instagram" style="color:white;font-size:22px;"></i></div><span style="color:rgba(255,255,255,0.5);">Stories</span></div>
-          <div class="share-dest"><div class="share-dest-icon" style="background:linear-gradient(45deg,#405DE6,#833AB4,#C13584);"><i class="fab fa-instagram" style="color:white;font-size:22px;"></i></div><span style="color:rgba(255,255,255,0.5);">Feed</span></div>
-          <div class="share-dest"><div class="share-dest-icon" style="background:#000;"><i class="fab fa-x-twitter" style="color:white;font-size:22px;"></i></div><span style="color:rgba(255,255,255,0.5);">X</span></div>
-          <div class="share-dest"><div class="share-dest-icon" style="background:#1877F2;"><i class="fab fa-facebook" style="color:white;font-size:22px;"></i></div><span style="color:rgba(255,255,255,0.5);">Facebook</span></div>
-          <div class="share-dest"><div class="share-dest-icon" style="background:rgba(255,255,255,0.08);"><i class="fas fa-image" style="color:rgba(255,255,255,0.5);font-size:22px;"></i></div><span style="color:rgba(255,255,255,0.5);">Save</span></div>
-          <div class="share-dest"><div class="share-dest-icon" style="background:rgba(255,255,255,0.08);"><i class="fas fa-ellipsis" style="color:rgba(255,255,255,0.5);font-size:22px;"></i></div><span style="color:rgba(255,255,255,0.5);">More</span></div>
-        </div>
-      </div>
-      <!-- Saved + Done -->
-      <div style="padding:12px 16px 40px;background:rgba(0,0,0,0.2);display:flex;align-items:center;gap:12px;">
-        <div style="display:flex;align-items:center;gap:6px;flex:1;">
-          <i class="fas fa-check-circle" style="color:var(--success);font-size:16px;"></i>
-          <span style="color:rgba(255,255,255,0.6);font-size:13px;font-weight:600;">Saved to Journal</span>
-        </div>
-        <button class="btn btn-primary" style="flex:1;" onclick="finishMoment()">Done →</button>
       </div>
     </div>
 
@@ -2000,6 +1906,63 @@ input[type=range]::-webkit-slider-thumb {
           </div>
         </div>
         <button class="btn btn-primary" onclick="back()">Confirm Location</button>
+      </div>
+    </div>
+
+    <!-- ========== STORY VIEWER SELF ========== -->
+    <div class="screen" id="story-viewer-self">
+      <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:30;color:white;"><span class="time">9:41</span><div class="icons"><i class="fas fa-signal"></i><i class="fas fa-wifi"></i><i class="fas fa-battery-full"></i></div></div>
+      <div class="story-bars">
+        <div class="story-bar"><div class="story-bar-fill" style="width:100%;"></div></div>
+        <div class="story-bar"><div class="story-bar-fill" style="width:0%;"></div></div>
+      </div>
+      <div class="story-user-row">
+        <div class="avatar-placeholder" style="width:36px;height:36px;font-size:14px;background:linear-gradient(135deg,#FF6B35,#FC4C02);">Y</div>
+        <div><div style="color:white;font-weight:800;font-size:14px;">Your Story</div><div style="color:rgba(255,255,255,0.55);font-size:12px;">Just now</div></div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
+          <div class="story-viewers-pill" onclick="openSheet('story-viewers-sheet')">
+            <i class="fas fa-eye" style="font-size:12px;"></i> 12
+          </div>
+          <i class="fas fa-trash" style="color:rgba(255,255,255,0.7);cursor:pointer;font-size:17px;" onclick="confirmDeleteStory()"></i>
+          <i class="fas fa-xmark" style="color:white;cursor:pointer;font-size:20px;" onclick="back()"></i>
+        </div>
+      </div>
+      <!-- Story content -->
+      <div style="position:absolute;inset:0;background:linear-gradient(135deg,#FF6B6B,#FF8E53);display:flex;align-items:center;justify-content:center;z-index:0;">
+        <div style="text-align:center;padding:24px;">
+          <div style="background:rgba(255,255,255,0.15);border-radius:20px;padding:20px 28px;backdrop-filter:blur(10px);margin-bottom:24px;">
+            <div style="font-size:40px;font-weight:900;color:white;">5.2 mi</div>
+            <div style="color:rgba(255,255,255,0.65);font-size:13px;margin-top:4px;">at 8:30/mi pace 🔥</div>
+          </div>
+          <p style="color:white;font-size:20px;font-weight:900;">Morning done! ☀️</p>
+          <p style="color:rgba(255,255,255,0.75);font-size:14px;margin-top:10px;line-height:1.5;">Who's running with me this weekend?</p>
+        </div>
+      </div>
+      <!-- STORY VIEWERS LIST SHEET -->
+      <div class="bottom-sheet-overlay" id="story-viewers-sheet" onclick="overlayClose(event,'story-viewers-sheet')" style="z-index:40;">
+        <div class="bottom-sheet" onclick="event.stopPropagation()">
+          <div class="sheet-handle"></div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+            <div class="sheet-title" style="margin-bottom:0;">Story Viewers</div>
+            <span style="color:var(--text-3);font-size:13px;font-weight:600;">12 views</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;" onclick="closeSheet('story-viewers-sheet');show('runner-detail')">
+            <div class="avatar-placeholder" style="width:44px;height:44px;font-size:16px;background:linear-gradient(135deg,#FF6B6B,#FF8E53);">S</div>
+            <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Sarah M.</div><div style="font-size:12px;color:var(--text-3);">2 minutes ago</div></div>
+            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:12px;"></i>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div class="avatar-placeholder" style="width:44px;height:44px;font-size:16px;background:linear-gradient(135deg,#667eea,#764ba2);">J</div>
+            <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Jake T.</div><div style="font-size:12px;color:var(--text-3);">8 minutes ago</div></div>
+            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:12px;"></i>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid rgba(0,0,0,0.05);cursor:pointer;">
+            <div class="avatar-placeholder" style="width:44px;height:44px;font-size:16px;background:linear-gradient(135deg,#4ECDC4,#44A08D);">E</div>
+            <div style="flex:1;"><div style="font-weight:700;font-size:14px;">Emma L.</div><div style="font-size:12px;color:var(--text-3);">15 minutes ago</div></div>
+            <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:12px;"></i>
+          </div>
+          <div style="text-align:center;padding:14px 0;color:var(--text-3);font-size:13px;">+ 9 more viewers</div>
+        </div>
       </div>
     </div>
 
@@ -2184,34 +2147,6 @@ function spawnConfetti() {
     `;
     wrap.appendChild(p);
   }
-}
-
-// ============ RUN PREFERENCES UNIT TOGGLE ============
-let _prefUnitIsKm = false;
-function togglePrefUnit() {
-  _prefUnitIsKm = !_prefUnitIsKm;
-  const toggle   = document.getElementById('pref-unit-toggle');
-  const unitLbl  = document.getElementById('pref-unit-label');
-  const paceEl   = document.getElementById('pref-pace-label');
-  const weeklyEl = document.getElementById('setup2-weekly-unit');
-  if (toggle)  { toggle.classList.toggle('off', !_prefUnitIsKm); }
-  if (unitLbl) unitLbl.textContent = _prefUnitIsKm ? 'KM' : 'Miles';
-  if (paceEl)  paceEl.textContent  = _prefUnitIsKm ? '5:00 – 6:30 /km' : '8:00 – 10:00 /mi';
-  if (weeklyEl) weeklyEl.textContent = _prefUnitIsKm ? 'km/wk' : 'mi/wk';
-}
-
-// ============ FILTER SHEET UNIT TOGGLE ============
-let _filterUnitIsKm = false;
-function toggleFilterUnit() {
-  _filterUnitIsKm = !_filterUnitIsKm;
-  const toggle    = document.getElementById('filter-unit-toggle');
-  const unitLbl   = document.getElementById('filter-unit-label');
-  const paceLbl   = document.getElementById('filter-pace-label');
-  const radiusLbl = document.getElementById('filter-radius-label');
-  if (toggle)    toggle.classList.toggle('off', !_filterUnitIsKm);
-  if (unitLbl)   unitLbl.textContent   = _filterUnitIsKm ? 'KM' : 'Miles';
-  if (paceLbl)   paceLbl.textContent   = _filterUnitIsKm ? '11:00–18:00 /km' : '7:00–11:00 /mi';
-  if (radiusLbl) radiusLbl.textContent = _filterUnitIsKm ? '8 km' : '5 mi';
 }
 
 // ============ ONBOARDING ============
@@ -2629,147 +2564,43 @@ function closeReqAccepted() {
   document.getElementById('run-req-accepted-overlay').classList.remove('active');
 }
 
-// ---- Save to Journal ----
-function saveToJournal() {
-  clearStoryCanvas();
-  show('my-journal');
-}
-
-function logRunWithoutVisual() {
-  show('my-journal');
-}
-
-// ---- Setup Step 4 — Location ----
-const _setup4Places = [
-  '14 Riverside Dr, New York, NY',
-  '72 Central Park West, New York, NY',
-  '540 W 145th St, New York, NY',
-  '1 Harbour St, Toronto, ON',
-  '312 Queen St W, Toronto, ON',
-  '88 Bloor St E, Toronto, ON',
-  '200 Mission St, San Francisco, CA',
-  '475 Market St, San Francisco, CA',
-  '1600 Lake Shore Dr, Chicago, IL',
-  '340 Michigan Ave, Chicago, IL',
-  '820 Peachtree St NE, Atlanta, GA',
-  '6400 Sunset Blvd, Los Angeles, CA',
-  '3200 Wilshire Blvd, Los Angeles, CA',
-  '900 Collins Ave, Miami Beach, FL',
-  '250 Congress Ave, Austin, TX',
-  '1400 Pike Place, Seattle, WA',
-  '280 Boylston St, Boston, MA',
-  '600 Magazine St, New Orleans, LA',
-  '410 Commerce St, Nashville, TN',
-  '700 Larimer St, Denver, CO',
-];
-
-function setup4Suggest(val) {
-  const box = document.getElementById('setup4-suggestions');
-  const q = val.trim().toLowerCase();
-  if (q.length < 2) { box.style.display = 'none'; return; }
-  const matches = _setup4Places.filter(p => p.toLowerCase().includes(q)).slice(0, 5);
-  if (!matches.length) { box.style.display = 'none'; return; }
-  box.innerHTML = matches.map((p, i) =>
-    `<div onclick="setup4SelectLocation('${p}')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;${i ? 'border-top:1px solid rgba(0,0,0,0.06)' : ''};cursor:pointer;font-size:14px;color:var(--secondary);" onmouseenter="this.style.background='var(--surface)'" onmouseleave="this.style.background=''">
-      <i class="fas fa-location-dot" style="color:var(--primary);font-size:14px;flex-shrink:0;"></i>${p}
-    </div>`
-  ).join('');
-  box.style.display = 'block';
-}
-
-function setup4SelectLocation(place) {
-  document.getElementById('setup4-location-input').value = place;
-  document.getElementById('setup4-suggestions').style.display = 'none';
-  document.getElementById('setup4-map-idle').style.display = 'none';
-  document.getElementById('setup4-map-active').style.display = 'block';
-  document.getElementById('setup4-map-pin').style.display = 'block';
-}
-
-// ---- Moment Feature ----
-let _momentFeel = 'Moderate';
-
-function selectMomentFeel(feel, el) {
-  _momentFeel = feel;
-  document.querySelectorAll('#moment-feel-chips .chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  updateMomentPreview();
-}
-
-function updateMomentPreview() {
-  const dist = document.getElementById('moment-dist').value || '—';
-  const dur  = document.getElementById('moment-dur').value  || '—';
-  const isKm = typeof _prefUnitIsKm !== 'undefined' && _prefUnitIsKm;
-  document.getElementById('moment-preview-dist').textContent = dist;
-  document.getElementById('moment-preview-unit').textContent = isKm ? 'km' : 'miles';
-  document.getElementById('moment-dist-unit').textContent    = isKm ? 'km' : 'mi';
-  document.getElementById('moment-preview-stats').textContent = dur + ' min · ' + _momentFeel;
-}
-
-function createMoment() {
-  const dist    = document.getElementById('moment-dist').value    || '5.2';
-  const dur     = document.getElementById('moment-dur').value     || '44:00';
-  const caption = document.getElementById('moment-caption').value || '';
-  const isKm    = typeof _prefUnitIsKm !== 'undefined' && _prefUnitIsKm;
-  const unitLong = isKm ? 'km' : 'miles';
-
-  // Populate moment-card
-  document.getElementById('moment-card-dist').textContent    = dist;
-  document.getElementById('moment-card-unit').textContent    = unitLong;
-  document.getElementById('moment-card-dur').textContent     = dur;
-  document.getElementById('moment-card-feel').textContent    = _momentFeel;
-  document.getElementById('moment-card-caption').textContent = caption;
-
-  // Prepend new entry to journal
-  const list = document.getElementById('journal-list');
-  if (list) {
-    const card = document.createElement('div');
-    card.style.cssText = 'padding:16px 20px;border-bottom:1px solid rgba(0,0,0,0.06);cursor:pointer;';
-    card.onclick = () => show('journal-entry');
-    card.innerHTML = `
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-        <div style="flex:1;">
-          <div style="font-weight:800;font-size:15px;">Apr 7 · Tuesday <span style="font-size:11px;background:rgba(252,76,2,0.1);color:var(--primary);padding:2px 8px;border-radius:20px;font-weight:700;margin-left:6px;">Moment 🎉</span></div>
-          <div style="display:flex;gap:10px;margin-top:4px;">
-            <span style="font-size:13px;font-weight:700;color:var(--primary);">${dist} ${isKm ? 'km' : 'mi'}</span>
-            <span style="font-size:13px;color:var(--text-3);">${dur} min</span>
-            <span style="font-size:12px;background:rgba(252,76,2,0.1);color:var(--primary);padding:2px 8px;border-radius:20px;font-weight:700;">${_momentFeel}</span>
-          </div>
-        </div>
-        <i class="fas fa-chevron-right" style="color:var(--text-3);font-size:13px;"></i>
-      </div>
-      <div style="height:120px;border-radius:14px;background:linear-gradient(135deg,#0F1B35,#1E3A6E);position:relative;overflow:hidden;">
-        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:14px;">
-          <div class="avatar-placeholder" style="width:40px;height:40px;font-size:16px;background:linear-gradient(135deg,#FF6B35,#FC4C02);border:2px solid rgba(255,255,255,0.3);">Y</div>
-          <div style="text-align:center;"><div style="font-size:28px;font-weight:900;color:white;">${dist}</div><div style="color:rgba(255,255,255,0.5);font-size:11px;">${unitLong} with Sarah 🤝</div></div>
-          <div class="avatar-placeholder" style="width:40px;height:40px;font-size:16px;background:linear-gradient(135deg,#4ECDC4,#44A08D);border:2px solid rgba(255,255,255,0.3);">S</div>
-        </div>
-      </div>
-      ${caption ? `<p style="font-size:13px;color:var(--text-2);margin-top:10px;line-height:1.5;">${caption}</p>` : ''}
-    `;
-    list.prepend(card);
-    // Update run count
-    const countEl = document.getElementById('journal-run-count');
-    if (countEl) {
-      const current = parseInt(countEl.textContent) || 12;
-      countEl.textContent = (current + 1) + ' runs';
+// ============ DELETE OWN STORY ============
+function confirmDeleteStory() {
+  if (confirm('Delete this story?')) {
+    // Reset "Add Story" button in feed
+    const ownItem = document.querySelector('#feed .stories-row .story-item');
+    if (ownItem) {
+      ownItem.setAttribute('onclick', "show('story-creation')");
+      const ring = ownItem.querySelector('.story-ring');
+      if (ring) ring.classList.add('add-btn');
+      const lbl = ownItem.querySelector('span');
+      if (lbl) lbl.textContent = 'Add Story';
     }
+    back();
   }
-
-  show('moment-card');
 }
 
-function finishMoment() {
-  show('my-journal');
+// ---- Audience ----
+function setAudience(val, optEl) {
+  storyAudience = val;
+  document.querySelectorAll('.audience-opt').forEach(o => o.classList.remove('active'));
+  optEl.classList.add('active');
 }
 
-// Close setup-4 suggestions when tapping elsewhere
-document.addEventListener('click', function(e) {
-  const box = document.getElementById('setup4-suggestions');
-  const input = document.getElementById('setup4-location-input');
-  if (box && !box.contains(e.target) && e.target !== input) {
-    box.style.display = 'none';
+// ---- Share / Discard ----
+function shareStory() {
+  clearStoryCanvas();
+  show('feed');
+  // Update "Add Story" item in feed to "Your Story" → story-viewer-self
+  const ownItem = document.querySelector('#feed .stories-row .story-item');
+  if (ownItem) {
+    ownItem.setAttribute('onclick', "show('story-viewer-self')");
+    const ring = ownItem.querySelector('.story-ring');
+    if (ring) ring.classList.remove('add-btn');
+    const lbl = ownItem.querySelector('span');
+    if (lbl) lbl.textContent = 'Your Story';
   }
-});
+}
 
 function discardStory() {
   if (storyLayers.length > 0 || true) {
@@ -2797,8 +2628,8 @@ const SCREEN_DEFS = [
   // Setup
   { section: 'Profile Setup' },
   { id: 'setup-1',           name: 'Step 1 · Profile', icon: 'fa-user',           bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
-  { id: 'setup-2',           name: 'Step 2 · Goals',   icon: 'fa-bullseye',       bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
-  { id: 'setup-3',           name: 'Step 3 · Pace',    icon: 'fa-stopwatch',      bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
+  { id: 'setup-2',           name: 'Step 2 · Pace',    icon: 'fa-stopwatch',      bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
+  { id: 'setup-3',           name: 'Step 3 · Goals',   icon: 'fa-bullseye',       bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
   { id: 'setup-4',           name: 'Step 4 · Location',icon: 'fa-location-dot',   bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
   { id: 'setup-5',           name: 'Step 5 · Review',  icon: 'fa-circle-check',   bg: 'linear-gradient(135deg,#1E3A6E,#2a4f90)' },
   // Discover
@@ -2810,15 +2641,16 @@ const SCREEN_DEFS = [
   { id: 'matches-list',      name: 'Matches List',     icon: 'fa-comment-dots',   bg: 'linear-gradient(135deg,#4ECDC4,#44A08D)' },
   { id: 'run-request-inbox', name: 'Run Request',      icon: 'fa-inbox',          bg: 'linear-gradient(135deg,#43e97b,#38f9d7)' },
   { id: 'chat-thread',       name: 'Chat Thread',      icon: 'fa-message',        bg: 'linear-gradient(135deg,#667eea,#764ba2)' },
-  { id: 'moment-creation',   name: 'Log Our Run',      icon: 'fa-fire',           bg: 'linear-gradient(135deg,#0F1B35,#1E3A6E)' },
-  { id: 'moment-card',       name: 'Moment Card',      icon: 'fa-share-nodes',    bg: 'linear-gradient(135deg,#0F1B35,#1E3A6E)' },
   { id: 'map-location-picker',name:'Map Picker',       icon: 'fa-map',            bg: 'linear-gradient(135deg,#a8edea,#6ec6b0)' },
-  // Running Journal
-  { section: 'Running Journal' },
-  { id: 'my-journal',        name: 'My Journal',       icon: 'fa-book-open',      bg: 'linear-gradient(135deg,#FC4C02,#FF6B35)' },
-  { id: 'journal-entry',     name: 'Journal Entry',    icon: 'fa-person-running', bg: 'linear-gradient(135deg,#FF6B6B,#FF8E53)' },
-  { id: 'story-creation',    name: 'Log a Run',        icon: 'fa-circle-plus',    bg: 'linear-gradient(135deg,#f093fb,#f5576c)' },
-  { id: 'story-editor',      name: 'Visual Editor',    icon: 'fa-pen-nib',        bg: 'linear-gradient(135deg,#4facfe,#00f2fe)' },
+  // Feed & Stories
+  { section: 'Feed & Stories' },
+  { id: 'feed',              name: 'Feed',             icon: 'fa-fire-flame-curved',bg:'linear-gradient(135deg,#FF6B6B,#FC4C02)' },
+  { id: 'feed-post-detail',  name: 'Post Detail',      icon: 'fa-image',          bg: 'linear-gradient(135deg,#FF8E53,#FC4C02)' },
+  { id: 'post-creation',     name: 'New Post',         icon: 'fa-plus',           bg: 'linear-gradient(135deg,#FC4C02,#c73e00)' },
+  { id: 'story-creation',    name: 'Story Creation',   icon: 'fa-circle-plus',    bg: 'linear-gradient(135deg,#f093fb,#f5576c)' },
+  { id: 'story-editor',      name: 'Story Editor',     icon: 'fa-pen-nib',        bg: 'linear-gradient(135deg,#4facfe,#00f2fe)' },
+  { id: 'story-viewer',      name: 'Story Viewer',     icon: 'fa-play-circle',    bg: 'linear-gradient(135deg,#1a1a2e,#FF6B35)' },
+  { id: 'story-viewer-self', name: 'My Story',         icon: 'fa-eye',            bg: 'linear-gradient(135deg,#FF6B6B,#FF8E53)' },
   { id: 'share-sheet-screen',name: 'Share Sheet',      icon: 'fa-share-nodes',    bg: 'linear-gradient(135deg,#43e97b,#38f9d7)' },
   // Notifications
   { section: 'Notifications' },
